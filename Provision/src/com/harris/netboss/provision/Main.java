@@ -255,18 +255,14 @@ public class Main extends javax.swing.JFrame {
 	private void topologyTreeValueChanged(
 			javax.swing.event.TreeSelectionEvent evt) {
 		setCursor(new Cursor(Cursor.WAIT_CURSOR));
-		startTimer = null;
-		startTimer = new Date();
+
 		if (!topologyTree.getSelectionModel().isSelectionEmpty()) {
 			CreateProperties property;
 			property = new CreateProperties();
 			property.create();
 		}
 		setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-		stopTimer = null;
-		stopTimer = new Date();
-		processTimerField.setText(dateFormat.format(stopTimer.getTime()
-				- startTimer.getTime()));
+
 	}
 
 	private void browseButtonMouseClicked(java.awt.event.MouseEvent evt) {
