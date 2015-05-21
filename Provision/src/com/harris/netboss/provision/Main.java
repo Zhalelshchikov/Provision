@@ -201,7 +201,7 @@ public class Main extends javax.swing.JFrame {
 												.addComponent(
 														scrollPane2,
 														javax.swing.GroupLayout.DEFAULT_SIZE,
-														642, Short.MAX_VALUE))));
+														670, Short.MAX_VALUE))));
 
 		pack();
 		setLocationRelativeTo(null);
