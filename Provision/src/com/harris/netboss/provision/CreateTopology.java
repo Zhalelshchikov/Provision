@@ -27,6 +27,18 @@ public class CreateTopology {
 	public static final StringBuilder topology = new StringBuilder();
 	public static final StringBuilder properties = new StringBuilder();
 
+	public Map<String, String> map = new HashMap<>();
+
+	public ImageIcon iconProvision = new ImageIcon();
+	public ImageIcon iconEclipseIcon = new ImageIcon();
+	public ImageIcon iconODU = new ImageIcon();
+	public ImageIcon iconCard = new ImageIcon();
+	public ImageIcon iconNetworkElement = new ImageIcon();
+	public ImageIcon iconBTS = new ImageIcon();
+	public ImageIcon iconPort = new ImageIcon();
+
+	public IconNode[] nodes;
+
 	protected static Image getImageProvision() {
 		java.net.URL imgURL;
 		imgURL = CreateTopology.class.getResource("res\\provision.gif");
@@ -104,17 +116,9 @@ public class CreateTopology {
 				Main.getDir()));
 		ArrayList<String> listProperties = new ArrayList<>();
 		LinkedHashSet<String> listResult = new LinkedHashSet<>();
-		
+
 		listProperties.clear();
 		listResult.clear();
-
-		ImageIcon iconProvision = new ImageIcon();
-		ImageIcon iconEclipseIcon = new ImageIcon();
-		ImageIcon iconODU = new ImageIcon();
-		ImageIcon iconCard = new ImageIcon();
-		ImageIcon iconNetworkElement = new ImageIcon();
-		ImageIcon iconBTS = new ImageIcon();
-		ImageIcon iconPort = new ImageIcon();
 
 		iconProvision.setImage(getImageProvision());
 		iconEclipseIcon.setImage(getImageEclipseIcon());
@@ -128,9 +132,6 @@ public class CreateTopology {
 				new FileReader(Main.getDir()));
 		String lineMap = null;
 		String className = null;
-		int count = 0;
-
-		Map<String, String> map = new HashMap<>();
 
 		while ((lineMap = topologyReaderForMap.readLine()) != null) {
 			String r = "";
@@ -535,12 +536,15 @@ public class CreateTopology {
 
 		String[] lines = topology.toString().split("\n");
 
+		int count = 0;
+
 		for (@SuppressWarnings("unused")
 		String line : lines) {
 			count++;
 		}
 
-		IconNode[] nodes = new IconNode[count];
+		nodes = new IconNode[count];
+
 		nodes[0] = new IconNode("topology");
 		int nodeCount = 0;
 		int level0 = 0;
@@ -601,247 +605,7 @@ public class CreateTopology {
 				nodes[level0].add(nodes[level1]);
 				nodes[level0].setIcon(iconBTS);
 
-				for (Map.Entry<String, String> entry : map.entrySet()) {
-					if (entry.getKey().contentEquals(m.group())) {
-
-						if (entry.getValue().contentEquals(
-								"customizable_container")
-								|| entry.getValue().contentEquals("region")
-								|| entry.getValue().contentEquals("rack")
-								|| entry.getValue().contentEquals("site")) {
-							nodes[level1].setIcon(iconBTS);
-						}
-						if (entry.getValue().contentEquals(
-								"unity_idu_controller")
-								|| entry.getValue().contentEquals(
-										"unity_idu_radio")
-								|| entry.getValue().contentEquals(
-										"unity_idu_radio10")
-								|| entry.getValue().contentEquals(
-										"unity_idu_radio_spe")
-								|| entry.getValue().contentEquals(
-										"unity_idu_data")
-								|| entry.getValue().contentEquals(
-										"unity_idu_aux")
-								|| entry.getValue().contentEquals(
-										"unity_idu_fan")
-								|| entry.getValue().contentEquals(
-										"unity_idu_ethernet")
-								|| entry.getValue().contentEquals(
-										"unity_idu_ethernet_spe")
-								|| entry.getValue().contentEquals(
-										"unity_idu_ge_ethernet")
-								|| entry.getValue().contentEquals("unity_idup")
-								|| entry.getValue().contentEquals(
-										"unity_idu_odu_spe_b")
-								|| entry.getValue().contentEquals(
-										"unity_idu_odu_spe_a")
-								|| entry.getValue().contentEquals(
-										"unity_idu_odu10")
-								|| entry.getValue()
-										.contentEquals("unity_odu10")
-								|| entry.getValue().contentEquals(
-										"unity_idu_odu")
-								|| entry.getValue().contentEquals("unity_odu")
-								|| entry.getValue().contentEquals("unity_idu")) {
-							nodes[level1].setIcon(iconODU);
-						}
-						if (entry.getValue().contentEquals("wtm_6000")
-								|| entry.getValue().contentEquals("wl1000")
-								|| entry.getValue().contentEquals(
-										"wimax_bs_subscriber")
-								|| entry.getValue().contentEquals(
-										"wimax_subscriber")
-								|| entry.getValue().contentEquals(
-										"wimax_bs_6400")
-								|| entry.getValue().contentEquals("wimax_bs")
-								|| entry.getValue().contentEquals(
-										"wimax_asn_protected")
-								|| entry.getValue().contentEquals("wimax_asn")
-								|| entry.getValue().contentEquals(
-										"protected_xp248x_remote_mgmt")
-								|| entry.getValue().contentEquals(
-										"protected_xp4_2x_4x")
-								|| entry.getValue().contentEquals(
-										"xp248x_remote_mgmt")
-								|| entry.getValue().contentEquals("xp4_2x_4x")
-								|| entry.getValue().contentEquals(
-										"protected_xp4_e3")
-								|| entry.getValue().contentEquals(
-										"protected_xpe3ds3_remote_mgmt")
-								|| entry.getValue().contentEquals(
-										"xp16xe3ds3_remote_mgmt")
-								|| entry.getValue().contentEquals("xp4_e3")
-								|| entry.getValue().contentEquals("velox")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_dt")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500")
-								|| entry.getValue().contentEquals(
-										"truepoint_6400")
-								|| entry.getValue().contentEquals(
-										"truepoint_4040_v2entry")
-								|| entry.getValue().contentEquals(
-										"truepoint_4040")
-								|| entry.getValue().contentEquals(
-										"truepoint_4000")
-								|| entry.getValue().contentEquals(
-										"truepoint_5000_2plus0")
-								|| entry.getValue().contentEquals(
-										"truepoint_5000")
-								|| entry.getValue().contentEquals("sagemlink")
-								|| entry.getValue().contentEquals("spII_snmp")
-								|| entry.getValue().contentEquals(
-										"protected_spectrum_II")
-								|| entry.getValue()
-										.contentEquals("spectrum_II")
-								|| entry.getValue().contentEquals("spectrum_I")
-								|| entry.getValue().contentEquals(
-										"protected_quantum")
-								|| entry.getValue().contentEquals("quantum")
-								|| entry.getValue().contentEquals("tnet_proxy")
-								|| entry.getValue().contentEquals(
-										"protected_wseries")
-								|| entry.getValue().contentEquals("wseries")
-								|| entry.getValue().contentEquals(
-										"protected_mseries")
-								|| entry.getValue().contentEquals("mseries")
-								|| entry.getValue().contentEquals("mf")
-								|| entry.getValue().contentEquals(
-										"protected_lc_series")
-								|| entry.getValue().contentEquals("lc_series")
-								|| entry.getValue().contentEquals("spII_snmp")
-								|| entry.getValue().contentEquals("smartcore")
-								|| entry.getValue().contentEquals("sma")
-								|| entry.getValue().contentEquals("rw2000")
-								|| entry.getValue().contentEquals(
-										"microstar_III")
-								|| entry.getValue().contentEquals(
-										"microstar_II")
-								|| entry.getValue().contentEquals(
-										"protected_microstar_I")
-								|| entry.getValue()
-										.contentEquals("microstar_I")
-								|| entry.getValue().contentEquals("m7i")
-								|| entry.getValue().contentEquals("m10i")
-								|| entry.getValue().contentEquals(
-										"megastar_spu")
-								|| entry.getValue()
-										.contentEquals("megastar_mn")
-								|| entry.getValue().contentEquals("megastar")
-								|| entry.getValue().contentEquals("le3200")
-								|| entry.getValue().contentEquals("le3000")
-								|| entry.getValue().contentEquals(
-										"generic_switch")
-								|| entry.getValue().contentEquals(
-										"generic_snmp")
-								|| entry.getValue().contentEquals(
-										"generic_router")
-								|| entry.getValue().contentEquals(
-										"generic_radio")
-								|| entry.getValue().contentEquals(
-										"generic_power_supply")
-								|| entry.getValue()
-										.contentEquals("generic_mux")
-								|| entry.getValue()
-										.contentEquals("generic_bts")
-								|| entry.getValue().contentEquals(
-										"generic_alarm_unit")
-								|| entry.getValue().contentEquals(
-										"eLink1000EXR")
-								|| entry.getValue().contentEquals("dxr200")
-								|| entry.getValue().contentEquals("dxr100p")
-								|| entry.getValue().contentEquals("dxr100np")
-								|| entry.getValue().contentEquals("dvm_XT")
-								|| entry.getValue().contentEquals(
-										"dvm45_repeater")
-								|| entry.getValue().contentEquals(
-										"dvm45_terminal")
-								|| entry.getValue().contentEquals("dva")
-								|| entry.getValue().contentEquals(
-										"dart_remote_mgmt")
-								|| entry.getValue().contentEquals("dart")
-								|| entry.getValue().contentEquals(
-										"constellation")
-								|| entry.getValue().contentEquals("cx_u")
-								|| entry.getValue().contentEquals(
-										"cisco_ME3600X")
-								|| entry.getValue().contentEquals("cau")
-								|| entry.getValue().contentEquals("classic_II")
-								|| entry.getValue().contentEquals("aurora")
-								|| entry.getValue().contentEquals(
-										"altiumMX_2plus0")
-								|| entry.getValue().contentEquals("altiumMX")
-								|| entry.getValue().contentEquals("altium")
-								|| entry.getValue().contentEquals("adr2500")
-								|| entry.getValue().contentEquals("dxr700p")
-								|| entry.getValue().contentEquals("adr")
-								|| entry.getValue().contentEquals(
-										"ethernet_port")
-								|| entry.getValue()
-										.contentEquals("generalCard")
-								|| entry.getValue().contentEquals(
-										"wtm_6000_protected_path")
-								|| entry.getValue()
-										.contentEquals("wtm_6000_sv")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_mstu")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_tcu")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_path")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_hk")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_sv")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_protected_path")
-								|| entry.getValue().contentEquals(
-										"cisco_ME3600X")
-								|| entry.getValue().contentEquals("unity_inu")
-								|| entry.getValue().contentEquals("unity_inue")) {
-							nodes[level1].setIcon(iconEclipseIcon);
-						}
-						if (entry.getValue().contentEquals("unity_rac10")
-								|| entry.getValue()
-										.contentEquals("unity_rac40")
-								|| entry.getValue()
-										.contentEquals("unity_rac4x")
-								|| entry.getValue().contentEquals(
-										"unity_dac155oM")
-								|| entry.getValue().contentEquals("unity_aux")
-								|| entry.getValue().contentEquals(
-										"unity_dacge3")
-								|| entry.getValue()
-										.contentEquals("unity_daces")
-								|| entry.getValue().contentEquals("unity_fan")
-								|| entry.getValue().contentEquals(
-										"unity_fan_2u")
-								|| entry.getValue().contentEquals("unity_rac")
-								|| entry.getValue()
-										.contentEquals("unity_dacge")
-								|| entry.getValue().contentEquals("unity_dac")
-								|| entry.getValue().contentEquals("unity_ncc")
-								|| entry.getValue().contentEquals("unity_npc")) {
-							nodes[level1].setIcon(iconCard);
-						}
-						if (entry.getValue().contentEquals("generic_switch")) {
-							nodes[level1].setIcon(iconNetworkElement);
-						}
-						if (entry.getValue().contentEquals("link")
-								|| entry.getValue().contentEquals(
-										"unity_ring_path")
-								|| entry.getValue().contentEquals(
-										"unity_unexpected")
-								|| entry.getValue().contentEquals(
-										"unity_protected_path")
-								|| entry.getValue().contentEquals("unity_path")) {
-							nodes[level1].setIcon(iconPort);
-						}
-
-					}
-
-				}
+				setNodeIcon(m.group(), level1);
 
 			}
 
@@ -854,246 +618,7 @@ public class CreateTopology {
 				nodes[level2] = new IconNode(m1.group(2));
 				nodes[level1].add(nodes[level2]);
 
-				for (Map.Entry<String, String> entry : map.entrySet()) {
-					if (entry.getKey().contentEquals(m1.group(2))) {
-
-						if (entry.getValue().contentEquals(
-								"customizable_container")
-								|| entry.getValue().contentEquals("region")
-								|| entry.getValue().contentEquals("rack")
-								|| entry.getValue().contentEquals("site")) {
-							nodes[level2].setIcon(iconBTS);
-						}
-						if (entry.getValue().contentEquals(
-								"unity_idu_controller")
-								|| entry.getValue().contentEquals(
-										"unity_idu_radio")
-								|| entry.getValue().contentEquals(
-										"unity_idu_radio10")
-								|| entry.getValue().contentEquals(
-										"unity_idu_radio_spe")
-								|| entry.getValue().contentEquals(
-										"unity_idu_data")
-								|| entry.getValue().contentEquals(
-										"unity_idu_aux")
-								|| entry.getValue().contentEquals(
-										"unity_idu_fan")
-								|| entry.getValue().contentEquals(
-										"unity_idu_ethernet")
-								|| entry.getValue().contentEquals(
-										"unity_idu_ethernet_spe")
-								|| entry.getValue().contentEquals(
-										"unity_idu_ge_ethernet")
-								|| entry.getValue().contentEquals("unity_idup")
-								|| entry.getValue().contentEquals(
-										"unity_idu_odu_spe_b")
-								|| entry.getValue().contentEquals(
-										"unity_idu_odu_spe_a")
-								|| entry.getValue().contentEquals(
-										"unity_idu_odu10")
-								|| entry.getValue()
-										.contentEquals("unity_odu10")
-								|| entry.getValue().contentEquals(
-										"unity_idu_odu")
-								|| entry.getValue().contentEquals("unity_odu")
-								|| entry.getValue().contentEquals("unity_idu")) {
-
-							nodes[level2].setIcon(iconODU);
-						}
-						if (entry.getValue().contentEquals("wtm_6000")
-								|| entry.getValue().contentEquals("wl1000")
-								|| entry.getValue().contentEquals(
-										"wimax_bs_subscriber")
-								|| entry.getValue().contentEquals(
-										"wimax_subscriber")
-								|| entry.getValue().contentEquals(
-										"wimax_bs_6400")
-								|| entry.getValue().contentEquals("wimax_bs")
-								|| entry.getValue().contentEquals(
-										"wimax_asn_protected")
-								|| entry.getValue().contentEquals("wimax_asn")
-								|| entry.getValue().contentEquals(
-										"protected_xp248x_remote_mgmt")
-								|| entry.getValue().contentEquals(
-										"protected_xp4_2x_4x")
-								|| entry.getValue().contentEquals(
-										"xp248x_remote_mgmt")
-								|| entry.getValue().contentEquals("xp4_2x_4x")
-								|| entry.getValue().contentEquals(
-										"protected_xp4_e3")
-								|| entry.getValue().contentEquals(
-										"protected_xpe3ds3_remote_mgmt")
-								|| entry.getValue().contentEquals(
-										"xp16xe3ds3_remote_mgmt")
-								|| entry.getValue().contentEquals("xp4_e3")
-								|| entry.getValue().contentEquals("velox")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_dt")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500")
-								|| entry.getValue().contentEquals(
-										"truepoint_6400")
-								|| entry.getValue().contentEquals(
-										"truepoint_4040_v2entry")
-								|| entry.getValue().contentEquals(
-										"truepoint_4040")
-								|| entry.getValue().contentEquals(
-										"truepoint_4000")
-								|| entry.getValue().contentEquals(
-										"truepoint_5000_2plus0")
-								|| entry.getValue().contentEquals(
-										"truepoint_5000")
-								|| entry.getValue().contentEquals("sagemlink")
-								|| entry.getValue().contentEquals("spII_snmp")
-								|| entry.getValue().contentEquals(
-										"protected_spectrum_II")
-								|| entry.getValue()
-										.contentEquals("spectrum_II")
-								|| entry.getValue().contentEquals("spectrum_I")
-								|| entry.getValue().contentEquals(
-										"protected_quantum")
-								|| entry.getValue().contentEquals("quantum")
-								|| entry.getValue().contentEquals("tnet_proxy")
-								|| entry.getValue().contentEquals(
-										"protected_wseries")
-								|| entry.getValue().contentEquals("wseries")
-								|| entry.getValue().contentEquals(
-										"protected_mseries")
-								|| entry.getValue().contentEquals("mseries")
-								|| entry.getValue().contentEquals("mf")
-								|| entry.getValue().contentEquals(
-										"protected_lc_series")
-								|| entry.getValue().contentEquals("lc_series")
-								|| entry.getValue().contentEquals("spII_snmp")
-								|| entry.getValue().contentEquals("smartcore")
-								|| entry.getValue().contentEquals("sma")
-								|| entry.getValue().contentEquals("rw2000")
-								|| entry.getValue().contentEquals(
-										"microstar_III")
-								|| entry.getValue().contentEquals(
-										"microstar_II")
-								|| entry.getValue().contentEquals(
-										"protected_microstar_I")
-								|| entry.getValue()
-										.contentEquals("microstar_I")
-								|| entry.getValue().contentEquals("m7i")
-								|| entry.getValue().contentEquals("m10i")
-								|| entry.getValue().contentEquals(
-										"megastar_spu")
-								|| entry.getValue()
-										.contentEquals("megastar_mn")
-								|| entry.getValue().contentEquals("megastar")
-								|| entry.getValue().contentEquals("le3200")
-								|| entry.getValue().contentEquals("le3000")
-								|| entry.getValue().contentEquals(
-										"generic_switch")
-								|| entry.getValue().contentEquals(
-										"generic_snmp")
-								|| entry.getValue().contentEquals(
-										"generic_router")
-								|| entry.getValue().contentEquals(
-										"generic_radio")
-								|| entry.getValue().contentEquals(
-										"generic_power_supply")
-								|| entry.getValue()
-										.contentEquals("generic_mux")
-								|| entry.getValue()
-										.contentEquals("generic_bts")
-								|| entry.getValue().contentEquals(
-										"generic_alarm_unit")
-								|| entry.getValue().contentEquals(
-										"eLink1000EXR")
-								|| entry.getValue().contentEquals("dxr200")
-								|| entry.getValue().contentEquals("dxr100p")
-								|| entry.getValue().contentEquals("dxr100np")
-								|| entry.getValue().contentEquals("dvm_XT")
-								|| entry.getValue().contentEquals(
-										"dvm45_repeater")
-								|| entry.getValue().contentEquals(
-										"dvm45_terminal")
-								|| entry.getValue().contentEquals("dva")
-								|| entry.getValue().contentEquals(
-										"dart_remote_mgmt")
-								|| entry.getValue().contentEquals("dart")
-								|| entry.getValue().contentEquals(
-										"constellation")
-								|| entry.getValue().contentEquals("cx_u")
-								|| entry.getValue().contentEquals(
-										"cisco_ME3600X")
-								|| entry.getValue().contentEquals("cau")
-								|| entry.getValue().contentEquals("classic_II")
-								|| entry.getValue().contentEquals("aurora")
-								|| entry.getValue().contentEquals(
-										"altiumMX_2plus0")
-								|| entry.getValue().contentEquals("altiumMX")
-								|| entry.getValue().contentEquals("altium")
-								|| entry.getValue().contentEquals("adr2500")
-								|| entry.getValue().contentEquals("dxr700p")
-								|| entry.getValue().contentEquals("adr")
-								|| entry.getValue().contentEquals(
-										"ethernet_port")
-								|| entry.getValue()
-										.contentEquals("generalCard")
-								|| entry.getValue().contentEquals(
-										"wtm_6000_protected_path")
-								|| entry.getValue()
-										.contentEquals("wtm_6000_sv")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_mstu")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_tcu")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_path")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_hk")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_sv")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_protected_path")
-								|| entry.getValue().contentEquals(
-										"cisco_ME3600X")
-								|| entry.getValue().contentEquals("unity_inu")
-								|| entry.getValue().contentEquals("unity_inue")) {
-							nodes[level2].setIcon(iconEclipseIcon);
-						}
-						if (entry.getValue().contentEquals("unity_rac10")
-								|| entry.getValue()
-										.contentEquals("unity_rac40")
-								|| entry.getValue()
-										.contentEquals("unity_rac4x")
-								|| entry.getValue().contentEquals(
-										"unity_dac155oM")
-								|| entry.getValue().contentEquals("unity_aux")
-								|| entry.getValue().contentEquals(
-										"unity_dacge3")
-								|| entry.getValue()
-										.contentEquals("unity_daces")
-								|| entry.getValue().contentEquals("unity_fan")
-								|| entry.getValue().contentEquals(
-										"unity_fan_2u")
-								|| entry.getValue().contentEquals("unity_rac")
-								|| entry.getValue()
-										.contentEquals("unity_dacge")
-								|| entry.getValue().contentEquals("unity_dac")
-								|| entry.getValue().contentEquals("unity_ncc")
-								|| entry.getValue().contentEquals("unity_npc")) {
-							nodes[level2].setIcon(iconCard);
-						}
-						if (entry.getValue().contentEquals("generic_switch")) {
-							nodes[level2].setIcon(iconNetworkElement);
-						}
-						if (entry.getValue().contentEquals("link")
-								|| entry.getValue().contentEquals(
-										"unity_ring_path")
-								|| entry.getValue().contentEquals(
-										"unity_unexpected")
-								|| entry.getValue().contentEquals(
-										"unity_protected_path")
-								|| entry.getValue().contentEquals("unity_path")) {
-							nodes[level2].setIcon(iconPort);
-						}
-					}
-				}
+				setNodeIcon(m1.group(2), level2);
 
 			}
 
@@ -1106,245 +631,8 @@ public class CreateTopology {
 				nodes[level3] = new IconNode(m2.group(2));
 				nodes[level2].add(nodes[level3]);
 
-				for (Map.Entry<String, String> entry : map.entrySet()) {
-					if (entry.getKey().contentEquals(m2.group(2))) {
-						if (entry.getValue().contentEquals(
-								"customizable_container")
-								|| entry.getValue().contentEquals("region")
-								|| entry.getValue().contentEquals("rack")
-								|| entry.getValue().contentEquals("site")) {
-							nodes[level3].setIcon(iconBTS);
-						}
-						if (entry.getValue().contentEquals(
-								"unity_idu_controller")
-								|| entry.getValue().contentEquals(
-										"unity_idu_radio")
-								|| entry.getValue().contentEquals(
-										"unity_idu_radio10")
-								|| entry.getValue().contentEquals(
-										"unity_idu_radio_spe")
-								|| entry.getValue().contentEquals(
-										"unity_idu_data")
-								|| entry.getValue().contentEquals(
-										"unity_idu_aux")
-								|| entry.getValue().contentEquals(
-										"unity_idu_fan")
-								|| entry.getValue().contentEquals(
-										"unity_idu_ethernet")
-								|| entry.getValue().contentEquals(
-										"unity_idu_ethernet_spe")
-								|| entry.getValue().contentEquals(
-										"unity_idu_ge_ethernet")
-								|| entry.getValue().contentEquals("unity_idup")
-								|| entry.getValue().contentEquals(
-										"unity_idu_odu_spe_b")
-								|| entry.getValue().contentEquals(
-										"unity_idu_odu_spe_a")
-								|| entry.getValue().contentEquals(
-										"unity_idu_odu10")
-								|| entry.getValue()
-										.contentEquals("unity_odu10")
-								|| entry.getValue().contentEquals(
-										"unity_idu_odu")
-								|| entry.getValue().contentEquals("unity_odu")
-								|| entry.getValue().contentEquals("unity_idu")) {
-							nodes[level3].setIcon(iconODU);
-						}
+				setNodeIcon(m2.group(2), level3);
 
-						if (entry.getValue().contentEquals("wtm_6000")
-								|| entry.getValue().contentEquals("wl1000")
-								|| entry.getValue().contentEquals(
-										"wimax_bs_subscriber")
-								|| entry.getValue().contentEquals(
-										"wimax_subscriber")
-								|| entry.getValue().contentEquals(
-										"wimax_bs_6400")
-								|| entry.getValue().contentEquals("wimax_bs")
-								|| entry.getValue().contentEquals(
-										"wimax_asn_protected")
-								|| entry.getValue().contentEquals("wimax_asn")
-								|| entry.getValue().contentEquals(
-										"protected_xp248x_remote_mgmt")
-								|| entry.getValue().contentEquals(
-										"protected_xp4_2x_4x")
-								|| entry.getValue().contentEquals(
-										"xp248x_remote_mgmt")
-								|| entry.getValue().contentEquals("xp4_2x_4x")
-								|| entry.getValue().contentEquals(
-										"protected_xp4_e3")
-								|| entry.getValue().contentEquals(
-										"protected_xpe3ds3_remote_mgmt")
-								|| entry.getValue().contentEquals(
-										"xp16xe3ds3_remote_mgmt")
-								|| entry.getValue().contentEquals("xp4_e3")
-								|| entry.getValue().contentEquals("velox")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_dt")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500")
-								|| entry.getValue().contentEquals(
-										"truepoint_6400")
-								|| entry.getValue().contentEquals(
-										"truepoint_4040_v2entry")
-								|| entry.getValue().contentEquals(
-										"truepoint_4040")
-								|| entry.getValue().contentEquals(
-										"truepoint_4000")
-								|| entry.getValue().contentEquals(
-										"truepoint_5000_2plus0")
-								|| entry.getValue().contentEquals(
-										"truepoint_5000")
-								|| entry.getValue().contentEquals("sagemlink")
-								|| entry.getValue().contentEquals("spII_snmp")
-								|| entry.getValue().contentEquals(
-										"protected_spectrum_II")
-								|| entry.getValue()
-										.contentEquals("spectrum_II")
-								|| entry.getValue().contentEquals("spectrum_I")
-								|| entry.getValue().contentEquals(
-										"protected_quantum")
-								|| entry.getValue().contentEquals("quantum")
-								|| entry.getValue().contentEquals("tnet_proxy")
-								|| entry.getValue().contentEquals(
-										"protected_wseries")
-								|| entry.getValue().contentEquals("wseries")
-								|| entry.getValue().contentEquals(
-										"protected_mseries")
-								|| entry.getValue().contentEquals("mseries")
-								|| entry.getValue().contentEquals("mf")
-								|| entry.getValue().contentEquals(
-										"protected_lc_series")
-								|| entry.getValue().contentEquals("lc_series")
-								|| entry.getValue().contentEquals("spII_snmp")
-								|| entry.getValue().contentEquals("smartcore")
-								|| entry.getValue().contentEquals("sma")
-								|| entry.getValue().contentEquals("rw2000")
-								|| entry.getValue().contentEquals(
-										"microstar_III")
-								|| entry.getValue().contentEquals(
-										"microstar_II")
-								|| entry.getValue().contentEquals(
-										"protected_microstar_I")
-								|| entry.getValue()
-										.contentEquals("microstar_I")
-								|| entry.getValue().contentEquals("m7i")
-								|| entry.getValue().contentEquals("m10i")
-								|| entry.getValue().contentEquals(
-										"megastar_spu")
-								|| entry.getValue()
-										.contentEquals("megastar_mn")
-								|| entry.getValue().contentEquals("megastar")
-								|| entry.getValue().contentEquals("le3200")
-								|| entry.getValue().contentEquals("le3000")
-								|| entry.getValue().contentEquals(
-										"generic_switch")
-								|| entry.getValue().contentEquals(
-										"generic_snmp")
-								|| entry.getValue().contentEquals(
-										"generic_router")
-								|| entry.getValue().contentEquals(
-										"generic_radio")
-								|| entry.getValue().contentEquals(
-										"generic_power_supply")
-								|| entry.getValue()
-										.contentEquals("generic_mux")
-								|| entry.getValue()
-										.contentEquals("generic_bts")
-								|| entry.getValue().contentEquals(
-										"generic_alarm_unit")
-								|| entry.getValue().contentEquals(
-										"eLink1000EXR")
-								|| entry.getValue().contentEquals("dxr200")
-								|| entry.getValue().contentEquals("dxr100p")
-								|| entry.getValue().contentEquals("dxr100np")
-								|| entry.getValue().contentEquals("dvm_XT")
-								|| entry.getValue().contentEquals(
-										"dvm45_repeater")
-								|| entry.getValue().contentEquals(
-										"dvm45_terminal")
-								|| entry.getValue().contentEquals("dva")
-								|| entry.getValue().contentEquals(
-										"dart_remote_mgmt")
-								|| entry.getValue().contentEquals("dart")
-								|| entry.getValue().contentEquals(
-										"constellation")
-								|| entry.getValue().contentEquals("cx_u")
-								|| entry.getValue().contentEquals(
-										"cisco_ME3600X")
-								|| entry.getValue().contentEquals("cau")
-								|| entry.getValue().contentEquals("classic_II")
-								|| entry.getValue().contentEquals("aurora")
-								|| entry.getValue().contentEquals(
-										"altiumMX_2plus0")
-								|| entry.getValue().contentEquals("altiumMX")
-								|| entry.getValue().contentEquals("altium")
-								|| entry.getValue().contentEquals("adr2500")
-								|| entry.getValue().contentEquals("dxr700p")
-								|| entry.getValue().contentEquals("adr")
-								|| entry.getValue().contentEquals(
-										"ethernet_port")
-								|| entry.getValue()
-										.contentEquals("generalCard")
-								|| entry.getValue().contentEquals(
-										"wtm_6000_protected_path")
-								|| entry.getValue()
-										.contentEquals("wtm_6000_sv")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_mstu")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_tcu")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_path")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_hk")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_sv")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_protected_path")
-								|| entry.getValue().contentEquals(
-										"cisco_ME3600X")
-								|| entry.getValue().contentEquals("unity_inu")
-								|| entry.getValue().contentEquals("unity_inue")) {
-							nodes[level3].setIcon(iconEclipseIcon);
-						}
-						if (entry.getValue().contentEquals("unity_rac10")
-								|| entry.getValue()
-										.contentEquals("unity_rac40")
-								|| entry.getValue()
-										.contentEquals("unity_rac4x")
-								|| entry.getValue().contentEquals(
-										"unity_dac155oM")
-								|| entry.getValue().contentEquals("unity_aux")
-								|| entry.getValue().contentEquals(
-										"unity_dacge3")
-								|| entry.getValue()
-										.contentEquals("unity_daces")
-								|| entry.getValue().contentEquals("unity_fan")
-								|| entry.getValue().contentEquals(
-										"unity_fan_2u")
-								|| entry.getValue().contentEquals("unity_rac")
-								|| entry.getValue()
-										.contentEquals("unity_dacge")
-								|| entry.getValue().contentEquals("unity_dac")
-								|| entry.getValue().contentEquals("unity_ncc")
-								|| entry.getValue().contentEquals("unity_npc")) {
-							nodes[level3].setIcon(iconCard);
-						}
-						if (entry.getValue().contentEquals("generic_switch")) {
-							nodes[level3].setIcon(iconNetworkElement);
-						}
-						if (entry.getValue().contentEquals("link")
-								|| entry.getValue().contentEquals(
-										"unity_ring_path")
-								|| entry.getValue().contentEquals(
-										"unity_unexpected")
-								|| entry.getValue().contentEquals(
-										"unity_protected_path")
-								|| entry.getValue().contentEquals("unity_path")) {
-							nodes[level3].setIcon(iconPort);
-						}
-					}
-				}
 			}
 
 			if (m3.matches() && !m4.matches() && !m5.matches() && !m6.matches()
@@ -1356,246 +644,7 @@ public class CreateTopology {
 				nodes[level4] = new IconNode(m3.group(2));
 				nodes[level3].add(nodes[level4]);
 
-				for (Map.Entry<String, String> entry : map.entrySet()) {
-					if (entry.getKey().contentEquals(m3.group(2))) {
-						if (entry.getValue().contentEquals(
-								"customizable_container")
-								|| entry.getValue().contentEquals("region")
-								|| entry.getValue().contentEquals("rack")
-								|| entry.getValue().contentEquals("site")) {
-							nodes[level4].setIcon(iconBTS);
-						}
-						if (entry.getValue().contentEquals(
-								"unity_idu_controller")
-								|| entry.getValue().contentEquals(
-										"unity_idu_radio")
-								|| entry.getValue().contentEquals(
-										"unity_idu_radio10")
-								|| entry.getValue().contentEquals(
-										"unity_idu_radio_spe")
-								|| entry.getValue().contentEquals(
-										"unity_idu_data")
-								|| entry.getValue().contentEquals(
-										"unity_idu_aux")
-								|| entry.getValue().contentEquals(
-										"unity_idu_fan")
-								|| entry.getValue().contentEquals(
-										"unity_idu_ethernet")
-								|| entry.getValue().contentEquals(
-										"unity_idu_ethernet_spe")
-								|| entry.getValue().contentEquals(
-										"unity_idu_ge_ethernet")
-								|| entry.getValue().contentEquals("unity_idup")
-								|| entry.getValue().contentEquals(
-										"unity_idu_odu_spe_b")
-								|| entry.getValue().contentEquals(
-										"unity_idu_odu_spe_a")
-								|| entry.getValue().contentEquals(
-										"unity_idu_odu10")
-								|| entry.getValue()
-										.contentEquals("unity_odu10")
-								|| entry.getValue().contentEquals(
-										"unity_idu_odu")
-								|| entry.getValue().contentEquals("unity_odu")
-								|| entry.getValue().contentEquals("unity_idu")) {
-							nodes[level4].setIcon(iconODU);
-						}
-
-						if (entry.getValue().contentEquals("wtm_6000")
-								|| entry.getValue().contentEquals("wl1000")
-								|| entry.getValue().contentEquals(
-										"wimax_bs_subscriber")
-								|| entry.getValue().contentEquals(
-										"wimax_subscriber")
-								|| entry.getValue().contentEquals(
-										"wimax_bs_6400")
-								|| entry.getValue().contentEquals("wimax_bs")
-								|| entry.getValue().contentEquals(
-										"wimax_asn_protected")
-								|| entry.getValue().contentEquals("wimax_asn")
-								|| entry.getValue().contentEquals(
-										"protected_xp248x_remote_mgmt")
-								|| entry.getValue().contentEquals(
-										"protected_xp4_2x_4x")
-								|| entry.getValue().contentEquals(
-										"xp248x_remote_mgmt")
-								|| entry.getValue().contentEquals("xp4_2x_4x")
-								|| entry.getValue().contentEquals(
-										"protected_xp4_e3")
-								|| entry.getValue().contentEquals(
-										"protected_xpe3ds3_remote_mgmt")
-								|| entry.getValue().contentEquals(
-										"xp16xe3ds3_remote_mgmt")
-								|| entry.getValue().contentEquals("xp4_e3")
-								|| entry.getValue().contentEquals("velox")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_dt")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500")
-								|| entry.getValue().contentEquals(
-										"truepoint_6400")
-								|| entry.getValue().contentEquals(
-										"truepoint_4040_v2entry")
-								|| entry.getValue().contentEquals(
-										"truepoint_4040")
-								|| entry.getValue().contentEquals(
-										"truepoint_4000")
-								|| entry.getValue().contentEquals(
-										"truepoint_5000_2plus0")
-								|| entry.getValue().contentEquals(
-										"truepoint_5000")
-								|| entry.getValue().contentEquals("sagemlink")
-								|| entry.getValue().contentEquals("spII_snmp")
-								|| entry.getValue().contentEquals(
-										"protected_spectrum_II")
-								|| entry.getValue()
-										.contentEquals("spectrum_II")
-								|| entry.getValue().contentEquals("spectrum_I")
-								|| entry.getValue().contentEquals(
-										"protected_quantum")
-								|| entry.getValue().contentEquals("quantum")
-								|| entry.getValue().contentEquals("tnet_proxy")
-								|| entry.getValue().contentEquals(
-										"protected_wseries")
-								|| entry.getValue().contentEquals("wseries")
-								|| entry.getValue().contentEquals(
-										"protected_mseries")
-								|| entry.getValue().contentEquals("mseries")
-								|| entry.getValue().contentEquals("mf")
-								|| entry.getValue().contentEquals(
-										"protected_lc_series")
-								|| entry.getValue().contentEquals("lc_series")
-								|| entry.getValue().contentEquals("spII_snmp")
-								|| entry.getValue().contentEquals("smartcore")
-								|| entry.getValue().contentEquals("sma")
-								|| entry.getValue().contentEquals("rw2000")
-								|| entry.getValue().contentEquals(
-										"microstar_III")
-								|| entry.getValue().contentEquals(
-										"microstar_II")
-								|| entry.getValue().contentEquals(
-										"protected_microstar_I")
-								|| entry.getValue()
-										.contentEquals("microstar_I")
-								|| entry.getValue().contentEquals("m7i")
-								|| entry.getValue().contentEquals("m10i")
-								|| entry.getValue().contentEquals(
-										"megastar_spu")
-								|| entry.getValue()
-										.contentEquals("megastar_mn")
-								|| entry.getValue().contentEquals("megastar")
-								|| entry.getValue().contentEquals("le3200")
-								|| entry.getValue().contentEquals("le3000")
-								|| entry.getValue().contentEquals(
-										"generic_switch")
-								|| entry.getValue().contentEquals(
-										"generic_snmp")
-								|| entry.getValue().contentEquals(
-										"generic_router")
-								|| entry.getValue().contentEquals(
-										"generic_radio")
-								|| entry.getValue().contentEquals(
-										"generic_power_supply")
-								|| entry.getValue()
-										.contentEquals("generic_mux")
-								|| entry.getValue()
-										.contentEquals("generic_bts")
-								|| entry.getValue().contentEquals(
-										"generic_alarm_unit")
-								|| entry.getValue().contentEquals(
-										"eLink1000EXR")
-								|| entry.getValue().contentEquals("dxr200")
-								|| entry.getValue().contentEquals("dxr100p")
-								|| entry.getValue().contentEquals("dxr100np")
-								|| entry.getValue().contentEquals("dvm_XT")
-								|| entry.getValue().contentEquals(
-										"dvm45_repeater")
-								|| entry.getValue().contentEquals(
-										"dvm45_terminal")
-								|| entry.getValue().contentEquals("dva")
-								|| entry.getValue().contentEquals(
-										"dart_remote_mgmt")
-								|| entry.getValue().contentEquals("dart")
-								|| entry.getValue().contentEquals(
-										"constellation")
-								|| entry.getValue().contentEquals("cx_u")
-								|| entry.getValue().contentEquals(
-										"cisco_ME3600X")
-								|| entry.getValue().contentEquals("cau")
-								|| entry.getValue().contentEquals("classic_II")
-								|| entry.getValue().contentEquals("aurora")
-								|| entry.getValue().contentEquals(
-										"altiumMX_2plus0")
-								|| entry.getValue().contentEquals("altiumMX")
-								|| entry.getValue().contentEquals("altium")
-								|| entry.getValue().contentEquals("adr2500")
-								|| entry.getValue().contentEquals("dxr700p")
-								|| entry.getValue().contentEquals("adr")
-								|| entry.getValue().contentEquals(
-										"ethernet_port")
-								|| entry.getValue()
-										.contentEquals("generalCard")
-								|| entry.getValue().contentEquals(
-										"wtm_6000_protected_path")
-								|| entry.getValue()
-										.contentEquals("wtm_6000_sv")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_mstu")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_tcu")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_path")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_hk")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_sv")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_protected_path")
-								|| entry.getValue().contentEquals(
-										"cisco_ME3600X")
-								|| entry.getValue().contentEquals("unity_inu")
-								|| entry.getValue().contentEquals("unity_inue")) {
-							nodes[level4].setIcon(iconEclipseIcon);
-						}
-						if (entry.getValue().contentEquals("unity_rac10")
-								|| entry.getValue()
-										.contentEquals("unity_rac40")
-								|| entry.getValue()
-										.contentEquals("unity_rac4x")
-								|| entry.getValue().contentEquals(
-										"unity_dac155oM")
-								|| entry.getValue().contentEquals("unity_aux")
-								|| entry.getValue().contentEquals(
-										"unity_dacge3")
-								|| entry.getValue()
-										.contentEquals("unity_daces")
-								|| entry.getValue().contentEquals("unity_fan")
-								|| entry.getValue().contentEquals(
-										"unity_fan_2u")
-								|| entry.getValue().contentEquals("unity_rac")
-								|| entry.getValue()
-										.contentEquals("unity_dacge")
-								|| entry.getValue().contentEquals("unity_dac")
-								|| entry.getValue().contentEquals("unity_ncc")
-								|| entry.getValue().contentEquals("unity_npc")) {
-							nodes[level4].setIcon(iconCard);
-						}
-						if (entry.getValue().contentEquals("generic_switch")) {
-							nodes[level4].setIcon(iconNetworkElement);
-						}
-						if (entry.getValue().contentEquals("link")
-								|| entry.getValue().contentEquals(
-										"unity_ring_path")
-								|| entry.getValue().contentEquals(
-										"unity_unexpected")
-								|| entry.getValue().contentEquals(
-										"unity_protected_path")
-								|| entry.getValue().contentEquals("unity_path")) {
-							nodes[level4].setIcon(iconPort);
-						}
-					}
-					// }
-				}
+				setNodeIcon(m3.group(2), level4);
 
 			}
 
@@ -1607,245 +656,7 @@ public class CreateTopology {
 				nodes[level5] = new IconNode(m4.group(2));
 				nodes[level4].add(nodes[level5]);
 
-				for (Map.Entry<String, String> entry : map.entrySet()) {
-					if (entry.getKey().contentEquals(m4.group(2))) {
-						if (entry.getValue().contentEquals(
-								"customizable_container")
-								|| entry.getValue().contentEquals("region")
-								|| entry.getValue().contentEquals("rack")
-								|| entry.getValue().contentEquals("site")) {
-							nodes[level5].setIcon(iconBTS);
-						}
-						if (entry.getValue().contentEquals(
-								"unity_idu_controller")
-								|| entry.getValue().contentEquals(
-										"unity_idu_radio")
-								|| entry.getValue().contentEquals(
-										"unity_idu_radio10")
-								|| entry.getValue().contentEquals(
-										"unity_idu_radio_spe")
-								|| entry.getValue().contentEquals(
-										"unity_idu_data")
-								|| entry.getValue().contentEquals(
-										"unity_idu_aux")
-								|| entry.getValue().contentEquals(
-										"unity_idu_fan")
-								|| entry.getValue().contentEquals(
-										"unity_idu_ethernet")
-								|| entry.getValue().contentEquals(
-										"unity_idu_ethernet_spe")
-								|| entry.getValue().contentEquals(
-										"unity_idu_ge_ethernet")
-								|| entry.getValue().contentEquals("unity_idup")
-								|| entry.getValue().contentEquals(
-										"unity_idu_odu_spe_b")
-								|| entry.getValue().contentEquals(
-										"unity_idu_odu_spe_a")
-								|| entry.getValue().contentEquals(
-										"unity_idu_odu10")
-								|| entry.getValue()
-										.contentEquals("unity_odu10")
-								|| entry.getValue().contentEquals(
-										"unity_idu_odu")
-								|| entry.getValue().contentEquals("unity_odu")
-								|| entry.getValue().contentEquals("unity_idu")) {
-							nodes[level5].setIcon(iconODU);
-						}
-
-						if (entry.getValue().contentEquals("wtm_6000")
-								|| entry.getValue().contentEquals("wl1000")
-								|| entry.getValue().contentEquals(
-										"wimax_bs_subscriber")
-								|| entry.getValue().contentEquals(
-										"wimax_subscriber")
-								|| entry.getValue().contentEquals(
-										"wimax_bs_6400")
-								|| entry.getValue().contentEquals("wimax_bs")
-								|| entry.getValue().contentEquals(
-										"wimax_asn_protected")
-								|| entry.getValue().contentEquals("wimax_asn")
-								|| entry.getValue().contentEquals(
-										"protected_xp248x_remote_mgmt")
-								|| entry.getValue().contentEquals(
-										"protected_xp4_2x_4x")
-								|| entry.getValue().contentEquals(
-										"xp248x_remote_mgmt")
-								|| entry.getValue().contentEquals("xp4_2x_4x")
-								|| entry.getValue().contentEquals(
-										"protected_xp4_e3")
-								|| entry.getValue().contentEquals(
-										"protected_xpe3ds3_remote_mgmt")
-								|| entry.getValue().contentEquals(
-										"xp16xe3ds3_remote_mgmt")
-								|| entry.getValue().contentEquals("xp4_e3")
-								|| entry.getValue().contentEquals("velox")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_dt")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500")
-								|| entry.getValue().contentEquals(
-										"truepoint_6400")
-								|| entry.getValue().contentEquals(
-										"truepoint_4040_v2entry")
-								|| entry.getValue().contentEquals(
-										"truepoint_4040")
-								|| entry.getValue().contentEquals(
-										"truepoint_4000")
-								|| entry.getValue().contentEquals(
-										"truepoint_5000_2plus0")
-								|| entry.getValue().contentEquals(
-										"truepoint_5000")
-								|| entry.getValue().contentEquals("sagemlink")
-								|| entry.getValue().contentEquals("spII_snmp")
-								|| entry.getValue().contentEquals(
-										"protected_spectrum_II")
-								|| entry.getValue()
-										.contentEquals("spectrum_II")
-								|| entry.getValue().contentEquals("spectrum_I")
-								|| entry.getValue().contentEquals(
-										"protected_quantum")
-								|| entry.getValue().contentEquals("quantum")
-								|| entry.getValue().contentEquals("tnet_proxy")
-								|| entry.getValue().contentEquals(
-										"protected_wseries")
-								|| entry.getValue().contentEquals("wseries")
-								|| entry.getValue().contentEquals(
-										"protected_mseries")
-								|| entry.getValue().contentEquals("mseries")
-								|| entry.getValue().contentEquals("mf")
-								|| entry.getValue().contentEquals(
-										"protected_lc_series")
-								|| entry.getValue().contentEquals("lc_series")
-								|| entry.getValue().contentEquals("spII_snmp")
-								|| entry.getValue().contentEquals("smartcore")
-								|| entry.getValue().contentEquals("sma")
-								|| entry.getValue().contentEquals("rw2000")
-								|| entry.getValue().contentEquals(
-										"microstar_III")
-								|| entry.getValue().contentEquals(
-										"microstar_II")
-								|| entry.getValue().contentEquals(
-										"protected_microstar_I")
-								|| entry.getValue()
-										.contentEquals("microstar_I")
-								|| entry.getValue().contentEquals("m7i")
-								|| entry.getValue().contentEquals("m10i")
-								|| entry.getValue().contentEquals(
-										"megastar_spu")
-								|| entry.getValue()
-										.contentEquals("megastar_mn")
-								|| entry.getValue().contentEquals("megastar")
-								|| entry.getValue().contentEquals("le3200")
-								|| entry.getValue().contentEquals("le3000")
-								|| entry.getValue().contentEquals(
-										"generic_switch")
-								|| entry.getValue().contentEquals(
-										"generic_snmp")
-								|| entry.getValue().contentEquals(
-										"generic_router")
-								|| entry.getValue().contentEquals(
-										"generic_radio")
-								|| entry.getValue().contentEquals(
-										"generic_power_supply")
-								|| entry.getValue()
-										.contentEquals("generic_mux")
-								|| entry.getValue()
-										.contentEquals("generic_bts")
-								|| entry.getValue().contentEquals(
-										"generic_alarm_unit")
-								|| entry.getValue().contentEquals(
-										"eLink1000EXR")
-								|| entry.getValue().contentEquals("dxr200")
-								|| entry.getValue().contentEquals("dxr100p")
-								|| entry.getValue().contentEquals("dxr100np")
-								|| entry.getValue().contentEquals("dvm_XT")
-								|| entry.getValue().contentEquals(
-										"dvm45_repeater")
-								|| entry.getValue().contentEquals(
-										"dvm45_terminal")
-								|| entry.getValue().contentEquals("dva")
-								|| entry.getValue().contentEquals(
-										"dart_remote_mgmt")
-								|| entry.getValue().contentEquals("dart")
-								|| entry.getValue().contentEquals(
-										"constellation")
-								|| entry.getValue().contentEquals("cx_u")
-								|| entry.getValue().contentEquals(
-										"cisco_ME3600X")
-								|| entry.getValue().contentEquals("cau")
-								|| entry.getValue().contentEquals("classic_II")
-								|| entry.getValue().contentEquals("aurora")
-								|| entry.getValue().contentEquals(
-										"altiumMX_2plus0")
-								|| entry.getValue().contentEquals("altiumMX")
-								|| entry.getValue().contentEquals("altium")
-								|| entry.getValue().contentEquals("adr2500")
-								|| entry.getValue().contentEquals("dxr700p")
-								|| entry.getValue().contentEquals("adr")
-								|| entry.getValue().contentEquals(
-										"ethernet_port")
-								|| entry.getValue()
-										.contentEquals("generalCard")
-								|| entry.getValue().contentEquals(
-										"wtm_6000_protected_path")
-								|| entry.getValue()
-										.contentEquals("wtm_6000_sv")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_mstu")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_tcu")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_path")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_hk")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_sv")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_protected_path")
-								|| entry.getValue().contentEquals(
-										"cisco_ME3600X")
-								|| entry.getValue().contentEquals("unity_inu")
-								|| entry.getValue().contentEquals("unity_inue")) {
-							nodes[level5].setIcon(iconEclipseIcon);
-						}
-						if (entry.getValue().contentEquals("unity_rac10")
-								|| entry.getValue()
-										.contentEquals("unity_rac40")
-								|| entry.getValue()
-										.contentEquals("unity_rac4x")
-								|| entry.getValue().contentEquals(
-										"unity_dac155oM")
-								|| entry.getValue().contentEquals("unity_aux")
-								|| entry.getValue().contentEquals(
-										"unity_dacge3")
-								|| entry.getValue()
-										.contentEquals("unity_daces")
-								|| entry.getValue().contentEquals("unity_fan")
-								|| entry.getValue().contentEquals(
-										"unity_fan_2u")
-								|| entry.getValue().contentEquals("unity_rac")
-								|| entry.getValue()
-										.contentEquals("unity_dacge")
-								|| entry.getValue().contentEquals("unity_dac")
-								|| entry.getValue().contentEquals("unity_ncc")
-								|| entry.getValue().contentEquals("unity_npc")) {
-							nodes[level5].setIcon(iconCard);
-						}
-						if (entry.getValue().contentEquals("generic_switch")) {
-							nodes[level5].setIcon(iconNetworkElement);
-						}
-						if (entry.getValue().contentEquals("link")
-								|| entry.getValue().contentEquals(
-										"unity_ring_path")
-								|| entry.getValue().contentEquals(
-										"unity_unexpected")
-								|| entry.getValue().contentEquals(
-										"unity_protected_path")
-								|| entry.getValue().contentEquals("unity_path")) {
-							nodes[level5].setIcon(iconPort);
-						}
-					}
-				}
+				setNodeIcon(m4.group(2), level5);
 
 			}
 
@@ -1857,245 +668,7 @@ public class CreateTopology {
 				nodes[level6] = new IconNode(m5.group(2));
 				nodes[level5].add(nodes[level6]);
 
-				for (Map.Entry<String, String> entry : map.entrySet()) {
-					if (entry.getKey().contentEquals(m5.group(2))) {
-						if (entry.getValue().contentEquals(
-								"customizable_container")
-								|| entry.getValue().contentEquals("region")
-								|| entry.getValue().contentEquals("rack")
-								|| entry.getValue().contentEquals("site")) {
-							nodes[level6].setIcon(iconBTS);
-						}
-						if (entry.getValue().contentEquals(
-								"unity_idu_controller")
-								|| entry.getValue().contentEquals(
-										"unity_idu_radio")
-								|| entry.getValue().contentEquals(
-										"unity_idu_radio10")
-								|| entry.getValue().contentEquals(
-										"unity_idu_radio_spe")
-								|| entry.getValue().contentEquals(
-										"unity_idu_data")
-								|| entry.getValue().contentEquals(
-										"unity_idu_aux")
-								|| entry.getValue().contentEquals(
-										"unity_idu_fan")
-								|| entry.getValue().contentEquals(
-										"unity_idu_ethernet")
-								|| entry.getValue().contentEquals(
-										"unity_idu_ethernet_spe")
-								|| entry.getValue().contentEquals(
-										"unity_idu_ge_ethernet")
-								|| entry.getValue().contentEquals("unity_idup")
-								|| entry.getValue().contentEquals(
-										"unity_idu_odu_spe_b")
-								|| entry.getValue().contentEquals(
-										"unity_idu_odu_spe_a")
-								|| entry.getValue().contentEquals(
-										"unity_idu_odu10")
-								|| entry.getValue()
-										.contentEquals("unity_odu10")
-								|| entry.getValue().contentEquals(
-										"unity_idu_odu")
-								|| entry.getValue().contentEquals("unity_odu")
-								|| entry.getValue().contentEquals("unity_idu")) {
-							nodes[level6].setIcon(iconODU);
-						}
-
-						if (entry.getValue().contentEquals("wtm_6000")
-								|| entry.getValue().contentEquals("wl1000")
-								|| entry.getValue().contentEquals(
-										"wimax_bs_subscriber")
-								|| entry.getValue().contentEquals(
-										"wimax_subscriber")
-								|| entry.getValue().contentEquals(
-										"wimax_bs_6400")
-								|| entry.getValue().contentEquals("wimax_bs")
-								|| entry.getValue().contentEquals(
-										"wimax_asn_protected")
-								|| entry.getValue().contentEquals("wimax_asn")
-								|| entry.getValue().contentEquals(
-										"protected_xp248x_remote_mgmt")
-								|| entry.getValue().contentEquals(
-										"protected_xp4_2x_4x")
-								|| entry.getValue().contentEquals(
-										"xp248x_remote_mgmt")
-								|| entry.getValue().contentEquals("xp4_2x_4x")
-								|| entry.getValue().contentEquals(
-										"protected_xp4_e3")
-								|| entry.getValue().contentEquals(
-										"protected_xpe3ds3_remote_mgmt")
-								|| entry.getValue().contentEquals(
-										"xp16xe3ds3_remote_mgmt")
-								|| entry.getValue().contentEquals("xp4_e3")
-								|| entry.getValue().contentEquals("velox")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_dt")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500")
-								|| entry.getValue().contentEquals(
-										"truepoint_6400")
-								|| entry.getValue().contentEquals(
-										"truepoint_4040_v2entry")
-								|| entry.getValue().contentEquals(
-										"truepoint_4040")
-								|| entry.getValue().contentEquals(
-										"truepoint_4000")
-								|| entry.getValue().contentEquals(
-										"truepoint_5000_2plus0")
-								|| entry.getValue().contentEquals(
-										"truepoint_5000")
-								|| entry.getValue().contentEquals("sagemlink")
-								|| entry.getValue().contentEquals("spII_snmp")
-								|| entry.getValue().contentEquals(
-										"protected_spectrum_II")
-								|| entry.getValue()
-										.contentEquals("spectrum_II")
-								|| entry.getValue().contentEquals("spectrum_I")
-								|| entry.getValue().contentEquals(
-										"protected_quantum")
-								|| entry.getValue().contentEquals("quantum")
-								|| entry.getValue().contentEquals("tnet_proxy")
-								|| entry.getValue().contentEquals(
-										"protected_wseries")
-								|| entry.getValue().contentEquals("wseries")
-								|| entry.getValue().contentEquals(
-										"protected_mseries")
-								|| entry.getValue().contentEquals("mseries")
-								|| entry.getValue().contentEquals("mf")
-								|| entry.getValue().contentEquals(
-										"protected_lc_series")
-								|| entry.getValue().contentEquals("lc_series")
-								|| entry.getValue().contentEquals("spII_snmp")
-								|| entry.getValue().contentEquals("smartcore")
-								|| entry.getValue().contentEquals("sma")
-								|| entry.getValue().contentEquals("rw2000")
-								|| entry.getValue().contentEquals(
-										"microstar_III")
-								|| entry.getValue().contentEquals(
-										"microstar_II")
-								|| entry.getValue().contentEquals(
-										"protected_microstar_I")
-								|| entry.getValue()
-										.contentEquals("microstar_I")
-								|| entry.getValue().contentEquals("m7i")
-								|| entry.getValue().contentEquals("m10i")
-								|| entry.getValue().contentEquals(
-										"megastar_spu")
-								|| entry.getValue()
-										.contentEquals("megastar_mn")
-								|| entry.getValue().contentEquals("megastar")
-								|| entry.getValue().contentEquals("le3200")
-								|| entry.getValue().contentEquals("le3000")
-								|| entry.getValue().contentEquals(
-										"generic_switch")
-								|| entry.getValue().contentEquals(
-										"generic_snmp")
-								|| entry.getValue().contentEquals(
-										"generic_router")
-								|| entry.getValue().contentEquals(
-										"generic_radio")
-								|| entry.getValue().contentEquals(
-										"generic_power_supply")
-								|| entry.getValue()
-										.contentEquals("generic_mux")
-								|| entry.getValue()
-										.contentEquals("generic_bts")
-								|| entry.getValue().contentEquals(
-										"generic_alarm_unit")
-								|| entry.getValue().contentEquals(
-										"eLink1000EXR")
-								|| entry.getValue().contentEquals("dxr200")
-								|| entry.getValue().contentEquals("dxr100p")
-								|| entry.getValue().contentEquals("dxr100np")
-								|| entry.getValue().contentEquals("dvm_XT")
-								|| entry.getValue().contentEquals(
-										"dvm45_repeater")
-								|| entry.getValue().contentEquals(
-										"dvm45_terminal")
-								|| entry.getValue().contentEquals("dva")
-								|| entry.getValue().contentEquals(
-										"dart_remote_mgmt")
-								|| entry.getValue().contentEquals("dart")
-								|| entry.getValue().contentEquals(
-										"constellation")
-								|| entry.getValue().contentEquals("cx_u")
-								|| entry.getValue().contentEquals(
-										"cisco_ME3600X")
-								|| entry.getValue().contentEquals("cau")
-								|| entry.getValue().contentEquals("classic_II")
-								|| entry.getValue().contentEquals("aurora")
-								|| entry.getValue().contentEquals(
-										"altiumMX_2plus0")
-								|| entry.getValue().contentEquals("altiumMX")
-								|| entry.getValue().contentEquals("altium")
-								|| entry.getValue().contentEquals("adr2500")
-								|| entry.getValue().contentEquals("dxr700p")
-								|| entry.getValue().contentEquals("adr")
-								|| entry.getValue().contentEquals(
-										"ethernet_port")
-								|| entry.getValue()
-										.contentEquals("generalCard")
-								|| entry.getValue().contentEquals(
-										"wtm_6000_protected_path")
-								|| entry.getValue()
-										.contentEquals("wtm_6000_sv")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_mstu")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_tcu")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_path")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_hk")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_sv")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_protected_path")
-								|| entry.getValue().contentEquals(
-										"cisco_ME3600X")
-								|| entry.getValue().contentEquals("unity_inu")
-								|| entry.getValue().contentEquals("unity_inue")) {
-							nodes[level6].setIcon(iconEclipseIcon);
-						}
-						if (entry.getValue().contentEquals("unity_rac10")
-								|| entry.getValue()
-										.contentEquals("unity_rac40")
-								|| entry.getValue()
-										.contentEquals("unity_rac4x")
-								|| entry.getValue().contentEquals(
-										"unity_dac155oM")
-								|| entry.getValue().contentEquals("unity_aux")
-								|| entry.getValue().contentEquals(
-										"unity_dacge3")
-								|| entry.getValue()
-										.contentEquals("unity_daces")
-								|| entry.getValue().contentEquals("unity_fan")
-								|| entry.getValue().contentEquals(
-										"unity_fan_2u")
-								|| entry.getValue().contentEquals("unity_rac")
-								|| entry.getValue()
-										.contentEquals("unity_dacge")
-								|| entry.getValue().contentEquals("unity_dac")
-								|| entry.getValue().contentEquals("unity_ncc")
-								|| entry.getValue().contentEquals("unity_npc")) {
-							nodes[level6].setIcon(iconCard);
-						}
-						if (entry.getValue().contentEquals("generic_switch")) {
-							nodes[level6].setIcon(iconNetworkElement);
-						}
-						if (entry.getValue().contentEquals("link")
-								|| entry.getValue().contentEquals(
-										"unity_ring_path")
-								|| entry.getValue().contentEquals(
-										"unity_unexpected")
-								|| entry.getValue().contentEquals(
-										"unity_protected_path")
-								|| entry.getValue().contentEquals("unity_path")) {
-							nodes[level6].setIcon(iconPort);
-						}
-					}
-				}
+				setNodeIcon(m5.group(2), level6);
 
 			}
 
@@ -2107,245 +680,7 @@ public class CreateTopology {
 				nodes[level7] = new IconNode(m6.group(2));
 				nodes[level6].add(nodes[level7]);
 
-				for (Map.Entry<String, String> entry : map.entrySet()) {
-					if (entry.getKey().contentEquals(m6.group(2))) {
-						if (entry.getValue().contentEquals(
-								"customizable_container")
-								|| entry.getValue().contentEquals("region")
-								|| entry.getValue().contentEquals("rack")
-								|| entry.getValue().contentEquals("site")) {
-							nodes[level7].setIcon(iconBTS);
-						}
-						if (entry.getValue().contentEquals(
-								"unity_idu_controller")
-								|| entry.getValue().contentEquals(
-										"unity_idu_radio")
-								|| entry.getValue().contentEquals(
-										"unity_idu_radio10")
-								|| entry.getValue().contentEquals(
-										"unity_idu_radio_spe")
-								|| entry.getValue().contentEquals(
-										"unity_idu_data")
-								|| entry.getValue().contentEquals(
-										"unity_idu_aux")
-								|| entry.getValue().contentEquals(
-										"unity_idu_fan")
-								|| entry.getValue().contentEquals(
-										"unity_idu_ethernet")
-								|| entry.getValue().contentEquals(
-										"unity_idu_ethernet_spe")
-								|| entry.getValue().contentEquals(
-										"unity_idu_ge_ethernet")
-								|| entry.getValue().contentEquals("unity_idup")
-								|| entry.getValue().contentEquals(
-										"unity_idu_odu_spe_b")
-								|| entry.getValue().contentEquals(
-										"unity_idu_odu_spe_a")
-								|| entry.getValue().contentEquals(
-										"unity_idu_odu10")
-								|| entry.getValue()
-										.contentEquals("unity_odu10")
-								|| entry.getValue().contentEquals(
-										"unity_idu_odu")
-								|| entry.getValue().contentEquals("unity_odu")
-								|| entry.getValue().contentEquals("unity_idu")) {
-							nodes[level7].setIcon(iconODU);
-						}
-
-						if (entry.getValue().contentEquals("wtm_6000")
-								|| entry.getValue().contentEquals("wl1000")
-								|| entry.getValue().contentEquals(
-										"wimax_bs_subscriber")
-								|| entry.getValue().contentEquals(
-										"wimax_subscriber")
-								|| entry.getValue().contentEquals(
-										"wimax_bs_6400")
-								|| entry.getValue().contentEquals("wimax_bs")
-								|| entry.getValue().contentEquals(
-										"wimax_asn_protected")
-								|| entry.getValue().contentEquals("wimax_asn")
-								|| entry.getValue().contentEquals(
-										"protected_xp248x_remote_mgmt")
-								|| entry.getValue().contentEquals(
-										"protected_xp4_2x_4x")
-								|| entry.getValue().contentEquals(
-										"xp248x_remote_mgmt")
-								|| entry.getValue().contentEquals("xp4_2x_4x")
-								|| entry.getValue().contentEquals(
-										"protected_xp4_e3")
-								|| entry.getValue().contentEquals(
-										"protected_xpe3ds3_remote_mgmt")
-								|| entry.getValue().contentEquals(
-										"xp16xe3ds3_remote_mgmt")
-								|| entry.getValue().contentEquals("xp4_e3")
-								|| entry.getValue().contentEquals("velox")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_dt")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500")
-								|| entry.getValue().contentEquals(
-										"truepoint_6400")
-								|| entry.getValue().contentEquals(
-										"truepoint_4040_v2entry")
-								|| entry.getValue().contentEquals(
-										"truepoint_4040")
-								|| entry.getValue().contentEquals(
-										"truepoint_4000")
-								|| entry.getValue().contentEquals(
-										"truepoint_5000_2plus0")
-								|| entry.getValue().contentEquals(
-										"truepoint_5000")
-								|| entry.getValue().contentEquals("sagemlink")
-								|| entry.getValue().contentEquals("spII_snmp")
-								|| entry.getValue().contentEquals(
-										"protected_spectrum_II")
-								|| entry.getValue()
-										.contentEquals("spectrum_II")
-								|| entry.getValue().contentEquals("spectrum_I")
-								|| entry.getValue().contentEquals(
-										"protected_quantum")
-								|| entry.getValue().contentEquals("quantum")
-								|| entry.getValue().contentEquals("tnet_proxy")
-								|| entry.getValue().contentEquals(
-										"protected_wseries")
-								|| entry.getValue().contentEquals("wseries")
-								|| entry.getValue().contentEquals(
-										"protected_mseries")
-								|| entry.getValue().contentEquals("mseries")
-								|| entry.getValue().contentEquals("mf")
-								|| entry.getValue().contentEquals(
-										"protected_lc_series")
-								|| entry.getValue().contentEquals("lc_series")
-								|| entry.getValue().contentEquals("spII_snmp")
-								|| entry.getValue().contentEquals("smartcore")
-								|| entry.getValue().contentEquals("sma")
-								|| entry.getValue().contentEquals("rw2000")
-								|| entry.getValue().contentEquals(
-										"microstar_III")
-								|| entry.getValue().contentEquals(
-										"microstar_II")
-								|| entry.getValue().contentEquals(
-										"protected_microstar_I")
-								|| entry.getValue()
-										.contentEquals("microstar_I")
-								|| entry.getValue().contentEquals("m7i")
-								|| entry.getValue().contentEquals("m10i")
-								|| entry.getValue().contentEquals(
-										"megastar_spu")
-								|| entry.getValue()
-										.contentEquals("megastar_mn")
-								|| entry.getValue().contentEquals("megastar")
-								|| entry.getValue().contentEquals("le3200")
-								|| entry.getValue().contentEquals("le3000")
-								|| entry.getValue().contentEquals(
-										"generic_switch")
-								|| entry.getValue().contentEquals(
-										"generic_snmp")
-								|| entry.getValue().contentEquals(
-										"generic_router")
-								|| entry.getValue().contentEquals(
-										"generic_radio")
-								|| entry.getValue().contentEquals(
-										"generic_power_supply")
-								|| entry.getValue()
-										.contentEquals("generic_mux")
-								|| entry.getValue()
-										.contentEquals("generic_bts")
-								|| entry.getValue().contentEquals(
-										"generic_alarm_unit")
-								|| entry.getValue().contentEquals(
-										"eLink1000EXR")
-								|| entry.getValue().contentEquals("dxr200")
-								|| entry.getValue().contentEquals("dxr100p")
-								|| entry.getValue().contentEquals("dxr100np")
-								|| entry.getValue().contentEquals("dvm_XT")
-								|| entry.getValue().contentEquals(
-										"dvm45_repeater")
-								|| entry.getValue().contentEquals(
-										"dvm45_terminal")
-								|| entry.getValue().contentEquals("dva")
-								|| entry.getValue().contentEquals(
-										"dart_remote_mgmt")
-								|| entry.getValue().contentEquals("dart")
-								|| entry.getValue().contentEquals(
-										"constellation")
-								|| entry.getValue().contentEquals("cx_u")
-								|| entry.getValue().contentEquals(
-										"cisco_ME3600X")
-								|| entry.getValue().contentEquals("cau")
-								|| entry.getValue().contentEquals("classic_II")
-								|| entry.getValue().contentEquals("aurora")
-								|| entry.getValue().contentEquals(
-										"altiumMX_2plus0")
-								|| entry.getValue().contentEquals("altiumMX")
-								|| entry.getValue().contentEquals("altium")
-								|| entry.getValue().contentEquals("adr2500")
-								|| entry.getValue().contentEquals("dxr700p")
-								|| entry.getValue().contentEquals("adr")
-								|| entry.getValue().contentEquals(
-										"ethernet_port")
-								|| entry.getValue()
-										.contentEquals("generalCard")
-								|| entry.getValue().contentEquals(
-										"wtm_6000_protected_path")
-								|| entry.getValue()
-										.contentEquals("wtm_6000_sv")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_mstu")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_tcu")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_path")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_hk")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_sv")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_protected_path")
-								|| entry.getValue().contentEquals(
-										"cisco_ME3600X")
-								|| entry.getValue().contentEquals("unity_inu")
-								|| entry.getValue().contentEquals("unity_inue")) {
-							nodes[level7].setIcon(iconEclipseIcon);
-						}
-						if (entry.getValue().contentEquals("unity_rac10")
-								|| entry.getValue()
-										.contentEquals("unity_rac40")
-								|| entry.getValue()
-										.contentEquals("unity_rac4x")
-								|| entry.getValue().contentEquals(
-										"unity_dac155oM")
-								|| entry.getValue().contentEquals("unity_aux")
-								|| entry.getValue().contentEquals(
-										"unity_dacge3")
-								|| entry.getValue()
-										.contentEquals("unity_daces")
-								|| entry.getValue().contentEquals("unity_fan")
-								|| entry.getValue().contentEquals(
-										"unity_fan_2u")
-								|| entry.getValue().contentEquals("unity_rac")
-								|| entry.getValue()
-										.contentEquals("unity_dacge")
-								|| entry.getValue().contentEquals("unity_dac")
-								|| entry.getValue().contentEquals("unity_ncc")
-								|| entry.getValue().contentEquals("unity_npc")) {
-							nodes[level7].setIcon(iconCard);
-						}
-						if (entry.getValue().contentEquals("generic_switch")) {
-							nodes[level7].setIcon(iconNetworkElement);
-						}
-						if (entry.getValue().contentEquals("link")
-								|| entry.getValue().contentEquals(
-										"unity_ring_path")
-								|| entry.getValue().contentEquals(
-										"unity_unexpected")
-								|| entry.getValue().contentEquals(
-										"unity_protected_path")
-								|| entry.getValue().contentEquals("unity_path")) {
-							nodes[level7].setIcon(iconPort);
-						}
-					}
-				}
+				setNodeIcon(m6.group(2), level7);
 
 			}
 
@@ -2357,245 +692,7 @@ public class CreateTopology {
 				nodes[level8] = new IconNode(m7.group(2));
 				nodes[level7].add(nodes[level8]);
 
-				for (Map.Entry<String, String> entry : map.entrySet()) {
-					if (entry.getKey().contentEquals(m7.group(2))) {
-						if (entry.getValue().contentEquals(
-								"customizable_container")
-								|| entry.getValue().contentEquals("region")
-								|| entry.getValue().contentEquals("rack")
-								|| entry.getValue().contentEquals("site")) {
-							nodes[level8].setIcon(iconBTS);
-						}
-						if (entry.getValue().contentEquals(
-								"unity_idu_controller")
-								|| entry.getValue().contentEquals(
-										"unity_idu_radio")
-								|| entry.getValue().contentEquals(
-										"unity_idu_radio10")
-								|| entry.getValue().contentEquals(
-										"unity_idu_radio_spe")
-								|| entry.getValue().contentEquals(
-										"unity_idu_data")
-								|| entry.getValue().contentEquals(
-										"unity_idu_aux")
-								|| entry.getValue().contentEquals(
-										"unity_idu_fan")
-								|| entry.getValue().contentEquals(
-										"unity_idu_ethernet")
-								|| entry.getValue().contentEquals(
-										"unity_idu_ethernet_spe")
-								|| entry.getValue().contentEquals(
-										"unity_idu_ge_ethernet")
-								|| entry.getValue().contentEquals("unity_idup")
-								|| entry.getValue().contentEquals(
-										"unity_idu_odu_spe_b")
-								|| entry.getValue().contentEquals(
-										"unity_idu_odu_spe_a")
-								|| entry.getValue().contentEquals(
-										"unity_idu_odu10")
-								|| entry.getValue()
-										.contentEquals("unity_odu10")
-								|| entry.getValue().contentEquals(
-										"unity_idu_odu")
-								|| entry.getValue().contentEquals("unity_odu")
-								|| entry.getValue().contentEquals("unity_idu")) {
-							nodes[level8].setIcon(iconODU);
-						}
-
-						if (entry.getValue().contentEquals("wtm_6000")
-								|| entry.getValue().contentEquals("wl1000")
-								|| entry.getValue().contentEquals(
-										"wimax_bs_subscriber")
-								|| entry.getValue().contentEquals(
-										"wimax_subscriber")
-								|| entry.getValue().contentEquals(
-										"wimax_bs_6400")
-								|| entry.getValue().contentEquals("wimax_bs")
-								|| entry.getValue().contentEquals(
-										"wimax_asn_protected")
-								|| entry.getValue().contentEquals("wimax_asn")
-								|| entry.getValue().contentEquals(
-										"protected_xp248x_remote_mgmt")
-								|| entry.getValue().contentEquals(
-										"protected_xp4_2x_4x")
-								|| entry.getValue().contentEquals(
-										"xp248x_remote_mgmt")
-								|| entry.getValue().contentEquals("xp4_2x_4x")
-								|| entry.getValue().contentEquals(
-										"protected_xp4_e3")
-								|| entry.getValue().contentEquals(
-										"protected_xpe3ds3_remote_mgmt")
-								|| entry.getValue().contentEquals(
-										"xp16xe3ds3_remote_mgmt")
-								|| entry.getValue().contentEquals("xp4_e3")
-								|| entry.getValue().contentEquals("velox")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_dt")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500")
-								|| entry.getValue().contentEquals(
-										"truepoint_6400")
-								|| entry.getValue().contentEquals(
-										"truepoint_4040_v2entry")
-								|| entry.getValue().contentEquals(
-										"truepoint_4040")
-								|| entry.getValue().contentEquals(
-										"truepoint_4000")
-								|| entry.getValue().contentEquals(
-										"truepoint_5000_2plus0")
-								|| entry.getValue().contentEquals(
-										"truepoint_5000")
-								|| entry.getValue().contentEquals("sagemlink")
-								|| entry.getValue().contentEquals("spII_snmp")
-								|| entry.getValue().contentEquals(
-										"protected_spectrum_II")
-								|| entry.getValue()
-										.contentEquals("spectrum_II")
-								|| entry.getValue().contentEquals("spectrum_I")
-								|| entry.getValue().contentEquals(
-										"protected_quantum")
-								|| entry.getValue().contentEquals("quantum")
-								|| entry.getValue().contentEquals("tnet_proxy")
-								|| entry.getValue().contentEquals(
-										"protected_wseries")
-								|| entry.getValue().contentEquals("wseries")
-								|| entry.getValue().contentEquals(
-										"protected_mseries")
-								|| entry.getValue().contentEquals("mseries")
-								|| entry.getValue().contentEquals("mf")
-								|| entry.getValue().contentEquals(
-										"protected_lc_series")
-								|| entry.getValue().contentEquals("lc_series")
-								|| entry.getValue().contentEquals("spII_snmp")
-								|| entry.getValue().contentEquals("smartcore")
-								|| entry.getValue().contentEquals("sma")
-								|| entry.getValue().contentEquals("rw2000")
-								|| entry.getValue().contentEquals(
-										"microstar_III")
-								|| entry.getValue().contentEquals(
-										"microstar_II")
-								|| entry.getValue().contentEquals(
-										"protected_microstar_I")
-								|| entry.getValue()
-										.contentEquals("microstar_I")
-								|| entry.getValue().contentEquals("m7i")
-								|| entry.getValue().contentEquals("m10i")
-								|| entry.getValue().contentEquals(
-										"megastar_spu")
-								|| entry.getValue()
-										.contentEquals("megastar_mn")
-								|| entry.getValue().contentEquals("megastar")
-								|| entry.getValue().contentEquals("le3200")
-								|| entry.getValue().contentEquals("le3000")
-								|| entry.getValue().contentEquals(
-										"generic_switch")
-								|| entry.getValue().contentEquals(
-										"generic_snmp")
-								|| entry.getValue().contentEquals(
-										"generic_router")
-								|| entry.getValue().contentEquals(
-										"generic_radio")
-								|| entry.getValue().contentEquals(
-										"generic_power_supply")
-								|| entry.getValue()
-										.contentEquals("generic_mux")
-								|| entry.getValue()
-										.contentEquals("generic_bts")
-								|| entry.getValue().contentEquals(
-										"generic_alarm_unit")
-								|| entry.getValue().contentEquals(
-										"eLink1000EXR")
-								|| entry.getValue().contentEquals("dxr200")
-								|| entry.getValue().contentEquals("dxr100p")
-								|| entry.getValue().contentEquals("dxr100np")
-								|| entry.getValue().contentEquals("dvm_XT")
-								|| entry.getValue().contentEquals(
-										"dvm45_repeater")
-								|| entry.getValue().contentEquals(
-										"dvm45_terminal")
-								|| entry.getValue().contentEquals("dva")
-								|| entry.getValue().contentEquals(
-										"dart_remote_mgmt")
-								|| entry.getValue().contentEquals("dart")
-								|| entry.getValue().contentEquals(
-										"constellation")
-								|| entry.getValue().contentEquals("cx_u")
-								|| entry.getValue().contentEquals(
-										"cisco_ME3600X")
-								|| entry.getValue().contentEquals("cau")
-								|| entry.getValue().contentEquals("classic_II")
-								|| entry.getValue().contentEquals("aurora")
-								|| entry.getValue().contentEquals(
-										"altiumMX_2plus0")
-								|| entry.getValue().contentEquals("altiumMX")
-								|| entry.getValue().contentEquals("altium")
-								|| entry.getValue().contentEquals("adr2500")
-								|| entry.getValue().contentEquals("dxr700p")
-								|| entry.getValue().contentEquals("adr")
-								|| entry.getValue().contentEquals(
-										"ethernet_port")
-								|| entry.getValue()
-										.contentEquals("generalCard")
-								|| entry.getValue().contentEquals(
-										"wtm_6000_protected_path")
-								|| entry.getValue()
-										.contentEquals("wtm_6000_sv")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_mstu")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_tcu")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_path")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_hk")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_sv")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_protected_path")
-								|| entry.getValue().contentEquals(
-										"cisco_ME3600X")
-								|| entry.getValue().contentEquals("unity_inu")
-								|| entry.getValue().contentEquals("unity_inue")) {
-							nodes[level8].setIcon(iconEclipseIcon);
-						}
-						if (entry.getValue().contentEquals("unity_rac10")
-								|| entry.getValue()
-										.contentEquals("unity_rac40")
-								|| entry.getValue()
-										.contentEquals("unity_rac4x")
-								|| entry.getValue().contentEquals(
-										"unity_dac155oM")
-								|| entry.getValue().contentEquals("unity_aux")
-								|| entry.getValue().contentEquals(
-										"unity_dacge3")
-								|| entry.getValue()
-										.contentEquals("unity_daces")
-								|| entry.getValue().contentEquals("unity_fan")
-								|| entry.getValue().contentEquals(
-										"unity_fan_2u")
-								|| entry.getValue().contentEquals("unity_rac")
-								|| entry.getValue()
-										.contentEquals("unity_dacge")
-								|| entry.getValue().contentEquals("unity_dac")
-								|| entry.getValue().contentEquals("unity_ncc")
-								|| entry.getValue().contentEquals("unity_npc")) {
-							nodes[level8].setIcon(iconCard);
-						}
-						if (entry.getValue().contentEquals("generic_switch")) {
-							nodes[level8].setIcon(iconNetworkElement);
-						}
-						if (entry.getValue().contentEquals("link")
-								|| entry.getValue().contentEquals(
-										"unity_ring_path")
-								|| entry.getValue().contentEquals(
-										"unity_unexpected")
-								|| entry.getValue().contentEquals(
-										"unity_protected_path")
-								|| entry.getValue().contentEquals("unity_path")) {
-							nodes[level8].setIcon(iconPort);
-						}
-					}
-				}
+				setNodeIcon(m7.group(2), level8);
 
 			}
 
@@ -2606,245 +703,7 @@ public class CreateTopology {
 				nodes[level9] = new IconNode(m8.group(2));
 				nodes[level8].add(nodes[level9]);
 
-				for (Map.Entry<String, String> entry : map.entrySet()) {
-					if (entry.getKey().contentEquals(m8.group(2))) {
-						if (entry.getValue().contentEquals(
-								"customizable_container")
-								|| entry.getValue().contentEquals("region")
-								|| entry.getValue().contentEquals("rack")
-								|| entry.getValue().contentEquals("site")) {
-							nodes[level9].setIcon(iconBTS);
-						}
-						if (entry.getValue().contentEquals(
-								"unity_idu_controller")
-								|| entry.getValue().contentEquals(
-										"unity_idu_radio")
-								|| entry.getValue().contentEquals(
-										"unity_idu_radio10")
-								|| entry.getValue().contentEquals(
-										"unity_idu_radio_spe")
-								|| entry.getValue().contentEquals(
-										"unity_idu_data")
-								|| entry.getValue().contentEquals(
-										"unity_idu_aux")
-								|| entry.getValue().contentEquals(
-										"unity_idu_fan")
-								|| entry.getValue().contentEquals(
-										"unity_idu_ethernet")
-								|| entry.getValue().contentEquals(
-										"unity_idu_ethernet_spe")
-								|| entry.getValue().contentEquals(
-										"unity_idu_ge_ethernet")
-								|| entry.getValue().contentEquals("unity_idup")
-								|| entry.getValue().contentEquals(
-										"unity_idu_odu_spe_b")
-								|| entry.getValue().contentEquals(
-										"unity_idu_odu_spe_a")
-								|| entry.getValue().contentEquals(
-										"unity_idu_odu10")
-								|| entry.getValue()
-										.contentEquals("unity_odu10")
-								|| entry.getValue().contentEquals(
-										"unity_idu_odu")
-								|| entry.getValue().contentEquals("unity_odu")
-								|| entry.getValue().contentEquals("unity_idu")) {
-							nodes[level9].setIcon(iconODU);
-						}
-
-						if (entry.getValue().contentEquals("wtm_6000")
-								|| entry.getValue().contentEquals("wl1000")
-								|| entry.getValue().contentEquals(
-										"wimax_bs_subscriber")
-								|| entry.getValue().contentEquals(
-										"wimax_subscriber")
-								|| entry.getValue().contentEquals(
-										"wimax_bs_6400")
-								|| entry.getValue().contentEquals("wimax_bs")
-								|| entry.getValue().contentEquals(
-										"wimax_asn_protected")
-								|| entry.getValue().contentEquals("wimax_asn")
-								|| entry.getValue().contentEquals(
-										"protected_xp248x_remote_mgmt")
-								|| entry.getValue().contentEquals(
-										"protected_xp4_2x_4x")
-								|| entry.getValue().contentEquals(
-										"xp248x_remote_mgmt")
-								|| entry.getValue().contentEquals("xp4_2x_4x")
-								|| entry.getValue().contentEquals(
-										"protected_xp4_e3")
-								|| entry.getValue().contentEquals(
-										"protected_xpe3ds3_remote_mgmt")
-								|| entry.getValue().contentEquals(
-										"xp16xe3ds3_remote_mgmt")
-								|| entry.getValue().contentEquals("xp4_e3")
-								|| entry.getValue().contentEquals("velox")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_dt")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500")
-								|| entry.getValue().contentEquals(
-										"truepoint_6400")
-								|| entry.getValue().contentEquals(
-										"truepoint_4040_v2entry")
-								|| entry.getValue().contentEquals(
-										"truepoint_4040")
-								|| entry.getValue().contentEquals(
-										"truepoint_4000")
-								|| entry.getValue().contentEquals(
-										"truepoint_5000_2plus0")
-								|| entry.getValue().contentEquals(
-										"truepoint_5000")
-								|| entry.getValue().contentEquals("sagemlink")
-								|| entry.getValue().contentEquals("spII_snmp")
-								|| entry.getValue().contentEquals(
-										"protected_spectrum_II")
-								|| entry.getValue()
-										.contentEquals("spectrum_II")
-								|| entry.getValue().contentEquals("spectrum_I")
-								|| entry.getValue().contentEquals(
-										"protected_quantum")
-								|| entry.getValue().contentEquals("quantum")
-								|| entry.getValue().contentEquals("tnet_proxy")
-								|| entry.getValue().contentEquals(
-										"protected_wseries")
-								|| entry.getValue().contentEquals("wseries")
-								|| entry.getValue().contentEquals(
-										"protected_mseries")
-								|| entry.getValue().contentEquals("mseries")
-								|| entry.getValue().contentEquals("mf")
-								|| entry.getValue().contentEquals(
-										"protected_lc_series")
-								|| entry.getValue().contentEquals("lc_series")
-								|| entry.getValue().contentEquals("spII_snmp")
-								|| entry.getValue().contentEquals("smartcore")
-								|| entry.getValue().contentEquals("sma")
-								|| entry.getValue().contentEquals("rw2000")
-								|| entry.getValue().contentEquals(
-										"microstar_III")
-								|| entry.getValue().contentEquals(
-										"microstar_II")
-								|| entry.getValue().contentEquals(
-										"protected_microstar_I")
-								|| entry.getValue()
-										.contentEquals("microstar_I")
-								|| entry.getValue().contentEquals("m7i")
-								|| entry.getValue().contentEquals("m10i")
-								|| entry.getValue().contentEquals(
-										"megastar_spu")
-								|| entry.getValue()
-										.contentEquals("megastar_mn")
-								|| entry.getValue().contentEquals("megastar")
-								|| entry.getValue().contentEquals("le3200")
-								|| entry.getValue().contentEquals("le3000")
-								|| entry.getValue().contentEquals(
-										"generic_switch")
-								|| entry.getValue().contentEquals(
-										"generic_snmp")
-								|| entry.getValue().contentEquals(
-										"generic_router")
-								|| entry.getValue().contentEquals(
-										"generic_radio")
-								|| entry.getValue().contentEquals(
-										"generic_power_supply")
-								|| entry.getValue()
-										.contentEquals("generic_mux")
-								|| entry.getValue()
-										.contentEquals("generic_bts")
-								|| entry.getValue().contentEquals(
-										"generic_alarm_unit")
-								|| entry.getValue().contentEquals(
-										"eLink1000EXR")
-								|| entry.getValue().contentEquals("dxr200")
-								|| entry.getValue().contentEquals("dxr100p")
-								|| entry.getValue().contentEquals("dxr100np")
-								|| entry.getValue().contentEquals("dvm_XT")
-								|| entry.getValue().contentEquals(
-										"dvm45_repeater")
-								|| entry.getValue().contentEquals(
-										"dvm45_terminal")
-								|| entry.getValue().contentEquals("dva")
-								|| entry.getValue().contentEquals(
-										"dart_remote_mgmt")
-								|| entry.getValue().contentEquals("dart")
-								|| entry.getValue().contentEquals(
-										"constellation")
-								|| entry.getValue().contentEquals("cx_u")
-								|| entry.getValue().contentEquals(
-										"cisco_ME3600X")
-								|| entry.getValue().contentEquals("cau")
-								|| entry.getValue().contentEquals("classic_II")
-								|| entry.getValue().contentEquals("aurora")
-								|| entry.getValue().contentEquals(
-										"altiumMX_2plus0")
-								|| entry.getValue().contentEquals("altiumMX")
-								|| entry.getValue().contentEquals("altium")
-								|| entry.getValue().contentEquals("adr2500")
-								|| entry.getValue().contentEquals("dxr700p")
-								|| entry.getValue().contentEquals("adr")
-								|| entry.getValue().contentEquals(
-										"ethernet_port")
-								|| entry.getValue()
-										.contentEquals("generalCard")
-								|| entry.getValue().contentEquals(
-										"wtm_6000_protected_path")
-								|| entry.getValue()
-										.contentEquals("wtm_6000_sv")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_mstu")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_tcu")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_path")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_hk")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_sv")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_protected_path")
-								|| entry.getValue().contentEquals(
-										"cisco_ME3600X")
-								|| entry.getValue().contentEquals("unity_inu")
-								|| entry.getValue().contentEquals("unity_inue")) {
-							nodes[level9].setIcon(iconEclipseIcon);
-						}
-						if (entry.getValue().contentEquals("unity_rac10")
-								|| entry.getValue()
-										.contentEquals("unity_rac40")
-								|| entry.getValue()
-										.contentEquals("unity_rac4x")
-								|| entry.getValue().contentEquals(
-										"unity_dac155oM")
-								|| entry.getValue().contentEquals("unity_aux")
-								|| entry.getValue().contentEquals(
-										"unity_dacge3")
-								|| entry.getValue()
-										.contentEquals("unity_daces")
-								|| entry.getValue().contentEquals("unity_fan")
-								|| entry.getValue().contentEquals(
-										"unity_fan_2u")
-								|| entry.getValue().contentEquals("unity_rac")
-								|| entry.getValue()
-										.contentEquals("unity_dacge")
-								|| entry.getValue().contentEquals("unity_dac")
-								|| entry.getValue().contentEquals("unity_ncc")
-								|| entry.getValue().contentEquals("unity_npc")) {
-							nodes[level9].setIcon(iconCard);
-						}
-						if (entry.getValue().contentEquals("generic_switch")) {
-							nodes[level9].setIcon(iconNetworkElement);
-						}
-						if (entry.getValue().contentEquals("link")
-								|| entry.getValue().contentEquals(
-										"unity_ring_path")
-								|| entry.getValue().contentEquals(
-										"unity_unexpected")
-								|| entry.getValue().contentEquals(
-										"unity_protected_path")
-								|| entry.getValue().contentEquals("unity_path")) {
-							nodes[level9].setIcon(iconPort);
-						}
-					}
-				}
+				setNodeIcon(m8.group(2), level9);
 
 			}
 
@@ -2855,245 +714,7 @@ public class CreateTopology {
 				nodes[level10] = new IconNode(m9.group(2));
 				nodes[level9].add(nodes[level10]);
 
-				for (Map.Entry<String, String> entry : map.entrySet()) {
-					if (entry.getKey().contentEquals(m9.group(2))) {
-						if (entry.getValue().contentEquals(
-								"customizable_container")
-								|| entry.getValue().contentEquals("region")
-								|| entry.getValue().contentEquals("rack")
-								|| entry.getValue().contentEquals("site")) {
-							nodes[level10].setIcon(iconBTS);
-						}
-						if (entry.getValue().contentEquals(
-								"unity_idu_controller")
-								|| entry.getValue().contentEquals(
-										"unity_idu_radio")
-								|| entry.getValue().contentEquals(
-										"unity_idu_radio10")
-								|| entry.getValue().contentEquals(
-										"unity_idu_radio_spe")
-								|| entry.getValue().contentEquals(
-										"unity_idu_data")
-								|| entry.getValue().contentEquals(
-										"unity_idu_aux")
-								|| entry.getValue().contentEquals(
-										"unity_idu_fan")
-								|| entry.getValue().contentEquals(
-										"unity_idu_ethernet")
-								|| entry.getValue().contentEquals(
-										"unity_idu_ethernet_spe")
-								|| entry.getValue().contentEquals(
-										"unity_idu_ge_ethernet")
-								|| entry.getValue().contentEquals("unity_idup")
-								|| entry.getValue().contentEquals(
-										"unity_idu_odu_spe_b")
-								|| entry.getValue().contentEquals(
-										"unity_idu_odu_spe_a")
-								|| entry.getValue().contentEquals(
-										"unity_idu_odu10")
-								|| entry.getValue()
-										.contentEquals("unity_odu10")
-								|| entry.getValue().contentEquals(
-										"unity_idu_odu")
-								|| entry.getValue().contentEquals("unity_odu")
-								|| entry.getValue().contentEquals("unity_idu")) {
-							nodes[level10].setIcon(iconODU);
-						}
-
-						if (entry.getValue().contentEquals("wtm_6000")
-								|| entry.getValue().contentEquals("wl1000")
-								|| entry.getValue().contentEquals(
-										"wimax_bs_subscriber")
-								|| entry.getValue().contentEquals(
-										"wimax_subscriber")
-								|| entry.getValue().contentEquals(
-										"wimax_bs_6400")
-								|| entry.getValue().contentEquals("wimax_bs")
-								|| entry.getValue().contentEquals(
-										"wimax_asn_protected")
-								|| entry.getValue().contentEquals("wimax_asn")
-								|| entry.getValue().contentEquals(
-										"protected_xp248x_remote_mgmt")
-								|| entry.getValue().contentEquals(
-										"protected_xp4_2x_4x")
-								|| entry.getValue().contentEquals(
-										"xp248x_remote_mgmt")
-								|| entry.getValue().contentEquals("xp4_2x_4x")
-								|| entry.getValue().contentEquals(
-										"protected_xp4_e3")
-								|| entry.getValue().contentEquals(
-										"protected_xpe3ds3_remote_mgmt")
-								|| entry.getValue().contentEquals(
-										"xp16xe3ds3_remote_mgmt")
-								|| entry.getValue().contentEquals("xp4_e3")
-								|| entry.getValue().contentEquals("velox")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_dt")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500")
-								|| entry.getValue().contentEquals(
-										"truepoint_6400")
-								|| entry.getValue().contentEquals(
-										"truepoint_4040_v2entry")
-								|| entry.getValue().contentEquals(
-										"truepoint_4040")
-								|| entry.getValue().contentEquals(
-										"truepoint_4000")
-								|| entry.getValue().contentEquals(
-										"truepoint_5000_2plus0")
-								|| entry.getValue().contentEquals(
-										"truepoint_5000")
-								|| entry.getValue().contentEquals("sagemlink")
-								|| entry.getValue().contentEquals("spII_snmp")
-								|| entry.getValue().contentEquals(
-										"protected_spectrum_II")
-								|| entry.getValue()
-										.contentEquals("spectrum_II")
-								|| entry.getValue().contentEquals("spectrum_I")
-								|| entry.getValue().contentEquals(
-										"protected_quantum")
-								|| entry.getValue().contentEquals("quantum")
-								|| entry.getValue().contentEquals("tnet_proxy")
-								|| entry.getValue().contentEquals(
-										"protected_wseries")
-								|| entry.getValue().contentEquals("wseries")
-								|| entry.getValue().contentEquals(
-										"protected_mseries")
-								|| entry.getValue().contentEquals("mseries")
-								|| entry.getValue().contentEquals("mf")
-								|| entry.getValue().contentEquals(
-										"protected_lc_series")
-								|| entry.getValue().contentEquals("lc_series")
-								|| entry.getValue().contentEquals("spII_snmp")
-								|| entry.getValue().contentEquals("smartcore")
-								|| entry.getValue().contentEquals("sma")
-								|| entry.getValue().contentEquals("rw2000")
-								|| entry.getValue().contentEquals(
-										"microstar_III")
-								|| entry.getValue().contentEquals(
-										"microstar_II")
-								|| entry.getValue().contentEquals(
-										"protected_microstar_I")
-								|| entry.getValue()
-										.contentEquals("microstar_I")
-								|| entry.getValue().contentEquals("m7i")
-								|| entry.getValue().contentEquals("m10i")
-								|| entry.getValue().contentEquals(
-										"megastar_spu")
-								|| entry.getValue()
-										.contentEquals("megastar_mn")
-								|| entry.getValue().contentEquals("megastar")
-								|| entry.getValue().contentEquals("le3200")
-								|| entry.getValue().contentEquals("le3000")
-								|| entry.getValue().contentEquals(
-										"generic_switch")
-								|| entry.getValue().contentEquals(
-										"generic_snmp")
-								|| entry.getValue().contentEquals(
-										"generic_router")
-								|| entry.getValue().contentEquals(
-										"generic_radio")
-								|| entry.getValue().contentEquals(
-										"generic_power_supply")
-								|| entry.getValue()
-										.contentEquals("generic_mux")
-								|| entry.getValue()
-										.contentEquals("generic_bts")
-								|| entry.getValue().contentEquals(
-										"generic_alarm_unit")
-								|| entry.getValue().contentEquals(
-										"eLink1000EXR")
-								|| entry.getValue().contentEquals("dxr200")
-								|| entry.getValue().contentEquals("dxr100p")
-								|| entry.getValue().contentEquals("dxr100np")
-								|| entry.getValue().contentEquals("dvm_XT")
-								|| entry.getValue().contentEquals(
-										"dvm45_repeater")
-								|| entry.getValue().contentEquals(
-										"dvm45_terminal")
-								|| entry.getValue().contentEquals("dva")
-								|| entry.getValue().contentEquals(
-										"dart_remote_mgmt")
-								|| entry.getValue().contentEquals("dart")
-								|| entry.getValue().contentEquals(
-										"constellation")
-								|| entry.getValue().contentEquals("cx_u")
-								|| entry.getValue().contentEquals(
-										"cisco_ME3600X")
-								|| entry.getValue().contentEquals("cau")
-								|| entry.getValue().contentEquals("classic_II")
-								|| entry.getValue().contentEquals("aurora")
-								|| entry.getValue().contentEquals(
-										"altiumMX_2plus0")
-								|| entry.getValue().contentEquals("altiumMX")
-								|| entry.getValue().contentEquals("altium")
-								|| entry.getValue().contentEquals("adr2500")
-								|| entry.getValue().contentEquals("dxr700p")
-								|| entry.getValue().contentEquals("adr")
-								|| entry.getValue().contentEquals(
-										"ethernet_port")
-								|| entry.getValue()
-										.contentEquals("generalCard")
-								|| entry.getValue().contentEquals(
-										"wtm_6000_protected_path")
-								|| entry.getValue()
-										.contentEquals("wtm_6000_sv")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_mstu")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_tcu")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_path")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_hk")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_sv")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_protected_path")
-								|| entry.getValue().contentEquals(
-										"cisco_ME3600X")
-								|| entry.getValue().contentEquals("unity_inu")
-								|| entry.getValue().contentEquals("unity_inue")) {
-							nodes[level10].setIcon(iconEclipseIcon);
-						}
-						if (entry.getValue().contentEquals("unity_rac10")
-								|| entry.getValue()
-										.contentEquals("unity_rac40")
-								|| entry.getValue()
-										.contentEquals("unity_rac4x")
-								|| entry.getValue().contentEquals(
-										"unity_dac155oM")
-								|| entry.getValue().contentEquals("unity_aux")
-								|| entry.getValue().contentEquals(
-										"unity_dacge3")
-								|| entry.getValue()
-										.contentEquals("unity_daces")
-								|| entry.getValue().contentEquals("unity_fan")
-								|| entry.getValue().contentEquals(
-										"unity_fan_2u")
-								|| entry.getValue().contentEquals("unity_rac")
-								|| entry.getValue()
-										.contentEquals("unity_dacge")
-								|| entry.getValue().contentEquals("unity_dac")
-								|| entry.getValue().contentEquals("unity_ncc")
-								|| entry.getValue().contentEquals("unity_npc")) {
-							nodes[level10].setIcon(iconCard);
-						}
-						if (entry.getValue().contentEquals("generic_switch")) {
-							nodes[level10].setIcon(iconNetworkElement);
-						}
-						if (entry.getValue().contentEquals("link")
-								|| entry.getValue().contentEquals(
-										"unity_ring_path")
-								|| entry.getValue().contentEquals(
-										"unity_unexpected")
-								|| entry.getValue().contentEquals(
-										"unity_protected_path")
-								|| entry.getValue().contentEquals("unity_path")) {
-							nodes[level10].setIcon(iconPort);
-						}
-					}
-				}
+				setNodeIcon(m9.group(2), level10);
 
 			}
 
@@ -3104,245 +725,7 @@ public class CreateTopology {
 				nodes[level11] = new IconNode(m10.group(2));
 				nodes[level10].add(nodes[level11]);
 
-				for (Map.Entry<String, String> entry : map.entrySet()) {
-					if (entry.getKey().contentEquals(m10.group(2))) {
-						if (entry.getValue().contentEquals(
-								"customizable_container")
-								|| entry.getValue().contentEquals("region")
-								|| entry.getValue().contentEquals("rack")
-								|| entry.getValue().contentEquals("site")) {
-							nodes[level11].setIcon(iconBTS);
-						}
-						if (entry.getValue().contentEquals(
-								"unity_idu_controller")
-								|| entry.getValue().contentEquals(
-										"unity_idu_radio")
-								|| entry.getValue().contentEquals(
-										"unity_idu_radio10")
-								|| entry.getValue().contentEquals(
-										"unity_idu_radio_spe")
-								|| entry.getValue().contentEquals(
-										"unity_idu_data")
-								|| entry.getValue().contentEquals(
-										"unity_idu_aux")
-								|| entry.getValue().contentEquals(
-										"unity_idu_fan")
-								|| entry.getValue().contentEquals(
-										"unity_idu_ethernet")
-								|| entry.getValue().contentEquals(
-										"unity_idu_ethernet_spe")
-								|| entry.getValue().contentEquals(
-										"unity_idu_ge_ethernet")
-								|| entry.getValue().contentEquals("unity_idup")
-								|| entry.getValue().contentEquals(
-										"unity_idu_odu_spe_b")
-								|| entry.getValue().contentEquals(
-										"unity_idu_odu_spe_a")
-								|| entry.getValue().contentEquals(
-										"unity_idu_odu10")
-								|| entry.getValue()
-										.contentEquals("unity_odu10")
-								|| entry.getValue().contentEquals(
-										"unity_idu_odu")
-								|| entry.getValue().contentEquals("unity_odu")
-								|| entry.getValue().contentEquals("unity_idu")) {
-							nodes[level11].setIcon(iconODU);
-						}
-
-						if (entry.getValue().contentEquals("wtm_6000")
-								|| entry.getValue().contentEquals("wl1000")
-								|| entry.getValue().contentEquals(
-										"wimax_bs_subscriber")
-								|| entry.getValue().contentEquals(
-										"wimax_subscriber")
-								|| entry.getValue().contentEquals(
-										"wimax_bs_6400")
-								|| entry.getValue().contentEquals("wimax_bs")
-								|| entry.getValue().contentEquals(
-										"wimax_asn_protected")
-								|| entry.getValue().contentEquals("wimax_asn")
-								|| entry.getValue().contentEquals(
-										"protected_xp248x_remote_mgmt")
-								|| entry.getValue().contentEquals(
-										"protected_xp4_2x_4x")
-								|| entry.getValue().contentEquals(
-										"xp248x_remote_mgmt")
-								|| entry.getValue().contentEquals("xp4_2x_4x")
-								|| entry.getValue().contentEquals(
-										"protected_xp4_e3")
-								|| entry.getValue().contentEquals(
-										"protected_xpe3ds3_remote_mgmt")
-								|| entry.getValue().contentEquals(
-										"xp16xe3ds3_remote_mgmt")
-								|| entry.getValue().contentEquals("xp4_e3")
-								|| entry.getValue().contentEquals("velox")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_dt")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500")
-								|| entry.getValue().contentEquals(
-										"truepoint_6400")
-								|| entry.getValue().contentEquals(
-										"truepoint_4040_v2entry")
-								|| entry.getValue().contentEquals(
-										"truepoint_4040")
-								|| entry.getValue().contentEquals(
-										"truepoint_4000")
-								|| entry.getValue().contentEquals(
-										"truepoint_5000_2plus0")
-								|| entry.getValue().contentEquals(
-										"truepoint_5000")
-								|| entry.getValue().contentEquals("sagemlink")
-								|| entry.getValue().contentEquals("spII_snmp")
-								|| entry.getValue().contentEquals(
-										"protected_spectrum_II")
-								|| entry.getValue()
-										.contentEquals("spectrum_II")
-								|| entry.getValue().contentEquals("spectrum_I")
-								|| entry.getValue().contentEquals(
-										"protected_quantum")
-								|| entry.getValue().contentEquals("quantum")
-								|| entry.getValue().contentEquals("tnet_proxy")
-								|| entry.getValue().contentEquals(
-										"protected_wseries")
-								|| entry.getValue().contentEquals("wseries")
-								|| entry.getValue().contentEquals(
-										"protected_mseries")
-								|| entry.getValue().contentEquals("mseries")
-								|| entry.getValue().contentEquals("mf")
-								|| entry.getValue().contentEquals(
-										"protected_lc_series")
-								|| entry.getValue().contentEquals("lc_series")
-								|| entry.getValue().contentEquals("spII_snmp")
-								|| entry.getValue().contentEquals("smartcore")
-								|| entry.getValue().contentEquals("sma")
-								|| entry.getValue().contentEquals("rw2000")
-								|| entry.getValue().contentEquals(
-										"microstar_III")
-								|| entry.getValue().contentEquals(
-										"microstar_II")
-								|| entry.getValue().contentEquals(
-										"protected_microstar_I")
-								|| entry.getValue()
-										.contentEquals("microstar_I")
-								|| entry.getValue().contentEquals("m7i")
-								|| entry.getValue().contentEquals("m10i")
-								|| entry.getValue().contentEquals(
-										"megastar_spu")
-								|| entry.getValue()
-										.contentEquals("megastar_mn")
-								|| entry.getValue().contentEquals("megastar")
-								|| entry.getValue().contentEquals("le3200")
-								|| entry.getValue().contentEquals("le3000")
-								|| entry.getValue().contentEquals(
-										"generic_switch")
-								|| entry.getValue().contentEquals(
-										"generic_snmp")
-								|| entry.getValue().contentEquals(
-										"generic_router")
-								|| entry.getValue().contentEquals(
-										"generic_radio")
-								|| entry.getValue().contentEquals(
-										"generic_power_supply")
-								|| entry.getValue()
-										.contentEquals("generic_mux")
-								|| entry.getValue()
-										.contentEquals("generic_bts")
-								|| entry.getValue().contentEquals(
-										"generic_alarm_unit")
-								|| entry.getValue().contentEquals(
-										"eLink1000EXR")
-								|| entry.getValue().contentEquals("dxr200")
-								|| entry.getValue().contentEquals("dxr100p")
-								|| entry.getValue().contentEquals("dxr100np")
-								|| entry.getValue().contentEquals("dvm_XT")
-								|| entry.getValue().contentEquals(
-										"dvm45_repeater")
-								|| entry.getValue().contentEquals(
-										"dvm45_terminal")
-								|| entry.getValue().contentEquals("dva")
-								|| entry.getValue().contentEquals(
-										"dart_remote_mgmt")
-								|| entry.getValue().contentEquals("dart")
-								|| entry.getValue().contentEquals(
-										"constellation")
-								|| entry.getValue().contentEquals("cx_u")
-								|| entry.getValue().contentEquals(
-										"cisco_ME3600X")
-								|| entry.getValue().contentEquals("cau")
-								|| entry.getValue().contentEquals("classic_II")
-								|| entry.getValue().contentEquals("aurora")
-								|| entry.getValue().contentEquals(
-										"altiumMX_2plus0")
-								|| entry.getValue().contentEquals("altiumMX")
-								|| entry.getValue().contentEquals("altium")
-								|| entry.getValue().contentEquals("adr2500")
-								|| entry.getValue().contentEquals("dxr700p")
-								|| entry.getValue().contentEquals("adr")
-								|| entry.getValue().contentEquals(
-										"ethernet_port")
-								|| entry.getValue()
-										.contentEquals("generalCard")
-								|| entry.getValue().contentEquals(
-										"wtm_6000_protected_path")
-								|| entry.getValue()
-										.contentEquals("wtm_6000_sv")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_mstu")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_tcu")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_path")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_hk")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_sv")
-								|| entry.getValue().contentEquals(
-										"truepoint_6500_protected_path")
-								|| entry.getValue().contentEquals(
-										"cisco_ME3600X")
-								|| entry.getValue().contentEquals("unity_inu")
-								|| entry.getValue().contentEquals("unity_inue")) {
-							nodes[level11].setIcon(iconEclipseIcon);
-						}
-						if (entry.getValue().contentEquals("unity_rac10")
-								|| entry.getValue()
-										.contentEquals("unity_rac40")
-								|| entry.getValue()
-										.contentEquals("unity_rac4x")
-								|| entry.getValue().contentEquals(
-										"unity_dac155oM")
-								|| entry.getValue().contentEquals("unity_aux")
-								|| entry.getValue().contentEquals(
-										"unity_dacge3")
-								|| entry.getValue()
-										.contentEquals("unity_daces")
-								|| entry.getValue().contentEquals("unity_fan")
-								|| entry.getValue().contentEquals(
-										"unity_fan_2u")
-								|| entry.getValue().contentEquals("unity_rac")
-								|| entry.getValue()
-										.contentEquals("unity_dacge")
-								|| entry.getValue().contentEquals("unity_dac")
-								|| entry.getValue().contentEquals("unity_ncc")
-								|| entry.getValue().contentEquals("unity_npc")) {
-							nodes[level11].setIcon(iconCard);
-						}
-						if (entry.getValue().contentEquals("generic_switch")) {
-							nodes[level11].setIcon(iconNetworkElement);
-						}
-						if (entry.getValue().contentEquals("link")
-								|| entry.getValue().contentEquals(
-										"unity_ring_path")
-								|| entry.getValue().contentEquals(
-										"unity_unexpected")
-								|| entry.getValue().contentEquals(
-										"unity_protected_path")
-								|| entry.getValue().contentEquals("unity_path")) {
-							nodes[level11].setIcon(iconPort);
-						}
-					}
-				}
+				setNodeIcon(m10.group(2), level11);
 
 			}
 
@@ -3427,5 +810,191 @@ public class CreateTopology {
 				}
 			}
 		}
+	}
+
+	public void setNodeIcon(String value, int level) {
+
+		for (Map.Entry<String, String> entry : map.entrySet()) {
+			if (entry.getKey().contentEquals(value)) {
+
+				if (entry.getValue().contentEquals("customizable_container")
+						|| entry.getValue().contentEquals("region")
+						|| entry.getValue().contentEquals("rack")
+						|| entry.getValue().contentEquals("site")) {
+					nodes[level].setIcon(iconBTS);
+				}
+				if (entry.getValue().contentEquals("unity_idu_controller")
+						|| entry.getValue().contentEquals("unity_idu_radio")
+						|| entry.getValue().contentEquals("unity_idu_radio10")
+						|| entry.getValue()
+								.contentEquals("unity_idu_radio_spe")
+						|| entry.getValue().contentEquals("unity_idu_data")
+						|| entry.getValue().contentEquals("unity_idu_aux")
+						|| entry.getValue().contentEquals("unity_idu_fan")
+						|| entry.getValue().contentEquals("unity_idu_ethernet")
+						|| entry.getValue().contentEquals(
+								"unity_idu_ethernet_spe")
+						|| entry.getValue().contentEquals(
+								"unity_idu_ge_ethernet")
+						|| entry.getValue().contentEquals("unity_idup")
+						|| entry.getValue()
+								.contentEquals("unity_idu_odu_spe_b")
+						|| entry.getValue()
+								.contentEquals("unity_idu_odu_spe_a")
+						|| entry.getValue().contentEquals("unity_idu_odu10")
+						|| entry.getValue().contentEquals("unity_odu10")
+						|| entry.getValue().contentEquals("unity_idu_odu")
+						|| entry.getValue().contentEquals("unity_odu")
+						|| entry.getValue().contentEquals("unity_idu")) {
+					nodes[level].setIcon(iconODU);
+				}
+				if (entry.getValue().contentEquals("wtm_6000")
+						|| entry.getValue().contentEquals("wl1000")
+						|| entry.getValue()
+								.contentEquals("wimax_bs_subscriber")
+						|| entry.getValue().contentEquals("wimax_subscriber")
+						|| entry.getValue().contentEquals("wimax_bs_6400")
+						|| entry.getValue().contentEquals("wimax_bs")
+						|| entry.getValue()
+								.contentEquals("wimax_asn_protected")
+						|| entry.getValue().contentEquals("wimax_asn")
+						|| entry.getValue().contentEquals(
+								"protected_xp248x_remote_mgmt")
+						|| entry.getValue()
+								.contentEquals("protected_xp4_2x_4x")
+						|| entry.getValue().contentEquals("xp248x_remote_mgmt")
+						|| entry.getValue().contentEquals("xp4_2x_4x")
+						|| entry.getValue().contentEquals("protected_xp4_e3")
+						|| entry.getValue().contentEquals(
+								"protected_xpe3ds3_remote_mgmt")
+						|| entry.getValue().contentEquals(
+								"xp16xe3ds3_remote_mgmt")
+						|| entry.getValue().contentEquals("xp4_e3")
+						|| entry.getValue().contentEquals("velox")
+						|| entry.getValue().contentEquals("truepoint_6500_dt")
+						|| entry.getValue().contentEquals("truepoint_6500")
+						|| entry.getValue().contentEquals("truepoint_6400")
+						|| entry.getValue().contentEquals(
+								"truepoint_4040_v2entry")
+						|| entry.getValue().contentEquals("truepoint_4040")
+						|| entry.getValue().contentEquals("truepoint_4000")
+						|| entry.getValue().contentEquals(
+								"truepoint_5000_2plus0")
+						|| entry.getValue().contentEquals("truepoint_5000")
+						|| entry.getValue().contentEquals("sagemlink")
+						|| entry.getValue().contentEquals("spII_snmp")
+						|| entry.getValue().contentEquals(
+								"protected_spectrum_II")
+						|| entry.getValue().contentEquals("spectrum_II")
+						|| entry.getValue().contentEquals("spectrum_I")
+						|| entry.getValue().contentEquals("protected_quantum")
+						|| entry.getValue().contentEquals("quantum")
+						|| entry.getValue().contentEquals("tnet_proxy")
+						|| entry.getValue().contentEquals("protected_wseries")
+						|| entry.getValue().contentEquals("wseries")
+						|| entry.getValue().contentEquals("protected_mseries")
+						|| entry.getValue().contentEquals("mseries")
+						|| entry.getValue().contentEquals("mf")
+						|| entry.getValue()
+								.contentEquals("protected_lc_series")
+						|| entry.getValue().contentEquals("lc_series")
+						|| entry.getValue().contentEquals("spII_snmp")
+						|| entry.getValue().contentEquals("smartcore")
+						|| entry.getValue().contentEquals("sma")
+						|| entry.getValue().contentEquals("rw2000")
+						|| entry.getValue().contentEquals("microstar_III")
+						|| entry.getValue().contentEquals("microstar_II")
+						|| entry.getValue().contentEquals(
+								"protected_microstar_I")
+						|| entry.getValue().contentEquals("microstar_I")
+						|| entry.getValue().contentEquals("m7i")
+						|| entry.getValue().contentEquals("m10i")
+						|| entry.getValue().contentEquals("megastar_spu")
+						|| entry.getValue().contentEquals("megastar_mn")
+						|| entry.getValue().contentEquals("megastar")
+						|| entry.getValue().contentEquals("le3200")
+						|| entry.getValue().contentEquals("le3000")
+						|| entry.getValue().contentEquals("generic_switch")
+						|| entry.getValue().contentEquals("generic_snmp")
+						|| entry.getValue().contentEquals("generic_router")
+						|| entry.getValue().contentEquals("generic_radio")
+						|| entry.getValue().contentEquals(
+								"generic_power_supply")
+						|| entry.getValue().contentEquals("generic_mux")
+						|| entry.getValue().contentEquals("generic_bts")
+						|| entry.getValue().contentEquals("generic_alarm_unit")
+						|| entry.getValue().contentEquals("eLink1000EXR")
+						|| entry.getValue().contentEquals("dxr200")
+						|| entry.getValue().contentEquals("dxr100p")
+						|| entry.getValue().contentEquals("dxr100np")
+						|| entry.getValue().contentEquals("dvm_XT")
+						|| entry.getValue().contentEquals("dvm45_repeater")
+						|| entry.getValue().contentEquals("dvm45_terminal")
+						|| entry.getValue().contentEquals("dva")
+						|| entry.getValue().contentEquals("dart_remote_mgmt")
+						|| entry.getValue().contentEquals("dart")
+						|| entry.getValue().contentEquals("constellation")
+						|| entry.getValue().contentEquals("cx_u")
+						|| entry.getValue().contentEquals("cisco_ME3600X")
+						|| entry.getValue().contentEquals("cau")
+						|| entry.getValue().contentEquals("classic_II")
+						|| entry.getValue().contentEquals("aurora")
+						|| entry.getValue().contentEquals("altiumMX_2plus0")
+						|| entry.getValue().contentEquals("altiumMX")
+						|| entry.getValue().contentEquals("altium")
+						|| entry.getValue().contentEquals("adr2500")
+						|| entry.getValue().contentEquals("dxr700p")
+						|| entry.getValue().contentEquals("adr")
+						|| entry.getValue().contentEquals("ethernet_port")
+						|| entry.getValue().contentEquals("generalCard")
+						|| entry.getValue().contentEquals(
+								"wtm_6000_protected_path")
+						|| entry.getValue().contentEquals("wtm_6000_sv")
+						|| entry.getValue()
+								.contentEquals("truepoint_6500_mstu")
+						|| entry.getValue().contentEquals("truepoint_6500_tcu")
+						|| entry.getValue()
+								.contentEquals("truepoint_6500_path")
+						|| entry.getValue().contentEquals("truepoint_6500_hk")
+						|| entry.getValue().contentEquals("truepoint_6500_sv")
+						|| entry.getValue().contentEquals(
+								"truepoint_6500_protected_path")
+						|| entry.getValue().contentEquals("cisco_ME3600X")
+						|| entry.getValue().contentEquals("unity_inu")
+						|| entry.getValue().contentEquals("unity_inue")) {
+					nodes[level].setIcon(iconEclipseIcon);
+				}
+				if (entry.getValue().contentEquals("unity_rac10")
+						|| entry.getValue().contentEquals("unity_rac40")
+						|| entry.getValue().contentEquals("unity_rac4x")
+						|| entry.getValue().contentEquals("unity_dac155oM")
+						|| entry.getValue().contentEquals("unity_aux")
+						|| entry.getValue().contentEquals("unity_dacge3")
+						|| entry.getValue().contentEquals("unity_daces")
+						|| entry.getValue().contentEquals("unity_fan")
+						|| entry.getValue().contentEquals("unity_fan_2u")
+						|| entry.getValue().contentEquals("unity_rac")
+						|| entry.getValue().contentEquals("unity_dacge")
+						|| entry.getValue().contentEquals("unity_dac")
+						|| entry.getValue().contentEquals("unity_ncc")
+						|| entry.getValue().contentEquals("unity_npc")) {
+					nodes[level].setIcon(iconCard);
+				}
+				if (entry.getValue().contentEquals("generic_switch")) {
+					nodes[level].setIcon(iconNetworkElement);
+				}
+				if (entry.getValue().contentEquals("link")
+						|| entry.getValue().contentEquals("unity_ring_path")
+						|| entry.getValue().contentEquals("unity_unexpected")
+						|| entry.getValue().contentEquals(
+								"unity_protected_path")
+						|| entry.getValue().contentEquals("unity_path")) {
+					nodes[level].setIcon(iconPort);
+				}
+
+			}
+
+		}
+
 	}
 }
