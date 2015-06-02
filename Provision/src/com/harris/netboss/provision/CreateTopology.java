@@ -1,43 +1,34 @@
 package com.harris.netboss.provision;
 
 import static com.harris.netboss.provision.Main.topologyTree;
-
 import java.awt.Component;
 import java.awt.Image;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
 
 public class CreateTopology {
 
 	public static final StringBuilder topology = new StringBuilder();
 	public static final StringBuilder properties = new StringBuilder();
-
-	public Map<String, String> map = new HashMap<>();
-
-	public ImageIcon iconProvision = new ImageIcon();
-	public ImageIcon iconEclipseIcon = new ImageIcon();
-	public ImageIcon iconODU = new ImageIcon();
-	public ImageIcon iconCard = new ImageIcon();
-	public ImageIcon iconNetworkElement = new ImageIcon();
-	public ImageIcon iconBTS = new ImageIcon();
-	public ImageIcon iconPort = new ImageIcon();
-
-	public IconNode[] nodes;
 
 	protected static Image getImageProvision() {
 		java.net.URL imgURL;
@@ -109,16 +100,19 @@ public class CreateTopology {
 		}
 	}
 
-	public void create() throws IOException {
-		BufferedReader topologyReaderForProperties = new BufferedReader(
-				new FileReader(Main.getDir()));
-		BufferedReader topologyReader = new BufferedReader(new FileReader(
-				Main.getDir()));
-		ArrayList<String> listProperties = new ArrayList<>();
-		LinkedHashSet<String> listResult = new LinkedHashSet<>();
+	public Map<String, String> map = new HashMap<>();
+	public IconNode[] nodes;
 
-		listProperties.clear();
-		listResult.clear();
+	public ImageIcon iconProvision = new ImageIcon();
+	public ImageIcon iconEclipseIcon = new ImageIcon();
+	public ImageIcon iconODU = new ImageIcon();
+	public ImageIcon iconCard = new ImageIcon();
+	public ImageIcon iconNetworkElement = new ImageIcon();
+	public ImageIcon iconBTS = new ImageIcon();
+	public ImageIcon iconPort = new ImageIcon();
+
+	public void create() throws IOException, SAXException,
+			ParserConfigurationException {
 
 		iconProvision.setImage(getImageProvision());
 		iconEclipseIcon.setImage(getImageEclipseIcon());
@@ -128,13 +122,21 @@ public class CreateTopology {
 		iconBTS.setImage(getImageBTS());
 		iconPort.setImage(getImagePort());
 
+		BufferedReader topologyReaderForProperties = new BufferedReader(
+				new FileReader(Main.getDir()));
+		ArrayList<String> listProperties = new ArrayList<>();
+
 		BufferedReader topologyReaderForMap = new BufferedReader(
 				new FileReader(Main.getDir()));
 		String lineMap = null;
 		String className = null;
+		String r = "";
+		int indexOfElement = 0;
+		int indexOfSimbol = 0;
+		int countOfSimbol = 0;
+		int index = 0;
 
 		while ((lineMap = topologyReaderForMap.readLine()) != null) {
-			String r = "";
 
 			Pattern pClass = Pattern.compile("(<object class=\")(.*)(\">)");
 			Matcher mClass = pClass.matcher(lineMap);
@@ -146,116 +148,73 @@ public class CreateTopology {
 
 			Pattern pName = Pattern
 					.compile("(<physical_path>|<obj type=\"ref\">)(.*)(</physical_path>|</obj>)");
-			Matcher mName = pName.matcher(lineMap.replace("(", r).replace(")",
-					r));
+			Matcher mName = pName.matcher(lineMap);
 
 			if (mName.matches()) {
 
-				Pattern pName1 = Pattern
-						.compile("/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])");
-				Matcher mName1 = pName1.matcher(mName.group(2).replace("(", r)
-						.replace(")", r));
-				Pattern pName2 = Pattern
-						.compile("/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])");
-				Matcher mName2 = pName2.matcher(mName.group(2).replace("(", r)
-						.replace(")", r));
-				Pattern pName3 = Pattern
-						.compile("/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])");
-				Matcher mName3 = pName3.matcher(mName.group(2).replace("(", r)
-						.replace(")", r));
-				Pattern pName4 = Pattern
-						.compile("/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])");
-				Matcher mName4 = pName4.matcher(mName.group(2).replace("(", r)
-						.replace(")", r));
-				Pattern pName5 = Pattern
-						.compile("/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])");
-				Matcher mName5 = pName5.matcher(mName.group(2).replace("(", r)
-						.replace(")", r));
-				Pattern pName6 = Pattern
-						.compile("/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])");
-				Matcher mName6 = pName6.matcher(mName.group(2).replace("(", r)
-						.replace(")", r));
-				Pattern pName7 = Pattern
-						.compile("/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])");
-				Matcher mName7 = pName7.matcher(mName.group(2).replace("(", r)
-						.replace(")", r));
-				Pattern pName8 = Pattern
-						.compile("/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])");
-				Matcher mName8 = pName8.matcher(mName.group(2).replace("(", r)
-						.replace(")", r));
-				Pattern pName9 = Pattern
-						.compile("/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])");
-				Matcher mName9 = pName9.matcher(mName.group(2).replace("(", r)
-						.replace(")", r));
-				Pattern pName10 = Pattern
-						.compile("/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])");
-				Matcher mName10 = pName10.matcher(mName.group(2)
-						.replace("(", r).replace(")", r));
-
-				if (mName1.matches() && !mName2.matches() && !mName3.matches()
-						&& !mName4.matches() && !mName5.matches()
-						&& !mName6.matches() && !mName7.matches()
-						&& !mName8.matches() && !mName9.matches()
-						&& !mName10.matches()) {
-
-					map.put(mName1.group(1), className);
-
+				while (indexOfSimbol < mName.group(2).length()) {
+					if (mName.group(2).charAt(indexOfSimbol) == '/') {
+						index = indexOfSimbol;
+						countOfSimbol++;
+					}
+					indexOfSimbol++;
 				}
 
-				if (mName2.matches() && !mName3.matches() && !mName4.matches()
-						&& !mName5.matches() && !mName6.matches()
-						&& !mName7.matches() && !mName8.matches()
-						&& !mName9.matches() && !mName10.matches()) {
+				map.put(mName.group(2).substring(index + 1,
+						mName.group(2).length()), className);
 
-					map.put(mName2.group(2), className);
+				index = 0;
+				indexOfSimbol = 0;
+				countOfSimbol = 0;
 
-				}
-
-				if (mName3.matches() && !mName4.matches() && !mName5.matches()
-						&& !mName6.matches() && !mName7.matches()
-						&& !mName8.matches() && !mName9.matches()
-						&& !mName10.matches()) {
-					map.put(mName3.group(3), className);
-				}
-
-				if (mName4.matches() && !mName5.matches() && !mName6.matches()
-						&& !mName7.matches() && !mName8.matches()
-						&& !mName9.matches() && !mName10.matches()) {
-					map.put(mName4.group(4), className);
-				}
-
-				if (mName5.matches() && !mName6.matches() && !mName7.matches()
-						&& !mName8.matches() && !mName9.matches()
-						&& !mName10.matches()) {
-					map.put(mName5.group(5), className);
-				}
-
-				if (mName6.matches() && !mName7.matches() && !mName8.matches()
-						&& !mName9.matches() && !mName10.matches()) {
-					map.put(mName6.group(6), className);
-				}
-
-				if (mName7.matches() && !mName8.matches() && !mName9.matches()
-						&& !mName10.matches()) {
-					map.put(mName7.group(7), className);
-				}
-
-				if (mName8.matches() && !mName9.matches() && !mName10.matches()) {
-					map.put(mName8.group(8), className);
-				}
-
-				if (mName9.matches() && !mName10.matches()) {
-					map.put(mName9.group(9), className);
-				}
-
-				if (mName10.matches()) {
-					map.put(mName10.group(10), className);
-				}
 			}
 
 		}
 
 		topologyReaderForMap.close();
+
+		File file = new File(Main.getDir().getPath());
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = factory.newDocumentBuilder();
+		Document document = builder.parse(file);
+		Element root = document.getDocumentElement();
+
+		nodes = new IconNode[root.getElementsByTagName("physical_path")
+				.getLength()];
+		nodes[0] = new IconNode("topology");
+
+		while (indexOfElement < root.getElementsByTagName("physical_path")
+				.getLength()) {
+
+			Element message = (Element) root.getElementsByTagName(
+					"physical_path").item(indexOfElement);
+			String textContent = message.getTextContent();
+
+			while (indexOfSimbol < textContent.length()) {
+				if (textContent.charAt(indexOfSimbol) == '/') {
+					index = indexOfSimbol;
+					countOfSimbol++;
+				}
+				indexOfSimbol++;
+			}
+
+			nodes[countOfSimbol] = new IconNode(textContent
+					.substring(index + 1, textContent.length()).replace("(", r)
+					.replace(")", r));
+			nodes[countOfSimbol - 1].add(nodes[countOfSimbol]);
+			nodes[0].setIcon(iconBTS);
+
+			setNodeIcon(textContent.substring(index + 1, textContent.length()),
+					countOfSimbol);
+
+			indexOfElement++;
+			index = 0;
+			indexOfSimbol = 0;
+			countOfSimbol = 0;
+		}
+
+		topologyTree.setModel(new javax.swing.tree.DefaultTreeModel(nodes[0]));
+		topologyTree.setCellRenderer(new IconNodeRenderer());
 
 		String topologyLine;
 		topologyLine = null;
@@ -282,534 +241,11 @@ public class CreateTopology {
 		topologyReaderForProperties.close();
 
 		for (String word : listProperties) {
-			String r = "";
+
 			properties.append(word.replace("(", r).replace(")", r))
 					.append("\n");
 		}
 
-		while ((topologyLine = topologyReader.readLine()) != null) {
-			Pattern p = Pattern
-					.compile("(<physical_path>|<obj type=\"ref\">)(.*)(</physical_path>|</obj>)");
-			Matcher m = p.matcher(topologyLine);
-
-			if (m.matches()) {
-				String r = "";
-				Pattern p1 = Pattern
-						.compile("/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])");
-				Matcher m1 = p1.matcher(m.group(2).replace("(", r)
-						.replace(")", r));
-				Pattern p2 = Pattern
-						.compile("/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])");
-				Matcher m2 = p2.matcher(m.group(2).replace("(", r)
-						.replace(")", r));
-				Pattern p3 = Pattern
-						.compile("/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])");
-				Matcher m3 = p3.matcher(m.group(2).replace("(", r)
-						.replace(")", r));
-				Pattern p4 = Pattern
-						.compile("/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])");
-				Matcher m4 = p4.matcher(m.group(2).replace("(", r)
-						.replace(")", r));
-				Pattern p5 = Pattern
-						.compile("/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])");
-				Matcher m5 = p5.matcher(m.group(2).replace("(", r)
-						.replace(")", r));
-				Pattern p6 = Pattern
-						.compile("/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])");
-				Matcher m6 = p6.matcher(m.group(2).replace("(", r)
-						.replace(")", r));
-				Pattern p7 = Pattern
-						.compile("/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])");
-				Matcher m7 = p7.matcher(m.group(2).replace("(", r)
-						.replace(")", r));
-				Pattern p8 = Pattern
-						.compile("/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])");
-				Matcher m8 = p8.matcher(m.group(2).replace("(", r)
-						.replace(")", r));
-				Pattern p9 = Pattern
-						.compile("/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])");
-				Matcher m9 = p9.matcher(m.group(2).replace("(", r)
-						.replace(")", r));
-				Pattern p10 = Pattern
-						.compile("/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])/([a-z||A-Z||0-9].*[a-z||A-Z||0-9])");
-				Matcher m10 = p10.matcher(m.group(2).replace("(", r)
-						.replace(")", r));
-
-				if (m1.matches() && !m2.matches() && !m3.matches()
-						&& !m4.matches() && !m5.matches() && !m6.matches()
-						&& !m7.matches() && !m8.matches() && !m9.matches()
-						&& !m10.matches()) {
-
-					listResult.add(m1.group(1));
-
-				}
-
-				if (m2.matches() && !m3.matches() && !m4.matches()
-						&& !m5.matches() && !m6.matches() && !m7.matches()
-						&& !m8.matches() && !m9.matches() && !m10.matches()) {
-
-					listResult.add(m2.group(1));
-					listResult.add("	" + "/" + m2.group(1) + "/" + m2.group(2));
-				}
-
-				if (m3.matches() && !m4.matches() && !m5.matches()
-						&& !m6.matches() && !m7.matches() && !m8.matches()
-						&& !m9.matches() && !m10.matches()) {
-					listResult.add(m3.group(1));
-					listResult.add("	" + "/" + m3.group(1) + "/" + m3.group(2));
-					listResult.add("		" + "/" + m3.group(1) + "/" + m3.group(2)
-							+ "/" + m3.group(3));
-				}
-
-				if (m4.matches() && !m5.matches() && !m6.matches()
-						&& !m7.matches() && !m8.matches() && !m9.matches()
-						&& !m10.matches()) {
-					listResult.add(m4.group(1));
-					listResult.add("	" + "/" + m4.group(1) + "/" + m4.group(2));
-					listResult.add("		" + "/" + m4.group(1) + "/" + m4.group(2)
-							+ "/" + m4.group(3));
-					listResult.add("			" + "/" + m4.group(1) + "/"
-							+ m4.group(2) + "/" + m4.group(3) + "/"
-							+ m4.group(4));
-				}
-
-				if (m5.matches() && !m6.matches() && !m7.matches()
-						&& !m8.matches() && !m9.matches() && !m10.matches()) {
-					listResult.add(m5.group(1));
-					listResult.add("	" + "/" + m5.group(1) + "/" + m5.group(2));
-					listResult.add("		" + "/" + m5.group(1) + "/" + m5.group(2)
-							+ "/" + m5.group(3));
-					listResult.add("			" + "/" + m5.group(1) + "/"
-							+ m5.group(2) + "/" + m5.group(3) + "/"
-							+ m5.group(4));
-					listResult.add("				" + "/" + m5.group(1) + "/"
-							+ m5.group(2) + "/" + m5.group(3) + "/"
-							+ m5.group(4) + "/" + m5.group(5));
-				}
-
-				if (m6.matches() && !m7.matches() && !m8.matches()
-						&& !m9.matches() && !m10.matches()) {
-					listResult.add(m6.group(1));
-					listResult.add("	" + "/" + m6.group(1) + "/" + m6.group(2));
-					listResult.add("		" + "/" + m6.group(1) + "/" + m6.group(2)
-							+ "/" + m6.group(3));
-					listResult.add("			" + "/" + m6.group(1) + "/"
-							+ m6.group(2) + "/" + m6.group(3) + "/"
-							+ m6.group(4));
-					listResult.add("				" + "/" + m6.group(1) + "/"
-							+ m6.group(2) + "/" + m6.group(3) + "/"
-							+ m6.group(4) + "/" + m6.group(5));
-					listResult.add("					" + "/" + m6.group(1) + "/"
-							+ m6.group(2) + "/" + m6.group(3) + "/"
-							+ m6.group(4) + "/" + m6.group(5) + "/"
-							+ m6.group(6));
-				}
-
-				if (m7.matches() && !m8.matches() && !m9.matches()
-						&& !m10.matches()) {
-					listResult.add(m7.group(1));
-					listResult.add("	" + "/" + m7.group(1) + "/" + m7.group(2));
-					listResult.add("		" + "/" + m7.group(1) + "/" + m7.group(2)
-							+ "/" + m7.group(3));
-					listResult.add("			" + "/" + m7.group(1) + "/"
-							+ m7.group(2) + "/" + m7.group(3) + "/"
-							+ m7.group(4));
-					listResult.add("				" + "/" + m7.group(1) + "/"
-							+ m7.group(2) + "/" + m7.group(3) + "/"
-							+ m7.group(4) + "/" + m7.group(5));
-					listResult.add("					" + "/" + m7.group(1) + "/"
-							+ m7.group(2) + "/" + m7.group(3) + "/"
-							+ m7.group(4) + "/" + m7.group(5) + "/"
-							+ m7.group(6));
-					listResult.add("						" + "/" + m7.group(1) + "/"
-							+ m7.group(2) + "/" + m7.group(3) + "/"
-							+ m7.group(4) + "/" + m7.group(5) + "/"
-							+ m7.group(6) + "/" + m7.group(7));
-				}
-
-				if (m8.matches() && !m9.matches() && !m10.matches()) {
-					listResult.add(m8.group(1));
-					listResult.add("	" + "/" + m8.group(1) + "/" + m8.group(2));
-					listResult.add("		" + "/" + m8.group(1) + "/" + m8.group(2)
-							+ "/" + m8.group(3));
-					listResult.add("			" + "/" + m8.group(1) + "/"
-							+ m8.group(2) + "/" + m8.group(3) + "/"
-							+ m8.group(4));
-					listResult.add("				" + "/" + m8.group(1) + "/"
-							+ m8.group(2) + "/" + m8.group(3) + "/"
-							+ m8.group(4) + "/" + m8.group(5));
-					listResult.add("					" + "/" + m8.group(1) + "/"
-							+ m8.group(2) + "/" + m8.group(3) + "/"
-							+ m8.group(4) + "/" + m8.group(5) + "/"
-							+ m8.group(6));
-					listResult.add("						" + "/" + m8.group(1) + "/"
-							+ m8.group(2) + "/" + m8.group(3) + "/"
-							+ m8.group(4) + "/" + m8.group(5) + "/"
-							+ m8.group(6) + "/" + m8.group(7));
-					listResult.add("							" + "/" + m8.group(1) + "/"
-							+ m8.group(2) + "/" + m8.group(3) + "/"
-							+ m8.group(4) + "/" + m8.group(5) + "/"
-							+ m8.group(6) + "/" + m8.group(7) + "/"
-							+ m8.group(8));
-				}
-
-				if (m9.matches() && !m10.matches()) {
-					listResult.add(m9.group(1));
-					listResult.add("	" + "/" + m9.group(1) + "/" + m9.group(2));
-					listResult.add("		" + "/" + m9.group(1) + "/" + m9.group(2)
-							+ "/" + m9.group(3));
-					listResult.add("			" + "/" + m9.group(1) + "/"
-							+ m9.group(2) + "/" + m9.group(3) + "/"
-							+ m9.group(4));
-					listResult.add("				" + "/" + m9.group(1) + "/"
-							+ m9.group(2) + "/" + m9.group(3) + "/"
-							+ m9.group(4) + "/" + m9.group(5));
-					listResult.add("					" + "/" + m9.group(1) + "/"
-							+ m9.group(2) + "/" + m9.group(3) + "/"
-							+ m9.group(4) + "/" + m9.group(5) + "/"
-							+ m9.group(6));
-					listResult.add("						" + "/" + m9.group(1) + "/"
-							+ m9.group(2) + "/" + m9.group(3) + "/"
-							+ m9.group(4) + "/" + m9.group(5) + "/"
-							+ m9.group(6) + "/" + m9.group(7));
-					listResult.add("							" + "/" + m9.group(1) + "/"
-							+ m9.group(2) + "/" + m9.group(3) + "/"
-							+ m9.group(4) + "/" + m9.group(5) + "/"
-							+ m9.group(6) + "/" + m9.group(7) + "/"
-							+ m9.group(8));
-					listResult.add("								" + "/" + m9.group(1) + "/"
-							+ m9.group(2) + "/" + m9.group(3) + "/"
-							+ m9.group(4) + "/" + m9.group(5) + "/"
-							+ m9.group(6) + "/" + m9.group(7) + "/"
-							+ m9.group(8) + "/" + m9.group(9));
-				}
-
-				if (m10.matches()) {
-					listResult.add(m10.group(1));
-					listResult.add("	" + "/" + m10.group(1) + "/"
-							+ m10.group(2));
-					listResult.add("		" + "/" + m10.group(1) + "/"
-							+ m10.group(2) + "/" + m10.group(3));
-					listResult.add("			" + "/" + m10.group(1) + "/"
-							+ m10.group(2) + "/" + m10.group(3) + "/"
-							+ m10.group(4));
-					listResult.add("				" + "/" + m10.group(1) + "/"
-							+ m10.group(2) + "/" + m10.group(3) + "/"
-							+ m10.group(4) + "/" + m10.group(5));
-					listResult.add("					" + "/" + m10.group(1) + "/"
-							+ m10.group(2) + "/" + m10.group(3) + "/"
-							+ m10.group(4) + "/" + m10.group(5) + "/"
-							+ m10.group(6));
-					listResult.add("						" + "/" + m10.group(1) + "/"
-							+ m10.group(2) + "/" + m10.group(3) + "/"
-							+ m10.group(4) + "/" + m10.group(5) + "/"
-							+ m10.group(6) + "/" + m10.group(7));
-					listResult.add("							" + "/" + m10.group(1) + "/"
-							+ m10.group(2) + "/" + m10.group(3) + "/"
-							+ m10.group(4) + "/" + m10.group(5) + "/"
-							+ m10.group(6) + "/" + m10.group(7) + "/"
-							+ m10.group(8));
-					listResult.add("								" + "/" + m10.group(1) + "/"
-							+ m10.group(2) + "/" + m10.group(3) + "/"
-							+ m10.group(4) + "/" + m10.group(5) + "/"
-							+ m10.group(6) + "/" + m10.group(7) + "/"
-							+ m10.group(8) + "/" + m10.group(9));
-					listResult.add("									" + "/" + m10.group(1) + "/"
-							+ m10.group(2) + "/" + m10.group(3) + "/"
-							+ m10.group(4) + "/" + m10.group(5) + "/"
-							+ m10.group(6) + "/" + m10.group(7) + "/"
-							+ m10.group(8) + "/" + m10.group(9) + "/"
-							+ m10.group(10));
-				}
-			}
-		}
-
-		topologyReader.close();
-
-		for (Iterator<String> i = listResult.iterator(); i.hasNext();) {
-
-			String r = "";
-			final String content = i.next();
-			topology.append(content.replace("(", r).replace(")", r)).append(
-					"\n");
-		}
-
-		String[] lines = topology.toString().split("\n");
-
-		int count = 0;
-
-		for (@SuppressWarnings("unused")
-		String line : lines) {
-			count++;
-		}
-
-		nodes = new IconNode[count];
-
-		nodes[0] = new IconNode("topology");
-		int nodeCount = 0;
-		int level0 = 0;
-		int level1 = 1;
-		int level2 = 0;
-		int level3 = 0;
-		int level4 = 0;
-		int level5 = 0;
-		int level6 = 0;
-		int level7 = 0;
-		int level8 = 0;
-		int level9 = 0;
-		int level10 = 0;
-		int level11 = 0;
-
-		for (String line : lines) {
-			Pattern p = Pattern.compile("[a-z||A-Z||0-9].*[a-z||A-Z||0-9]");
-			Matcher m = p.matcher(line);
-			Pattern p1 = Pattern
-					.compile("(	/.*/)([a-z||A-Z||0-9].*[a-z||A-Z||0-9])");
-			Matcher m1 = p1.matcher(line);
-			Pattern p2 = Pattern
-					.compile("(		/.*/.*/)([a-z||A-Z||0-9].*[a-z||A-Z||0-9])");
-			Matcher m2 = p2.matcher(line);
-			Pattern p3 = Pattern
-					.compile("(			/.*/.*/.*/)([a-z||A-Z||0-9].*[a-z||A-Z||0-9])");
-			Matcher m3 = p3.matcher(line);
-			Pattern p4 = Pattern
-					.compile("(				/.*/.*/.*/.*/)([a-z||A-Z||0-9].*[a-z||A-Z||0-9])");
-			Matcher m4 = p4.matcher(line);
-			Pattern p5 = Pattern
-					.compile("(					/.*/.*/.*/.*/.*/)([a-z||A-Z||0-9].*[a-z||A-Z||0-9])");
-			Matcher m5 = p5.matcher(line);
-			Pattern p6 = Pattern
-					.compile("(						/.*/.*/.*/.*/.*/.*/)([a-z||A-Z||0-9].*[a-z||A-Z||0-9])");
-			Matcher m6 = p6.matcher(line);
-			Pattern p7 = Pattern
-					.compile("(							/.*/.*/.*/.*/.*/.*/.*/.*/)([a-z||A-Z||0-9].*[a-z||A-Z||0-9])");
-			Matcher m7 = p7.matcher(line);
-			Pattern p8 = Pattern
-					.compile("(								/.*/.*/.*/.*/.*/.*/.*/.*/.*/)([a-z||A-Z||0-9].*[a-z||A-Z||0-9])");
-			Matcher m8 = p8.matcher(line);
-			Pattern p9 = Pattern
-					.compile("(									/.*/.*/.*/.*/.*/.*/.*/.*/.*/.*/)([a-z||A-Z||0-9].*[a-z||A-Z||0-9])");
-			Matcher m9 = p9.matcher(line);
-			Pattern p10 = Pattern
-					.compile("(										/.*/.*/.*/.*/.*/.*/.*/.*/.*/.*/.*/)([a-z||A-Z||0-9].*[a-z||A-Z||0-9])");
-			Matcher m10 = p10.matcher(line);
-
-			if (m.matches() && !m1.matches() && !m2.matches() && !m3.matches()
-					&& !m4.matches() && !m5.matches() && !m6.matches()
-					&& !m7.matches() && !m8.matches() && !m9.matches()
-					&& !m10.matches()) {
-
-				nodeCount++;
-
-				nodes[level1] = new IconNode(m.group());
-				nodes[level0].add(nodes[level1]);
-				nodes[level0].setIcon(iconBTS);
-
-				setNodeIcon(m.group(), level1);
-
-			}
-
-			if (m1.matches() && !m2.matches() && !m3.matches() && !m4.matches()
-					&& !m5.matches() && !m6.matches() && !m7.matches()
-					&& !m8.matches() && !m9.matches() && !m10.matches()) {
-
-				nodeCount++;
-				level2 = nodeCount;
-				nodes[level2] = new IconNode(m1.group(2));
-				nodes[level1].add(nodes[level2]);
-
-				setNodeIcon(m1.group(2), level2);
-
-			}
-
-			if (m2.matches() && !m3.matches() && !m4.matches() && !m5.matches()
-					&& !m6.matches() && !m7.matches() && !m8.matches()
-					&& !m9.matches() && !m10.matches()) {
-
-				nodeCount++;
-				level3 = nodeCount;
-				nodes[level3] = new IconNode(m2.group(2));
-				nodes[level2].add(nodes[level3]);
-
-				setNodeIcon(m2.group(2), level3);
-
-			}
-
-			if (m3.matches() && !m4.matches() && !m5.matches() && !m6.matches()
-					&& !m7.matches() && !m8.matches() && !m9.matches()
-					&& !m10.matches()) {
-
-				nodeCount++;
-				level4 = nodeCount;
-				nodes[level4] = new IconNode(m3.group(2));
-				nodes[level3].add(nodes[level4]);
-
-				setNodeIcon(m3.group(2), level4);
-
-			}
-
-			if (m4.matches() && !m5.matches() && !m6.matches() && !m7.matches()
-					&& !m8.matches() && !m9.matches() && !m10.matches()) {
-
-				nodeCount++;
-				level5 = nodeCount;
-				nodes[level5] = new IconNode(m4.group(2));
-				nodes[level4].add(nodes[level5]);
-
-				setNodeIcon(m4.group(2), level5);
-
-			}
-
-			if (m5.matches() && !m6.matches() && !m7.matches() && !m8.matches()
-					&& !m9.matches() && !m10.matches()) {
-
-				nodeCount++;
-				level6 = nodeCount;
-				nodes[level6] = new IconNode(m5.group(2));
-				nodes[level5].add(nodes[level6]);
-
-				setNodeIcon(m5.group(2), level6);
-
-			}
-
-			if (m6.matches() && !m7.matches() && !m8.matches() && !m9.matches()
-					&& !m10.matches()) {
-
-				nodeCount++;
-				level7 = nodeCount;
-				nodes[level7] = new IconNode(m6.group(2));
-				nodes[level6].add(nodes[level7]);
-
-				setNodeIcon(m6.group(2), level7);
-
-			}
-
-			if (m7.matches() && !m8.matches() && !m9.matches()
-					&& !m10.matches()) {
-
-				nodeCount++;
-				level8 = nodeCount;
-				nodes[level8] = new IconNode(m7.group(2));
-				nodes[level7].add(nodes[level8]);
-
-				setNodeIcon(m7.group(2), level8);
-
-			}
-
-			if (m8.matches() && !m9.matches() && !m10.matches()) {
-
-				nodeCount++;
-				level9 = nodeCount;
-				nodes[level9] = new IconNode(m8.group(2));
-				nodes[level8].add(nodes[level9]);
-
-				setNodeIcon(m8.group(2), level9);
-
-			}
-
-			if (m9.matches() && !m10.matches()) {
-
-				nodeCount++;
-				level10 = nodeCount;
-				nodes[level10] = new IconNode(m9.group(2));
-				nodes[level9].add(nodes[level10]);
-
-				setNodeIcon(m9.group(2), level10);
-
-			}
-
-			if (m10.matches()) {
-
-				nodeCount++;
-				level11 = nodeCount;
-				nodes[level11] = new IconNode(m10.group(2));
-				nodes[level10].add(nodes[level11]);
-
-				setNodeIcon(m10.group(2), level11);
-
-			}
-
-		}
-
-		topologyTree.setModel(new javax.swing.tree.DefaultTreeModel(nodes[0]));
-		topologyTree.setCellRenderer(new IconNodeRenderer());
-
-	}
-
-	class IconNodeRenderer extends DefaultTreeCellRenderer {
-
-		private static final long serialVersionUID = 1L;
-
-		public Component getTreeCellRendererComponent(JTree tree, Object value,
-				boolean sel, boolean expanded, boolean leaf, int row,
-				boolean hasFocus) {
-
-			super.getTreeCellRendererComponent(tree, value, sel, expanded,
-					leaf, row, hasFocus);
-
-			if (value instanceof IconNode) {
-				Icon icon = ((IconNode) value).getIcon();
-
-				if (icon == null) {
-					Hashtable<?, ?> icons = (Hashtable<?, ?>) tree
-							.getClientProperty("JTree.icons");
-					String name = ((IconNode) value).getIconName();
-					if ((icons != null) && (name != null)) {
-						icon = (Icon) icons.get(name);
-						if (icon != null) {
-							setIcon(icon);
-						}
-					}
-				} else {
-					setIcon(icon);
-				}
-			}
-			return this;
-		}
-	}
-
-	class IconNode extends DefaultMutableTreeNode {
-
-		private static final long serialVersionUID = 1L;
-
-		protected Icon icon;
-
-		protected String iconName;
-
-		public IconNode() {
-			this(null);
-		}
-
-		public IconNode(Object userObject) {
-			this(userObject, true, null);
-		}
-
-		public IconNode(Object userObject, boolean allowsChildren, Icon icon) {
-			super(userObject, allowsChildren);
-			this.icon = icon;
-		}
-
-		public void setIcon(Icon icon) {
-			this.icon = icon;
-		}
-
-		public Icon getIcon() {
-			return icon;
-		}
-
-		public String getIconName() {
-			if (iconName != null) {
-				return iconName;
-			} else {
-				String str = userObject.toString();
-				int index = str.lastIndexOf(".");
-				if (index != -1) {
-					return str.substring(++index);
-				} else {
-					return null;
-				}
-			}
-		}
 	}
 
 	public void setNodeIcon(String value, int level) {
@@ -996,5 +432,88 @@ public class CreateTopology {
 
 		}
 
+	}
+
+	class IconNodeRenderer extends DefaultTreeCellRenderer {
+
+		/**
+	 * 
+	 */
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		public Component getTreeCellRendererComponent(JTree tree, Object value,
+				boolean sel, boolean expanded, boolean leaf, int row,
+				boolean hasFocus) {
+
+			super.getTreeCellRendererComponent(tree, value, sel, expanded,
+					leaf, row, hasFocus);
+
+			if (value instanceof IconNode) {
+				Icon icon = ((IconNode) value).getIcon();
+
+				if (icon == null) {
+					Hashtable<?, ?> icons = (Hashtable<?, ?>) tree
+							.getClientProperty("JTree.icons");
+					String name = ((IconNode) value).getIconName();
+					if ((icons != null) && (name != null)) {
+						icon = (Icon) icons.get(name);
+						if (icon != null) {
+							setIcon(icon);
+						}
+					}
+				} else {
+					setIcon(icon);
+				}
+			}
+			return this;
+		}
+	}
+
+	class IconNode extends DefaultMutableTreeNode {
+
+		/**
+	 * 
+	 */
+		private static final long serialVersionUID = 1L;
+
+		protected Icon icon;
+
+		protected String iconName;
+
+		public IconNode() {
+			this(null);
+		}
+
+		public IconNode(Object userObject) {
+			this(userObject, true, null);
+		}
+
+		public IconNode(Object userObject, boolean allowsChildren, Icon icon) {
+			super(userObject, allowsChildren);
+			this.icon = icon;
+		}
+
+		public void setIcon(Icon icon) {
+			this.icon = icon;
+		}
+
+		public Icon getIcon() {
+			return icon;
+		}
+
+		public String getIconName() {
+			if (iconName != null) {
+				return iconName;
+			} else {
+				String str = userObject.toString();
+				int index = str.lastIndexOf(".");
+				if (index != -1) {
+					return str.substring(++index);
+				} else {
+					return null;
+				}
+			}
+		}
 	}
 }
