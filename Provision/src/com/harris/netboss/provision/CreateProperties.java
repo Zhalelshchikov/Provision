@@ -9,341 +9,38 @@ public class CreateProperties {
 
 	public void create() {
 
+		int indexOfSimbol = 0;
+		int index = 0;
+
 		String[] lines = properties.toString().split("\n");
 		String list = Main.topologyTree.getSelectionModel().getSelectionPath()
 				.toString();
 
-		Pattern p = Pattern
-				.compile("(.*topology,) ([a-z||A-Z||0-9].*[a-z||A-Z||0-9])(.*[^,].*)");
-		Pattern p1 = Pattern
-				.compile("(.*topology,) ([a-z||A-Z||0-9].*[a-z||A-Z||0-9]), ([a-z||A-Z||0-9].*[a-z||A-Z||0-9])(.*[^,].*)");
-		Pattern p2 = Pattern
-				.compile("(.*topology,) ([a-z||A-Z||0-9].*[a-z||A-Z||0-9]), ([a-z||A-Z||0-9].*[a-z||A-Z||0-9]), ([a-z||A-Z||0-9].*[a-z||A-Z||0-9])(.*[^,].*)");
-		Pattern p3 = Pattern
-				.compile("(.*topology,) ([a-z||A-Z||0-9].*[a-z||A-Z||0-9]), ([a-z||A-Z||0-9].*[a-z||A-Z||0-9]), ([a-z||A-Z||0-9].*[a-z||A-Z||0-9]), ([a-z||A-Z||0-9].*[a-z||A-Z||0-9])(.*[^,].*)");
-		Pattern p4 = Pattern
-				.compile("(.*topology,) ([a-z||A-Z||0-9].*[a-z||A-Z||0-9]), ([a-z||A-Z||0-9].*[a-z||A-Z||0-9]), ([a-z||A-Z||0-9].*[a-z||A-Z||0-9]), ([a-z||A-Z||0-9].*[a-z||A-Z||0-9]), ([a-z||A-Z||0-9].*[a-z||A-Z||0-9])(.*[^,].*)");
-		Pattern p5 = Pattern
-				.compile("(.*topology,) ([a-z||A-Z||0-9].*[a-z||A-Z||0-9]), ([a-z||A-Z||0-9].*[a-z||A-Z||0-9]), ([a-z||A-Z||0-9].*[a-z||A-Z||0-9]), ([a-z||A-Z||0-9].*[a-z||A-Z||0-9]), ([a-z||A-Z||0-9].*[a-z||A-Z||0-9]), ([a-z||A-Z||0-9].*[a-z||A-Z||0-9])(.*[^,].*)");
-		Pattern p6 = Pattern
-				.compile("(.*topology,) ([a-z||A-Z||0-9].*[a-z||A-Z||0-9]), ([a-z||A-Z||0-9].*[a-z||A-Z||0-9]), ([a-z||A-Z||0-9].*[a-z||A-Z||0-9]), ([a-z||A-Z||0-9].*[a-z||A-Z||0-9]), ([a-z||A-Z||0-9].*[a-z||A-Z||0-9]), ([a-z||A-Z||0-9].*[a-z||A-Z||0-9]), ([a-z||A-Z||0-9].*[a-z||A-Z||0-9])(.*[^,].*)");
-		Pattern p7 = Pattern
-				.compile("(.*topology,) ([a-z||A-Z||0-9].*[a-z||A-Z||0-9]), ([a-z||A-Z||0-9].*[a-z||A-Z||0-9]), ([a-z||A-Z||0-9].*[a-z||A-Z||0-9]), ([a-z||A-Z||0-9].*[a-z||A-Z||0-9]), ([a-z||A-Z||0-9].*[a-z||A-Z||0-9]), ([a-z||A-Z||0-9].*[a-z||A-Z||0-9]), ([a-z||A-Z||0-9].*[a-z||A-Z||0-9]), ([a-z||A-Z||0-9].*[a-z||A-Z||0-9])(.*[^,].*)");
-		Pattern p8 = Pattern
-				.compile("(.*topology,) ([a-z||A-Z||0-9].*[a-z||A-Z||0-9]), ([a-z||A-Z||0-9].*[a-z||A-Z||0-9]), ([a-z||A-Z||0-9].*[a-z||A-Z||0-9]), ([a-z||A-Z||0-9].*[a-z||A-Z||0-9]), ([a-z||A-Z||0-9].*[a-z||A-Z||0-9]), ([a-z||A-Z||0-9].*[a-z||A-Z||0-9]), ([a-z||A-Z||0-9].*[a-z||A-Z||0-9]), ([a-z||A-Z||0-9].*[a-z||A-Z||0-9]), ([a-z||A-Z||0-9].*[a-z||A-Z||0-9])(.*[^,].*)");
-		Pattern p9 = Pattern
-				.compile("(.*topology,) ([a-z||A-Z||0-9].*[a-z||A-Z||0-9]), ([a-z||A-Z||0-9].*[a-z||A-Z||0-9]), ([a-z||A-Z||0-9].*[a-z||A-Z||0-9]), ([a-z||A-Z||0-9].*[a-z||A-Z||0-9]), ([a-z||A-Z||0-9].*[a-z||A-Z||0-9]), ([a-z||A-Z||0-9].*[a-z||A-Z||0-9]), ([a-z||A-Z||0-9].*[a-z||A-Z||0-9]), ([a-z||A-Z||0-9].*[a-z||A-Z||0-9]), ([a-z||A-Z||0-9].*[a-z||A-Z||0-9]), ([a-z||A-Z||0-9].*[a-z||A-Z||0-9])(.*[^,].*)");
-		Pattern p10 = Pattern
-				.compile("(.*topology,) ([a-z||A-Z||0-9].*[a-z||A-Z||0-9]), ([a-z||A-Z||0-9].*[a-z||A-Z||0-9]), ([a-z||A-Z||0-9].*[a-z||A-Z||0-9]), ([a-z||A-Z||0-9].*[a-z||A-Z||0-9]), ([a-z||A-Z||0-9].*[a-z||A-Z||0-9]), ([a-z||A-Z||0-9].*[a-z||A-Z||0-9]), ([a-z||A-Z||0-9].*[a-z||A-Z||0-9]), ([a-z||A-Z||0-9].*[a-z||A-Z||0-9]), ([a-z||A-Z||0-9].*[a-z||A-Z||0-9]), ([a-z||A-Z||0-9].*[a-z||A-Z||0-9]), ([a-z||A-Z||0-9].*[a-z||A-Z||0-9])(.*[^,].*)");
-
-		Matcher m = p.matcher(list);
-		Matcher m1 = p1.matcher(list);
-		Matcher m2 = p2.matcher(list);
-		Matcher m3 = p3.matcher(list);
-		Matcher m4 = p4.matcher(list);
-		Matcher m5 = p5.matcher(list);
-		Matcher m6 = p6.matcher(list);
-		Matcher m7 = p7.matcher(list);
-		Matcher m8 = p8.matcher(list);
-		Matcher m9 = p9.matcher(list);
-		Matcher m10 = p10.matcher(list);
-
-		if (m.matches() && !m1.matches() && !m2.matches() && !m3.matches()
-				&& !m4.matches() && !m5.matches() && !m6.matches()
-				&& !m7.matches() && !m8.matches() && !m9.matches()
-				&& !m10.matches()) {
-			Pattern pn = Pattern
-					.compile("(.*,) ([a-z||A-Z||0-9].*[a-z||A-Z||0-9])(.*[^,].*)");
-			Matcher mn = pn.matcher(list);
-			if (mn.matches()) {
-
-				row[0] = "name:";
-				row[1] = mn.group(2);
-
+		while (indexOfSimbol < list.length()) {
+			if (list.charAt(indexOfSimbol) == ',') {
+				index = indexOfSimbol;
 			}
+			indexOfSimbol++;
+		}
 
-			for (String line : lines) {
+		list = Main.topologyTree.getSelectionModel().getSelectionPath()
+				.toString().substring(index + 2, list.length() - 1);
 
-				Pattern pp = Pattern
-						.compile("(/)" + m.group(2) + "	(.*:)( .*)");
-				Matcher mp = pp.matcher(line);
+		row[0] = "name:";
+		row[1] = list;
 
-				if (mp.matches()) {
+		for (String line : lines) {
 
+			Pattern pp = Pattern.compile("(.*/)" + list + "	(.*:)( .*)");
+			Matcher mp = pp.matcher(line);
+
+			if (mp.matches()) {
+
+				if ((mp.group(1) + list).equals(Main.topologyTree
+						.getSelectionModel().getSelectionPath().toString()
+						.replace('[', '/').replaceAll("]", "")
+						.replaceAll(", ", "/").replaceAll(" topology/", ""))) {
 					rowFild(mp.group(2), mp.group(3));
-					counter++;
-
-				}
-
-			}
-
-		}
-
-		if (m1.matches() && !m2.matches() && !m3.matches() && !m4.matches()
-				&& !m5.matches() && !m6.matches() && !m7.matches()
-				&& !m8.matches() && !m9.matches() && !m10.matches()) {
-
-			Pattern pn = Pattern
-					.compile("(.*,) ([a-z||A-Z||0-9].*[a-z||A-Z||0-9])(.*[^,].*)");
-			Matcher mn = pn.matcher(list);
-			if (mn.matches()) {
-
-				row[0] = "name:";
-				row[1] = mn.group(2);
-
-			}
-
-			for (String line : lines) {
-				Pattern pp = Pattern.compile("(/)" + m1.group(2) + "(/)"
-						+ m1.group(3) + "	(.*:)( .*)");
-				Matcher mp = pp.matcher(line);
-				if (mp.matches()) {
-
-					rowFild(mp.group(3), mp.group(4));
-					counter++;
-
-				}
-			}
-		}
-
-		if (m2.matches() && !m3.matches() && !m4.matches() && !m5.matches()
-				&& !m6.matches() && !m7.matches() && !m8.matches()
-				&& !m9.matches() && !m10.matches()) {
-			Pattern pn = Pattern
-					.compile("(.*,) ([a-z||A-Z||0-9].*[a-z||A-Z||0-9])(.*[^,].*)");
-			Matcher mn = pn.matcher(list);
-			if (mn.matches()) {
-
-				row[0] = "name:";
-				row[1] = mn.group(2);
-
-			}
-
-			for (String line : lines) {
-				Pattern pp = Pattern.compile("(/)" + m2.group(2) + "(/)"
-						+ m2.group(3) + "(/)" + m2.group(4) + "	(.*:)( .*)");
-				Matcher mp = pp.matcher(line);
-				if (mp.matches()) {
-
-					rowFild(mp.group(4), mp.group(5));
-					counter++;
-				}
-			}
-		}
-
-		if (m3.matches() && !m4.matches() && !m5.matches() && !m6.matches()
-				&& !m7.matches() && !m8.matches() && !m9.matches()
-				&& !m10.matches()) {
-
-			Pattern pn = Pattern
-					.compile("(.*,) ([a-z||A-Z||0-9].*[a-z||A-Z||0-9])(.*[^,].*)");
-			Matcher mn = pn.matcher(list);
-			if (mn.matches()) {
-
-				row[0] = "name:";
-				row[1] = mn.group(2);
-
-			}
-
-			for (String line : lines) {
-				Pattern pp = Pattern.compile("(/)" + m3.group(2) + "(/)"
-						+ m3.group(3) + "(/)" + m3.group(4) + "(/)"
-						+ m3.group(5) + "	(.*:)( .*)");
-				Matcher mp = pp.matcher(line);
-				if (mp.matches()) {
-
-					rowFild(mp.group(5), mp.group(6));
-					counter++;
-				}
-			}
-		}
-
-		if (m4.matches() && !m5.matches() && !m6.matches() && !m7.matches()
-				&& !m8.matches() && !m9.matches() && !m10.matches()) {
-
-			Pattern pn = Pattern
-					.compile("(.*,) ([a-z||A-Z||0-9].*[a-z||A-Z||0-9])(.*[^,].*)");
-			Matcher mn = pn.matcher(list);
-			if (mn.matches()) {
-
-				row[0] = "name:";
-				row[1] = mn.group(2);
-
-			}
-
-			for (String line : lines) {
-				Pattern pp = Pattern.compile("(/)" + m4.group(2) + "(/)"
-						+ m4.group(3) + "(/)" + m4.group(4) + "(/)"
-						+ m4.group(5) + "(/)" + m4.group(6) + "	(.*:)( .*)");
-				Matcher mp = pp.matcher(line);
-				if (mp.matches()) {
-
-					rowFild(mp.group(6), mp.group(7));
-					counter++;
-				}
-			}
-		}
-
-		if (m5.matches() && !m6.matches() && !m7.matches() && !m8.matches()
-				&& !m9.matches() && !m10.matches()) {
-
-			Pattern pn = Pattern
-					.compile("(.*,) ([a-z||A-Z||0-9].*[a-z||A-Z||0-9])(.*[^,].*)");
-			Matcher mn = pn.matcher(list);
-			if (mn.matches()) {
-
-				row[0] = "name:";
-				row[1] = mn.group(2);
-
-			}
-
-			for (String line : lines) {
-				Pattern pp = Pattern.compile("(/)" + m5.group(2) + "(/)"
-						+ m5.group(3) + "(/)" + m5.group(4) + "(/)"
-						+ m5.group(5) + "(/)" + m5.group(6) + "(/)"
-						+ m5.group(7) + "	(.*:)( .*)");
-				Matcher mp = pp.matcher(line);
-				if (mp.matches()) {
-
-					rowFild(mp.group(7), mp.group(8));
-					counter++;
-				}
-			}
-		}
-
-		if (m6.matches() && !m7.matches() && !m8.matches() && !m9.matches()
-				&& !m10.matches()) {
-
-			Pattern pn = Pattern
-					.compile("(.*,) ([a-z||A-Z||0-9].*[a-z||A-Z||0-9])(.*[^,].*)");
-			Matcher mn = pn.matcher(list);
-			if (mn.matches()) {
-
-				row[0] = "name:";
-				row[1] = mn.group(2);
-
-			}
-
-			for (String line : lines) {
-				Pattern pp = Pattern.compile("(/)" + m6.group(2) + "(/)"
-						+ m6.group(3) + "(/)" + m6.group(4) + "(/)"
-						+ m6.group(5) + "(/)" + m6.group(6) + "(/)"
-						+ m6.group(7) + "(/)" + m6.group(8) + "	(.*:)( .*)");
-				Matcher mp = pp.matcher(line);
-				if (mp.matches()) {
-
-					rowFild(mp.group(8), mp.group(9));
-					counter++;
-				}
-			}
-		}
-
-		if (m7.matches() && !m8.matches() && !m9.matches() && !m10.matches()) {
-
-			Pattern pn = Pattern
-					.compile("(.*,) ([a-z||A-Z||0-9].*[a-z||A-Z||0-9])(.*[^,].*)");
-			Matcher mn = pn.matcher(list);
-			if (mn.matches()) {
-
-				row[0] = "name:";
-				row[1] = mn.group(2);
-
-			}
-
-			for (String line : lines) {
-				Pattern pp = Pattern.compile("(/)" + m7.group(2) + "(/)"
-						+ m7.group(3) + "(/)" + m7.group(4) + "(/)"
-						+ m7.group(5) + "(/)" + m7.group(6) + "(/)"
-						+ m7.group(7) + "(/)" + m7.group(8) + "(/)"
-						+ m7.group(9) + "	(.*:)( .*)");
-				Matcher mp = pp.matcher(line);
-				if (mp.matches()) {
-
-					rowFild(mp.group(9), mp.group(10));
-					counter++;
-				}
-			}
-		}
-
-		if (m8.matches() && !m9.matches() && !m10.matches()) {
-
-			Pattern pn = Pattern
-					.compile("(.*,) ([a-z||A-Z||0-9].*[a-z||A-Z||0-9])(.*[^,].*)");
-			Matcher mn = pn.matcher(list);
-			if (mn.matches()) {
-
-				row[0] = "name:";
-				row[1] = mn.group(2);
-
-			}
-
-			for (String line : lines) {
-				Pattern pp = Pattern.compile("(/)" + m8.group(2) + "(/)"
-						+ m8.group(3) + "(/)" + m8.group(4) + "(/)"
-						+ m8.group(5) + "(/)" + m8.group(6) + "(/)"
-						+ m8.group(7) + "(/)" + m8.group(8) + "(/)"
-						+ m8.group(9) + "(/)" + m8.group(10) + "	(.*:)( .*)");
-				Matcher mp = pp.matcher(line);
-				if (mp.matches()) {
-
-					rowFild(mp.group(10), mp.group(11));
-					counter++;
-				}
-			}
-		}
-
-		if (m9.matches() && !m10.matches()) {
-
-			Pattern pn = Pattern
-					.compile("(.*,) ([a-z||A-Z||0-9].*[a-z||A-Z||0-9])(.*[^,].*)");
-			Matcher mn = pn.matcher(list);
-			if (mn.matches()) {
-
-				row[0] = "name:";
-				row[1] = mn.group(2);
-
-			}
-
-			for (String line : lines) {
-				Pattern pp = Pattern.compile("(/)" + m9.group(2) + "(/)"
-						+ m9.group(3) + "(/)" + m9.group(4) + "(/)"
-						+ m9.group(5) + "(/)" + m9.group(6) + "(/)"
-						+ m9.group(7) + "(/)" + m9.group(8) + "(/)"
-						+ m9.group(9) + "(/)" + m9.group(10) + "(/)"
-						+ m9.group(11) + "	(.*:)( .*)");
-				Matcher mp = pp.matcher(line);
-				if (mp.matches()) {
-
-					rowFild(mp.group(11), mp.group(12));
-					counter++;
-				}
-			}
-		}
-
-		if (m10.matches()) {
-
-			Pattern pn = Pattern
-					.compile("(.*,) ([a-z||A-Z||0-9].*[a-z||A-Z||0-9])(.*[^,].*)");
-			Matcher mn = pn.matcher(list);
-			if (mn.matches()) {
-
-				row[0] = "name:";
-				row[1] = mn.group(2);
-
-			}
-
-			for (String line : lines) {
-				Pattern pp = Pattern
-						.compile("(/)" + m10.group(2) + "(/)" + m10.group(3)
-								+ "(/)" + m10.group(4) + "(/)" + m10.group(5)
-								+ "(/)" + m10.group(6) + "(/)" + m10.group(7)
-								+ "(/)" + m10.group(8) + "(/)" + m10.group(9)
-								+ "(/)" + m10.group(10) + "(/)" + m10.group(11)
-								+ "(/)" + m10.group(12) + "	(.*:)( .*)");
-				Matcher mp = pp.matcher(line);
-				if (mp.matches()) {
-
-					rowFild(mp.group(12), mp.group(13));
 					counter++;
 				}
 			}
@@ -364,9 +61,8 @@ public class CreateProperties {
 					Class[] types = new Class[] { java.lang.String.class,
 							java.lang.String.class };
 
-					@SuppressWarnings({ "unchecked", "rawtypes" })
 					@Override
-					public Class getColumnClass(int columnIndex) {
+					public Class<?> getColumnClass(int columnIndex) {
 						return types[columnIndex];
 					}
 				});

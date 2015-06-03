@@ -2,6 +2,7 @@ package com.harris.netboss.provision;
 
 import static com.harris.netboss.provision.CreateTopology.properties;
 import static com.harris.netboss.provision.CreateTopology.topology;
+
 import java.awt.Cursor;
 import java.awt.Image;
 import java.io.File;
@@ -11,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -73,7 +75,12 @@ public class Main extends javax.swing.JFrame {
 		createTopologyButton
 				.addMouseListener(new java.awt.event.MouseAdapter() {
 					public void mouseClicked(java.awt.event.MouseEvent evt) {
-						createTopologyButtonMouseClicked(evt);
+						try {
+							createTopologyButtonMouseClicked(evt);
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
 				});
 
@@ -85,7 +92,7 @@ public class Main extends javax.swing.JFrame {
 		processTimerLable.setText("Process timer:");
 
 		javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode(
-				"topology");
+				" topology");
 		topologyTree.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
 		topologyTree.setToolTipText("");
 		topologyTree
@@ -207,7 +214,8 @@ public class Main extends javax.swing.JFrame {
 		setLocationRelativeTo(null);
 	}
 
-	private void createTopologyButtonMouseClicked(java.awt.event.MouseEvent evt) {
+	private void createTopologyButtonMouseClicked(java.awt.event.MouseEvent evt)
+			throws Exception {
 		propertiesTable.setModel(new javax.swing.table.DefaultTableModel(
 				new Object[][] {
 

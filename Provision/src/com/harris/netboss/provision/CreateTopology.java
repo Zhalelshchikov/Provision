@@ -181,7 +181,7 @@ public class CreateTopology {
 
 		nodes = new IconNode[root.getElementsByTagName("physical_path")
 				.getLength()];
-		nodes[0] = new IconNode("topology");
+		nodes[0] = new IconNode(" topology");
 
 		while (indexOfElement < root.getElementsByTagName("physical_path")
 				.getLength()) {
@@ -219,6 +219,7 @@ public class CreateTopology {
 		String topologyLine;
 		topologyLine = null;
 		String path = null;
+
 		while ((topologyLine = topologyReaderForProperties.readLine()) != null) {
 
 			Pattern p = Pattern.compile("<(.*)>(.*)<(.*)>");
