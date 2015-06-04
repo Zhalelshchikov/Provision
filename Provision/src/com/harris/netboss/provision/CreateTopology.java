@@ -178,19 +178,20 @@ public class CreateTopology {
 		DocumentBuilder builder = factory.newDocumentBuilder();
 		Document document = builder.parse(file);
 		Element root = document.getDocumentElement();
+		int countOfElements = root.getElementsByTagName("physical_path")
+				.getLength();
 
-		nodes = new IconNode[root.getElementsByTagName("physical_path")
-				.getLength()];
+		nodes = new IconNode[countOfElements];
 		nodes[0] = new IconNode(" topology");
 
-		while (indexOfElement < root.getElementsByTagName("physical_path")
-				.getLength()) {
+		while (indexOfElement < countOfElements) {
 
 			Element message = (Element) root.getElementsByTagName(
 					"physical_path").item(indexOfElement);
 			String textContent = message.getTextContent();
+			int textContentLength = textContent.length();
 
-			while (indexOfSimbol < textContent.length()) {
+			while (indexOfSimbol < textContentLength) {
 				if (textContent.charAt(indexOfSimbol) == '/') {
 					index = indexOfSimbol;
 					countOfSimbol++;
@@ -199,12 +200,12 @@ public class CreateTopology {
 			}
 
 			nodes[countOfSimbol] = new IconNode(textContent
-					.substring(index + 1, textContent.length()).replace("(", r)
+					.substring(index + 1, textContentLength).replace("(", r)
 					.replace(")", r));
 			nodes[countOfSimbol - 1].add(nodes[countOfSimbol]);
 			nodes[0].setIcon(iconBTS);
 
-			setNodeIcon(textContent.substring(index + 1, textContent.length()),
+			setNodeIcon(textContent.substring(index + 1, textContentLength),
 					countOfSimbol);
 
 			indexOfElement++;
