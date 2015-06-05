@@ -12,36 +12,44 @@ public class CreateProperties {
 		int indexOfSimbol = 0;
 		int index = 0;
 
-		String[] lines = properties.toString().split("\n");
-		String list = Main.topologyTree.getSelectionModel().getSelectionPath()
-				.toString();
+		String[] lines = (String[]) properties.toString().split("\n");
+		String list = (String) Main.topologyTree.getSelectionModel()
+				.getSelectionPath().toString();
 
-		while (indexOfSimbol < list.length()) {
-			if (list.charAt(indexOfSimbol) == ',') {
-				index = indexOfSimbol;
+		if (list != null) {
+			while (indexOfSimbol < list.length()) {
+				if (list.charAt(indexOfSimbol) == ',') {
+					index = indexOfSimbol;
+				}
+				indexOfSimbol++;
 			}
-			indexOfSimbol++;
-		}
 
-		list = Main.topologyTree.getSelectionModel().getSelectionPath()
-				.toString().substring(index + 2, list.length() - 1);
+			list = (String) Main.topologyTree.getSelectionModel()
+					.getSelectionPath().toString()
+					.substring(index + 2, list.length() - 1);
 
-		row[0] = "name:";
-		row[1] = list;
+			row[0] = "name:";
+			row[1] = list;
+			if (lines != null) {
+				for (String line : lines) {
 
-		for (String line : lines) {
+					Pattern pp = Pattern
+							.compile("(.*/)" + list + "	(.*:)( .*)");
+					Matcher mp = pp.matcher(line);
 
-			Pattern pp = Pattern.compile("(.*/)" + list + "	(.*:)( .*)");
-			Matcher mp = pp.matcher(line);
+					if (mp.matches()) {
 
-			if (mp.matches()) {
-
-				if ((mp.group(1) + list).equals(Main.topologyTree
-						.getSelectionModel().getSelectionPath().toString()
-						.replace('[', '/').replaceAll("]", "")
-						.replaceAll(", ", "/").replaceAll(" topology/", ""))) {
-					rowFild(mp.group(2), mp.group(3));
-					counter++;
+						if ((mp.group(1) + list)
+								.equals((String) Main.topologyTree
+										.getSelectionModel().getSelectionPath()
+										.toString().replace('[', '/')
+										.replaceAll("]", "")
+										.replaceAll(", ", "/")
+										.replaceAll(" topology/", ""))) {
+							rowFild(mp.group(2), mp.group(3));
+							counter++;
+						}
+					}
 				}
 			}
 		}

@@ -508,14 +508,17 @@ public class CreateTopology {
 			if (iconName != null) {
 				return iconName;
 			} else {
-				String str = userObject.toString();
-				int index = str.lastIndexOf(".");
-				if (index != -1) {
-					return str.substring(++index);
-				} else {
-					return null;
+				String str = (String) userObject.toString();
+				if (str != null) {
+					int index = str.lastIndexOf(".");
+					if (index != -1) {
+						return str.substring(++index);
+					} else {
+						return null;
+					}
 				}
 			}
+			return null;
 		}
 	}
 }

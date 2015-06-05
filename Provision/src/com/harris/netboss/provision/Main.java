@@ -282,7 +282,7 @@ public class Main extends javax.swing.JFrame {
 
 		file = fileopenSelectedFile.getSelectedFile();
 		if (fileopenSelectedFile.getSelectedFile() != null) {
-			selectedFileField.setText(file.toString());
+			selectedFileField.setText((String) file.toString());
 			setDir(file);
 		}
 	}
