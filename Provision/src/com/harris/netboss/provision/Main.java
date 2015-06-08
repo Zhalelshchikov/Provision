@@ -19,6 +19,8 @@ import javax.swing.JOptionPane;
 
 public class Main extends javax.swing.JFrame {
 
+	public static final String PROVISION = "res\\provision.gif";
+	
 	private static final long serialVersionUID = 1L;
 
 	public static Date startTimer;
@@ -45,7 +47,7 @@ public class Main extends javax.swing.JFrame {
 
 	protected static Image getImage() {
 		java.net.URL imgURL;
-		imgURL = Main.class.getResource("res\\provision.gif");
+		imgURL = Main.class.getResource(PROVISION);
 		if (imgURL != null) {
 			return new ImageIcon(imgURL).getImage();
 		} else {

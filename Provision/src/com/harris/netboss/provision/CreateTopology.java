@@ -26,13 +26,27 @@ import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 public class CreateTopology {
-
+	
+	public static final String TOPOLOGY = " topology";
+	public static final String PROVISION = "res\\provision.gif";
+	public static final String ECLIPSE = "res\\EclipseIcon.gif";
+	public static final String ODU = "res\\ODU.gif";
+	public static final String CARD = "res\\card.gif";
+	public static final String PORT = "res\\port.gif";
+	public static final String NETWORKELEMENT = "res\\networkElement.gif";
+	public static final String BTS = "res\\BTS.gif";
+	public static final String CLASS = "(<object class=\")(.*)(\">)";
+	public static final String NAME = "(<physical_path>|<obj type=\"ref\">)(.*)(</physical_path>|</obj>)";
+	public static final String PHYSICALPATH = "physical_path";
+	public static final String STR = "<(.*)>(.*)<(.*)>";
+	public static final String TYPE = "obj type=\"ref\"";
+	
 	public static final StringBuilder topology = new StringBuilder();
 	public static final StringBuilder properties = new StringBuilder();
 
 	protected static Image getImageProvision() {
 		java.net.URL imgURL;
-		imgURL = CreateTopology.class.getResource("res\\provision.gif");
+		imgURL = CreateTopology.class.getResource(PROVISION);
 		if (imgURL != null) {
 			return new ImageIcon(imgURL).getImage();
 		} else {
@@ -42,7 +56,7 @@ public class CreateTopology {
 
 	protected static Image getImageEclipseIcon() {
 		java.net.URL imgURL;
-		imgURL = CreateTopology.class.getResource("res\\EclipseIcon.gif");
+		imgURL = CreateTopology.class.getResource(ECLIPSE);
 		if (imgURL != null) {
 			return new ImageIcon(imgURL).getImage();
 		} else {
@@ -52,7 +66,7 @@ public class CreateTopology {
 
 	protected static Image getImageODU() {
 		java.net.URL imgURL;
-		imgURL = CreateTopology.class.getResource("res\\ODU.gif");
+		imgURL = CreateTopology.class.getResource(ODU);
 		if (imgURL != null) {
 			return new ImageIcon(imgURL).getImage();
 		} else {
@@ -62,7 +76,7 @@ public class CreateTopology {
 
 	protected static Image getImageCard() {
 		java.net.URL imgURL;
-		imgURL = CreateTopology.class.getResource("res\\card.gif");
+		imgURL = CreateTopology.class.getResource(CARD);
 		if (imgURL != null) {
 			return new ImageIcon(imgURL).getImage();
 		} else {
@@ -72,7 +86,7 @@ public class CreateTopology {
 
 	protected static Image getImagePort() {
 		java.net.URL imgURL;
-		imgURL = CreateTopology.class.getResource("res\\port.gif");
+		imgURL = CreateTopology.class.getResource(PORT);
 		if (imgURL != null) {
 			return new ImageIcon(imgURL).getImage();
 		} else {
@@ -82,7 +96,7 @@ public class CreateTopology {
 
 	protected static Image getImageNetworkElement() {
 		java.net.URL imgURL;
-		imgURL = CreateTopology.class.getResource("res\\networkElement.gif");
+		imgURL = CreateTopology.class.getResource(NETWORKELEMENT);
 		if (imgURL != null) {
 			return new ImageIcon(imgURL).getImage();
 		} else {
@@ -92,7 +106,7 @@ public class CreateTopology {
 
 	protected static Image getImageBTS() {
 		java.net.URL imgURL;
-		imgURL = CreateTopology.class.getResource("res\\BTS.gif");
+		imgURL = CreateTopology.class.getResource(BTS);
 		if (imgURL != null) {
 			return new ImageIcon(imgURL).getImage();
 		} else {
@@ -138,7 +152,7 @@ public class CreateTopology {
 
 		while ((lineMap = topologyReaderForMap.readLine()) != null) {
 
-			Pattern pClass = Pattern.compile("(<object class=\")(.*)(\">)");
+			Pattern pClass = Pattern.compile(CLASS);
 			Matcher mClass = pClass.matcher(lineMap);
 			if (mClass.matches()) {
 
@@ -147,7 +161,7 @@ public class CreateTopology {
 			}
 
 			Pattern pName = Pattern
-					.compile("(<physical_path>|<obj type=\"ref\">)(.*)(</physical_path>|</obj>)");
+					.compile(NAME);
 			Matcher mName = pName.matcher(lineMap);
 
 			if (mName.matches()) {
@@ -178,16 +192,16 @@ public class CreateTopology {
 		DocumentBuilder builder = factory.newDocumentBuilder();
 		Document document = builder.parse(file);
 		Element root = document.getDocumentElement();
-		int countOfElements = root.getElementsByTagName("physical_path")
+		int countOfElements = root.getElementsByTagName(PHYSICALPATH)
 				.getLength();
 
 		nodes = new IconNode[countOfElements];
-		nodes[0] = new IconNode(" topology");
+		nodes[0] = new IconNode(TOPOLOGY);
 
 		while (indexOfElement < countOfElements) {
 
 			Element message = (Element) root.getElementsByTagName(
-					"physical_path").item(indexOfElement);
+					PHYSICALPATH).item(indexOfElement);
 			String textContent = message.getTextContent();
 			int textContentLength = textContent.length();
 
@@ -223,11 +237,11 @@ public class CreateTopology {
 
 		while ((topologyLine = topologyReaderForProperties.readLine()) != null) {
 
-			Pattern p = Pattern.compile("<(.*)>(.*)<(.*)>");
+			Pattern p = Pattern.compile(STR);
 			Matcher m = p.matcher(topologyLine);
 			if (m.matches()) {
-				if (m.group(1).contentEquals("physical_path")
-						|| m.group(1).contentEquals("obj type=\"ref\"")) {
+				if (m.group(1).contentEquals(PHYSICALPATH)
+						|| m.group(1).contentEquals(TYPE)) {
 					path = m.group(2);
 				}
 
