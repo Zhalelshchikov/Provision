@@ -1,6 +1,7 @@
 package com.harris.netboss.provision;
 
 import static com.harris.netboss.provision.Main.topologyTree;
+import com.harris.netboss.provision.ProvisionConstants;
 import java.awt.Component;
 import java.awt.Image;
 import java.io.BufferedReader;
@@ -26,27 +27,10 @@ import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 public class CreateTopology {
-	
-	public static final String TOPOLOGY = " topology";
-	public static final String PROVISION = "res\\provision.gif";
-	public static final String ECLIPSE = "res\\EclipseIcon.gif";
-	public static final String ODU = "res\\ODU.gif";
-	public static final String CARD = "res\\card.gif";
-	public static final String PORT = "res\\port.gif";
-	public static final String NETWORKELEMENT = "res\\networkElement.gif";
-	public static final String BTS = "res\\BTS.gif";
-	public static final String CLASS = "(<object class=\")(.*)(\">)";
-	public static final String NAME = "(<physical_path>|<obj type=\"ref\">)(.*)(</physical_path>|</obj>)";
-	public static final String PHYSICALPATH = "physical_path";
-	public static final String STR = "<(.*)>(.*)<(.*)>";
-	public static final String TYPE = "obj type=\"ref\"";
-	
-	public static final StringBuilder topology = new StringBuilder();
-	public static final StringBuilder properties = new StringBuilder();
 
 	protected static Image getImageProvision() {
 		java.net.URL imgURL;
-		imgURL = CreateTopology.class.getResource(PROVISION);
+		imgURL = CreateTopology.class.getResource(ProvisionConstants.PROVISION);
 		if (imgURL != null) {
 			return new ImageIcon(imgURL).getImage();
 		} else {
@@ -56,7 +40,7 @@ public class CreateTopology {
 
 	protected static Image getImageEclipseIcon() {
 		java.net.URL imgURL;
-		imgURL = CreateTopology.class.getResource(ECLIPSE);
+		imgURL = CreateTopology.class.getResource(ProvisionConstants.ECLIPSE);
 		if (imgURL != null) {
 			return new ImageIcon(imgURL).getImage();
 		} else {
@@ -66,7 +50,7 @@ public class CreateTopology {
 
 	protected static Image getImageODU() {
 		java.net.URL imgURL;
-		imgURL = CreateTopology.class.getResource(ODU);
+		imgURL = CreateTopology.class.getResource(ProvisionConstants.ODU);
 		if (imgURL != null) {
 			return new ImageIcon(imgURL).getImage();
 		} else {
@@ -76,7 +60,7 @@ public class CreateTopology {
 
 	protected static Image getImageCard() {
 		java.net.URL imgURL;
-		imgURL = CreateTopology.class.getResource(CARD);
+		imgURL = CreateTopology.class.getResource(ProvisionConstants.CARD);
 		if (imgURL != null) {
 			return new ImageIcon(imgURL).getImage();
 		} else {
@@ -86,7 +70,7 @@ public class CreateTopology {
 
 	protected static Image getImagePort() {
 		java.net.URL imgURL;
-		imgURL = CreateTopology.class.getResource(PORT);
+		imgURL = CreateTopology.class.getResource(ProvisionConstants.PORT);
 		if (imgURL != null) {
 			return new ImageIcon(imgURL).getImage();
 		} else {
@@ -96,7 +80,8 @@ public class CreateTopology {
 
 	protected static Image getImageNetworkElement() {
 		java.net.URL imgURL;
-		imgURL = CreateTopology.class.getResource(NETWORKELEMENT);
+		imgURL = CreateTopology.class
+				.getResource(ProvisionConstants.NETWORKELEMENT);
 		if (imgURL != null) {
 			return new ImageIcon(imgURL).getImage();
 		} else {
@@ -106,7 +91,7 @@ public class CreateTopology {
 
 	protected static Image getImageBTS() {
 		java.net.URL imgURL;
-		imgURL = CreateTopology.class.getResource(BTS);
+		imgURL = CreateTopology.class.getResource(ProvisionConstants.BTS);
 		if (imgURL != null) {
 			return new ImageIcon(imgURL).getImage();
 		} else {
@@ -152,20 +137,18 @@ public class CreateTopology {
 
 		while ((lineMap = topologyReaderForMap.readLine()) != null) {
 
-			Pattern pClass = Pattern.compile(CLASS);
+			Pattern pClass = Pattern.compile(ProvisionConstants.CLASS);
 			Matcher mClass = pClass.matcher(lineMap);
-			if (mClass.matches()) {
+			if (mClass.matches() && mClass.group(2).length() != 0) {
 
 				className = mClass.group(2);
 
 			}
 
-			Pattern pName = Pattern
-					.compile(NAME);
+			Pattern pName = Pattern.compile(ProvisionConstants.NAME);
 			Matcher mName = pName.matcher(lineMap);
 
-			if (mName.matches()) {
-
+			if (mName.matches() && mName.group(2).length() != 0) {
 				while (indexOfSimbol < mName.group(2).length()) {
 					if (mName.group(2).charAt(indexOfSimbol) == '/') {
 						index = indexOfSimbol;
@@ -192,40 +175,43 @@ public class CreateTopology {
 		DocumentBuilder builder = factory.newDocumentBuilder();
 		Document document = builder.parse(file);
 		Element root = document.getDocumentElement();
-		int countOfElements = root.getElementsByTagName(PHYSICALPATH)
-				.getLength();
+		int countOfElements = root.getElementsByTagName(
+				ProvisionConstants.PHYSICALPATH).getLength();
 
 		nodes = new IconNode[countOfElements];
-		nodes[0] = new IconNode(TOPOLOGY);
+		nodes[0] = new IconNode(ProvisionConstants.TOPOLOGY);
 
 		while (indexOfElement < countOfElements) {
 
 			Element message = (Element) root.getElementsByTagName(
-					PHYSICALPATH).item(indexOfElement);
-			String textContent = message.getTextContent();
-			int textContentLength = textContent.length();
+					ProvisionConstants.PHYSICALPATH).item(indexOfElement);
+			if (message != null) {
+				String textContent = message.getTextContent();
+				int textContentLength = textContent.length();
 
-			while (indexOfSimbol < textContentLength) {
-				if (textContent.charAt(indexOfSimbol) == '/') {
-					index = indexOfSimbol;
-					countOfSimbol++;
+				while (indexOfSimbol < textContentLength) {
+					if (textContent.charAt(indexOfSimbol) == '/') {
+						index = indexOfSimbol;
+						countOfSimbol++;
+					}
+					indexOfSimbol++;
 				}
-				indexOfSimbol++;
+
+				nodes[countOfSimbol] = new IconNode(textContent
+						.substring(index + 1, textContentLength)
+						.replace("(", r).replace(")", r));
+				nodes[countOfSimbol - 1].add(nodes[countOfSimbol]);
+				nodes[0].setIcon(iconBTS);
+
+				setNodeIcon(
+						textContent.substring(index + 1, textContentLength),
+						countOfSimbol);
+
+				indexOfElement++;
+				index = 0;
+				indexOfSimbol = 0;
+				countOfSimbol = 0;
 			}
-
-			nodes[countOfSimbol] = new IconNode(textContent
-					.substring(index + 1, textContentLength).replace("(", r)
-					.replace(")", r));
-			nodes[countOfSimbol - 1].add(nodes[countOfSimbol]);
-			nodes[0].setIcon(iconBTS);
-
-			setNodeIcon(textContent.substring(index + 1, textContentLength),
-					countOfSimbol);
-
-			indexOfElement++;
-			index = 0;
-			indexOfSimbol = 0;
-			countOfSimbol = 0;
 		}
 
 		topologyTree.setModel(new javax.swing.tree.DefaultTreeModel(nodes[0]));
@@ -237,20 +223,23 @@ public class CreateTopology {
 
 		while ((topologyLine = topologyReaderForProperties.readLine()) != null) {
 
-			Pattern p = Pattern.compile(STR);
+			Pattern p = Pattern.compile(ProvisionConstants.STR);
 			Matcher m = p.matcher(topologyLine);
 			if (m.matches()) {
-				if (m.group(1).contentEquals(PHYSICALPATH)
-						|| m.group(1).contentEquals(TYPE)) {
-					path = m.group(2);
+				if ((m.group(1).length() != 0) && (m.group(2).length() != 0)) {
+					if (m.group(1).contentEquals(
+							ProvisionConstants.PHYSICALPATH)
+							|| m.group(1)
+									.contentEquals(ProvisionConstants.TYPE)) {
+						path = m.group(2);
+					}
+
+					if (!m.group(1).contentEquals("name")) {
+
+						listProperties.add(path + "	" + m.group(1) + ": "
+								+ m.group(2));
+					}
 				}
-
-				if (!m.group(1).contentEquals("name")) {
-
-					listProperties.add(path + "	" + m.group(1) + ": "
-							+ m.group(2));
-				}
-
 			}
 		}
 
@@ -258,8 +247,8 @@ public class CreateTopology {
 
 		for (String word : listProperties) {
 
-			properties.append(word.replace("(", r).replace(")", r))
-					.append("\n");
+			ProvisionConstants.properties.append(
+					word.replace("(", r).replace(")", r)).append("\n");
 		}
 
 	}
@@ -453,9 +442,9 @@ public class CreateTopology {
 	class IconNodeRenderer extends DefaultTreeCellRenderer {
 
 		/**
-	 * 
-	 */
-		private static final long serialVersionUID = 1L;
+		 * 
+		 */
+		private static final long serialVersionUID = 8855684144932247759L;
 
 		@Override
 		public Component getTreeCellRendererComponent(JTree tree, Object value,
@@ -489,9 +478,9 @@ public class CreateTopology {
 	class IconNode extends DefaultMutableTreeNode {
 
 		/**
-	 * 
-	 */
-		private static final long serialVersionUID = 1L;
+		 * 
+		 */
+		private static final long serialVersionUID = -8929878233584468335L;
 
 		protected Icon icon;
 

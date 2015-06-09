@@ -1,8 +1,5 @@
 package com.harris.netboss.provision;
 
-import static com.harris.netboss.provision.CreateTopology.properties;
-import static com.harris.netboss.provision.CreateTopology.topology;
-
 import java.awt.Cursor;
 import java.awt.Image;
 import java.io.File;
@@ -19,9 +16,10 @@ import javax.swing.JOptionPane;
 
 public class Main extends javax.swing.JFrame {
 
-	public static final String PROVISION = "res\\provision.gif";
-	
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5600409472739057209L;
 
 	public static Date startTimer;
 	public static Date stopTimer;
@@ -47,7 +45,7 @@ public class Main extends javax.swing.JFrame {
 
 	protected static Image getImage() {
 		java.net.URL imgURL;
-		imgURL = Main.class.getResource(PROVISION);
+		imgURL = Main.class.getResource(ProvisionConstants.PROVISION);
 		if (imgURL != null) {
 			return new ImageIcon(imgURL).getImage();
 		} else {
@@ -80,7 +78,8 @@ public class Main extends javax.swing.JFrame {
 						try {
 							createTopologyButtonMouseClicked(evt);
 						} catch (Exception e) {
-							// TODO Auto-generated catch block
+							JOptionPane.showMessageDialog(rootPane, "ERROR!!!",
+									"ERROR", WIDTH);
 							e.printStackTrace();
 						}
 					}
@@ -235,8 +234,10 @@ public class Main extends javax.swing.JFrame {
 
 			setCursor(new Cursor(Cursor.WAIT_CURSOR));
 
-			topology.delete(0, topology.length());
-			properties.delete(0, properties.length());
+			ProvisionConstants.topology.delete(0,
+					ProvisionConstants.topology.length());
+			ProvisionConstants.properties.delete(0,
+					ProvisionConstants.properties.length());
 
 			CreateTopology topology;
 			topology = new CreateTopology();
