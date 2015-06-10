@@ -78,9 +78,8 @@ public class Main extends javax.swing.JFrame {
 						try {
 							createTopologyButtonMouseClicked(evt);
 						} catch (Exception e) {
-							JOptionPane.showMessageDialog(rootPane, "ERROR!!!",
-									"ERROR", WIDTH);
-							e.printStackTrace();
+							JOptionPane.showMessageDialog(rootPane,
+									e.getMessage(), "ERROR", WIDTH);
 						}
 					}
 				});

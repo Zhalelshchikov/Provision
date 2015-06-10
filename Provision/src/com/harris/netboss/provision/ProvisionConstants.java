@@ -16,6 +16,8 @@ public class ProvisionConstants {
 	public static final String STR = "<(.*)>(.*)<(.*)>";
 	public static final String TYPE = "obj type=\"ref\"";
 
+	public static final int COUNTOFROWS = 40;
+
 	public static final StringBuilder topology = new StringBuilder();
 	public static final StringBuilder properties = new StringBuilder();
 

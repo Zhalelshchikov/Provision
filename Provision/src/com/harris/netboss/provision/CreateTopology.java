@@ -139,7 +139,7 @@ public class CreateTopology {
 
 			Pattern pClass = Pattern.compile(ProvisionConstants.CLASS);
 			Matcher mClass = pClass.matcher(lineMap);
-			if (mClass.matches() && mClass.group(2).length() != 0) {
+			if (mClass.matches() && mClass.group(2) != null) {
 
 				className = mClass.group(2);
 
@@ -148,7 +148,7 @@ public class CreateTopology {
 			Pattern pName = Pattern.compile(ProvisionConstants.NAME);
 			Matcher mName = pName.matcher(lineMap);
 
-			if (mName.matches() && mName.group(2).length() != 0) {
+			if (mName.matches() && mName.group(2) != null) {
 				while (indexOfSimbol < mName.group(2).length()) {
 					if (mName.group(2).charAt(indexOfSimbol) == '/') {
 						index = indexOfSimbol;
@@ -226,7 +226,7 @@ public class CreateTopology {
 			Pattern p = Pattern.compile(ProvisionConstants.STR);
 			Matcher m = p.matcher(topologyLine);
 			if (m.matches()) {
-				if ((m.group(1).length() != 0) && (m.group(2).length() != 0)) {
+				if ((m.group(1) != null) && (m.group(2) != null)) {
 					if (m.group(1).contentEquals(
 							ProvisionConstants.PHYSICALPATH)
 							|| m.group(1)
