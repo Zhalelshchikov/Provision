@@ -81,7 +81,7 @@ public class CreateTopology {
 	protected static Image getImageNetworkElement() {
 		java.net.URL imgURL;
 		imgURL = CreateTopology.class
-				.getResource(ProvisionConstants.NETWORKELEMENT);
+				.getResource(ProvisionConstants.NETWORK_ELEMENT);
 		if (imgURL != null) {
 			return new ImageIcon(imgURL).getImage();
 		} else {
@@ -139,7 +139,7 @@ public class CreateTopology {
 
 			Pattern pClass = Pattern.compile(ProvisionConstants.CLASS);
 			Matcher mClass = pClass.matcher(lineMap);
-			if (mClass.matches() && mClass.group(2) != null) {
+			if (mClass.matches() && mClass.groupCount() <= 3) {
 
 				className = mClass.group(2);
 
@@ -148,7 +148,8 @@ public class CreateTopology {
 			Pattern pName = Pattern.compile(ProvisionConstants.NAME);
 			Matcher mName = pName.matcher(lineMap);
 
-			if (mName.matches() && mName.group(2) != null) {
+			if (mName.matches() && mName.groupCount() <= 3) {
+
 				while (indexOfSimbol < mName.group(2).length()) {
 					if (mName.group(2).charAt(indexOfSimbol) == '/') {
 						index = indexOfSimbol;
@@ -176,7 +177,7 @@ public class CreateTopology {
 		Document document = builder.parse(file);
 		Element root = document.getDocumentElement();
 		int countOfElements = root.getElementsByTagName(
-				ProvisionConstants.PHYSICALPATH).getLength();
+				ProvisionConstants.PHYSICAL_PATH).getLength();
 
 		nodes = new IconNode[countOfElements];
 		nodes[0] = new IconNode(ProvisionConstants.TOPOLOGY);
@@ -184,7 +185,7 @@ public class CreateTopology {
 		while (indexOfElement < countOfElements) {
 
 			Element message = (Element) root.getElementsByTagName(
-					ProvisionConstants.PHYSICALPATH).item(indexOfElement);
+					ProvisionConstants.PHYSICAL_PATH).item(indexOfElement);
 			if (message != null) {
 				String textContent = message.getTextContent();
 				int textContentLength = textContent.length();
@@ -226,9 +227,9 @@ public class CreateTopology {
 			Pattern p = Pattern.compile(ProvisionConstants.STR);
 			Matcher m = p.matcher(topologyLine);
 			if (m.matches()) {
-				if ((m.group(1) != null) && (m.group(2) != null)) {
+				if (m.groupCount() <= 3) {
 					if (m.group(1).contentEquals(
-							ProvisionConstants.PHYSICALPATH)
+							ProvisionConstants.PHYSICAL_PATH)
 							|| m.group(1)
 									.contentEquals(ProvisionConstants.TYPE)) {
 						path = m.group(2);

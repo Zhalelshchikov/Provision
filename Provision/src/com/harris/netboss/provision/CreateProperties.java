@@ -7,81 +7,69 @@ public class CreateProperties {
 
 	public void create() {
 
-		int indexOfSimbol = 0;
-		int index = 0;
+		Object property = ProvisionConstants.properties;
+		Object selectionPath = Main.topologyTree.getSelectionModel()
+				.getSelectionPath();
 
-		if ((ProvisionConstants.properties.toString() != null)
-				&& (Main.topologyTree.getSelectionModel().getSelectionPath()
-						.toString() != null)) {
+		String[] lines = (String[]) property.toString().split("\n");
+		String list = (String) selectionPath.toString();
 
-			String[] lines = (String[]) ProvisionConstants.properties
-					.toString().split("\n");
-			String list = (String) Main.topologyTree.getSelectionModel()
-					.getSelectionPath().toString();
+		if (list != null) {
 
-			if (list != null) {
-				while (indexOfSimbol < list.length()) {
-					if (list.charAt(indexOfSimbol) == ',') {
-						index = indexOfSimbol;
-					}
-					indexOfSimbol++;
-				}
+			list = (String) Main.topologyTree.getSelectionModel()
+					.getSelectionPath().toString()
+					.substring(list.lastIndexOf(',') + 2, list.length() - 1);
 
-				list = (String) Main.topologyTree.getSelectionModel()
-						.getSelectionPath().toString()
-						.substring(index + 2, list.length() - 1);
+			rows[0][0] = "name:";
+			rows[0][1] = list;
+			if (lines != null) {
 
-				rows[0][0] = "name:";
-				rows[0][1] = list;
-				if (lines != null) {
+				for (String line : lines) {
 
-					for (String line : lines) {
+					Pattern pp = Pattern
+							.compile("(.*/)" + list + "	(.*:)( .*)");
+					Matcher mp = pp.matcher(line);
 
-						Pattern pp = Pattern.compile("(.*/)" + list
-								+ "	(.*:)( .*)");
-						Matcher mp = pp.matcher(line);
+					if (mp.matches()) {
+						if (mp.groupCount() <= 3) {
 
-						if (mp.matches()) {
-							if ((mp.group(1) != null) && (mp.group(2) != null)) {
-
-								if ((mp.group(1) + list)
-										.equals((String) Main.topologyTree
-												.getSelectionModel()
-												.getSelectionPath().toString()
-												.replace('[', '/')
-												.replaceAll("]", "")
-												.replaceAll(", ", "/")
-												.replaceAll(" topology/", ""))) {
-									rowFild(mp.group(2), mp.group(3));
-									counter++;
-								}
+							if ((mp.group(1) + list)
+									.equals((String) Main.topologyTree
+											.getSelectionModel()
+											.getSelectionPath().toString()
+											.replace('[', '/')
+											.replaceAll("]", "")
+											.replaceAll(", ", "/")
+											.replaceAll(" topology/", ""))) {
+								rowFild(mp.group(2), mp.group(3));
+								counter++;
 							}
 						}
 					}
 				}
 			}
+		}
 
-			Main.propertiesTable
-					.setModel(new javax.swing.table.DefaultTableModel(
+		Main.propertiesTable.setModel(new javax.swing.table.DefaultTableModel(
 
-					rows
+		rows
 
-					, new String[] { "Property", "Value" }) {
-						/**
+		, new String[] { "Property", "Value" }) {
+			/**
 					 * 
 					 */
-						private static final long serialVersionUID = 2237708183985897972L;
+			private static final long serialVersionUID = 2237708183985897972L;
 
-						@SuppressWarnings("rawtypes")
-						Class[] types = new Class[] { java.lang.String.class,
-								java.lang.String.class };
+			@SuppressWarnings("rawtypes")
+			Class[] types = new Class[] { java.lang.String.class,
+					java.lang.String.class };
 
-						@Override
-						public Class<?> getColumnClass(int columnIndex) {
-							return types[columnIndex];
-						}
-					});
-		}
+			@Override
+			public Class<?> getColumnClass(int columnIndex) {
+				return types[columnIndex];
+			}
+		});
+
 	}
 
 	public void rowFild(String firstValue, String secondValue) {
@@ -93,6 +81,6 @@ public class CreateProperties {
 
 	public int counter = 1;
 
-	public String[][] rows = new String[ProvisionConstants.COUNTOFROWS][2];
+	public String[][] rows = new String[ProvisionConstants.COUNT_OF_ROWS][2];
 
 }
