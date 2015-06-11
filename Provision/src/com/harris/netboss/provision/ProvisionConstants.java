@@ -13,7 +13,7 @@ public class ProvisionConstants {
 	public static final String CLASS = "(<object class=\")(.*)(\">)";
 	public static final String NAME = "(<physical_path>|<obj type=\"ref\">)(.*)(</physical_path>|</obj>)";
 	public static final String PHYSICAL_PATH = "physical_path";
-	public static final String STR = "<(.*)>(.*)<(.*)>";
+	public static final String STR = "<(.*)>(.*)<.*>";
 	public static final String TYPE = "obj type=\"ref\"";
 
 	public static final int COUNT_OF_ROWS = 40;

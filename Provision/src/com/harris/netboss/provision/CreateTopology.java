@@ -227,7 +227,7 @@ public class CreateTopology {
 			Pattern p = Pattern.compile(ProvisionConstants.STR);
 			Matcher m = p.matcher(topologyLine);
 			if (m.matches()) {
-				if (m.groupCount() <= 3) {
+				if (m.groupCount() <= 2) {
 					if (m.group(1).contentEquals(
 							ProvisionConstants.PHYSICAL_PATH)
 							|| m.group(1)

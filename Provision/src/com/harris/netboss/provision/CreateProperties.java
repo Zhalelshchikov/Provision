@@ -11,38 +11,46 @@ public class CreateProperties {
 		Object selectionPath = Main.topologyTree.getSelectionModel()
 				.getSelectionPath();
 
-		String[] lines = (String[]) property.toString().split("\n");
-		String list = (String) selectionPath.toString();
+		if (property != null && selectionPath != null) {
 
-		if (list != null) {
+			String[] lines = (String[]) property.toString().split("\n");
+			String selectionPathToString = (String) selectionPath.toString();
 
-			list = (String) Main.topologyTree.getSelectionModel()
-					.getSelectionPath().toString()
-					.substring(list.lastIndexOf(',') + 2, list.length() - 1);
+			if (selectionPathToString != null) {
 
-			rows[0][0] = "name:";
-			rows[0][1] = list;
-			if (lines != null) {
+				String list = (String) selectionPath.toString().substring(
+						selectionPathToString.lastIndexOf(',') + 2,
+						selectionPathToString.length() - 1);
 
-				for (String line : lines) {
+				if (list != null) {
 
-					Pattern pp = Pattern
-							.compile("(.*/)" + list + "	(.*:)( .*)");
-					Matcher mp = pp.matcher(line);
+					rows[0][0] = "name:";
+					rows[0][1] = list;
+					if (lines != null) {
 
-					if (mp.matches()) {
-						if (mp.groupCount() <= 3) {
+						for (String line : lines) {
 
-							if ((mp.group(1) + list)
-									.equals((String) Main.topologyTree
-											.getSelectionModel()
-											.getSelectionPath().toString()
-											.replace('[', '/')
-											.replaceAll("]", "")
-											.replaceAll(", ", "/")
-											.replaceAll(" topology/", ""))) {
-								rowFild(mp.group(2), mp.group(3));
-								counter++;
+							Pattern pp = Pattern.compile("(.*/)" + list
+									+ "	(.*:)( .*)");
+							Matcher mp = pp.matcher(line);
+
+							if (mp.matches()) {
+								if (mp.groupCount() <= 3) {
+
+									if ((mp.group(1) + list)
+											.equals((String) Main.topologyTree
+													.getSelectionModel()
+													.getSelectionPath()
+													.toString()
+													.replace('[', '/')
+													.replaceAll("]", "")
+													.replaceAll(", ", "/")
+													.replaceAll(" topology/",
+															""))) {
+										rowFild(mp.group(2), mp.group(3));
+										counter++;
+									}
+								}
 							}
 						}
 					}
