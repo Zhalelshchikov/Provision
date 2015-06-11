@@ -1,7 +1,5 @@
 package com.harris.netboss.provision;
 
-import static com.harris.netboss.provision.CreateTopology.properties;
-import static com.harris.netboss.provision.CreateTopology.topology;
 import java.awt.Cursor;
 import java.awt.Image;
 import java.io.File;
@@ -11,13 +9,17 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 public class Main extends javax.swing.JFrame {
 
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5600409472739057209L;
 
 	public static Date startTimer;
 	public static Date stopTimer;
@@ -43,7 +45,7 @@ public class Main extends javax.swing.JFrame {
 
 	protected static Image getImage() {
 		java.net.URL imgURL;
-		imgURL = Main.class.getResource("res\\provision.gif");
+		imgURL = Main.class.getResource(ProvisionConstants.PROVISION);
 		if (imgURL != null) {
 			return new ImageIcon(imgURL).getImage();
 		} else {
@@ -73,7 +75,12 @@ public class Main extends javax.swing.JFrame {
 		createTopologyButton
 				.addMouseListener(new java.awt.event.MouseAdapter() {
 					public void mouseClicked(java.awt.event.MouseEvent evt) {
-						createTopologyButtonMouseClicked(evt);
+						try {
+							createTopologyButtonMouseClicked(evt);
+						} catch (Exception e) {
+							JOptionPane.showMessageDialog(rootPane,
+									e.getMessage(), "ERROR", WIDTH);
+						}
 					}
 				});
 
@@ -85,7 +92,7 @@ public class Main extends javax.swing.JFrame {
 		processTimerLable.setText("Process timer:");
 
 		javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode(
-				"topology");
+				" topology");
 		topologyTree.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
 		topologyTree.setToolTipText("");
 		topologyTree
@@ -201,13 +208,14 @@ public class Main extends javax.swing.JFrame {
 												.addComponent(
 														scrollPane2,
 														javax.swing.GroupLayout.DEFAULT_SIZE,
-														642, Short.MAX_VALUE))));
+														670, Short.MAX_VALUE))));
 
 		pack();
 		setLocationRelativeTo(null);
 	}
 
-	private void createTopologyButtonMouseClicked(java.awt.event.MouseEvent evt) {
+	private void createTopologyButtonMouseClicked(java.awt.event.MouseEvent evt)
+			throws Exception {
 		propertiesTable.setModel(new javax.swing.table.DefaultTableModel(
 				new Object[][] {
 
@@ -225,8 +233,10 @@ public class Main extends javax.swing.JFrame {
 
 			setCursor(new Cursor(Cursor.WAIT_CURSOR));
 
-			topology.delete(0, topology.length());
-			properties.delete(0, properties.length());
+			ProvisionConstants.topology.delete(0,
+					ProvisionConstants.topology.length());
+			ProvisionConstants.properties.delete(0,
+					ProvisionConstants.properties.length());
 
 			CreateTopology topology;
 			topology = new CreateTopology();
@@ -274,7 +284,7 @@ public class Main extends javax.swing.JFrame {
 
 		file = fileopenSelectedFile.getSelectedFile();
 		if (fileopenSelectedFile.getSelectedFile() != null) {
-			selectedFileField.setText(file.toString());
+			selectedFileField.setText((String) file.toString());
 			setDir(file);
 		}
 	}
