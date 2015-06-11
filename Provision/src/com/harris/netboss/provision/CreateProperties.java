@@ -7,21 +7,22 @@ public class CreateProperties {
 
 	public void create() {
 
-		Object property = ProvisionConstants.properties;
+		Object property = ProvisionConstants.properties.toString().split("\n");
 		Object selectionPath = Main.topologyTree.getSelectionModel()
-				.getSelectionPath();
+				.getSelectionPath().toString();
 
 		if (property != null && selectionPath != null) {
 
-			String[] lines = (String[]) property.toString().split("\n");
-			String selectionPathToString = (String) selectionPath.toString();
+			String[] lines = (String[]) property;
+			String selectionPathToString = (String) selectionPath;
 
 			if (selectionPathToString != null) {
 
-				String list = (String) selectionPathToString
-						.toString()
-						.substring(selectionPathToString.lastIndexOf(',') + 1,
-								selectionPathToString.length() - 1).trim();
+				int startIndex = selectionPathToString.lastIndexOf(',') + 1;
+				int endIndex = selectionPathToString.length() - 1;
+
+				String list = (String) selectionPathToString.toString()
+						.substring(startIndex, endIndex).trim();
 
 				if (list != null) {
 
