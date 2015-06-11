@@ -18,9 +18,10 @@ public class CreateProperties {
 
 			if (selectionPathToString != null) {
 
-				String list = (String) selectionPath.toString().substring(
-						selectionPathToString.lastIndexOf(',') + 2,
-						selectionPathToString.length() - 1);
+				String list = (String) selectionPathToString
+						.toString()
+						.substring(selectionPathToString.lastIndexOf(',') + 1,
+								selectionPathToString.length() - 1).trim();
 
 				if (list != null) {
 
