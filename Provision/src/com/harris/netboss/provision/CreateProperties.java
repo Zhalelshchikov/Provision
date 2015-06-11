@@ -8,50 +8,43 @@ public class CreateProperties {
 	public void create() {
 
 		Object property = ProvisionConstants.properties.toString().split("\n");
-		Object selectionPath = Main.topologyTree.getSelectionModel()
+		String selectionPath = Main.topologyTree.getSelectionModel()
 				.getSelectionPath().toString();
 
 		if (property != null && selectionPath != null) {
 
 			String[] lines = (String[]) property;
-			String selectionPathToString = (String) selectionPath;
 
-			if (selectionPathToString != null) {
+			int startIndex = selectionPath.lastIndexOf(',') + 1;
+			int endIndex = selectionPath.length() - 1;
 
-				int startIndex = selectionPathToString.lastIndexOf(',') + 1;
-				int endIndex = selectionPathToString.length() - 1;
+			String list = selectionPath.substring(startIndex, endIndex).trim();
 
-				String list = (String) selectionPathToString.toString()
-						.substring(startIndex, endIndex).trim();
+			if (list != null) {
 
-				if (list != null) {
+				rows[0][0] = "name:";
+				rows[0][1] = list;
+				if (lines != null) {
 
-					rows[0][0] = "name:";
-					rows[0][1] = list;
-					if (lines != null) {
+					for (String line : lines) {
 
-						for (String line : lines) {
+						Pattern pp = Pattern.compile("(.*/)" + list
+								+ "	(.*:)( .*)");
+						Matcher mp = pp.matcher(line);
 
-							Pattern pp = Pattern.compile("(.*/)" + list
-									+ "	(.*:)( .*)");
-							Matcher mp = pp.matcher(line);
+						if (mp.matches()) {
+							if (mp.groupCount() <= 3) {
 
-							if (mp.matches()) {
-								if (mp.groupCount() <= 3) {
-
-									if ((mp.group(1) + list)
-											.equals((String) Main.topologyTree
-													.getSelectionModel()
-													.getSelectionPath()
-													.toString()
-													.replace('[', '/')
-													.replaceAll("]", "")
-													.replaceAll(", ", "/")
-													.replaceAll(" topology/",
-															""))) {
-										rowFild(mp.group(2), mp.group(3));
-										counter++;
-									}
+								if ((mp.group(1) + list)
+										.equals((String) Main.topologyTree
+												.getSelectionModel()
+												.getSelectionPath().toString()
+												.replace('[', '/')
+												.replaceAll("]", "")
+												.replaceAll(", ", "/")
+												.replaceAll(" topology/", ""))) {
+									rowFild(mp.group(2), mp.group(3));
+									counter++;
 								}
 							}
 						}
